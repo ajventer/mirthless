@@ -37,3 +37,5 @@ If you prefer to track the installation.
 To run the unit tests use:
 
 `make test`
+
+Game art from: kenney.nl

@@ -7,6 +7,15 @@ import sys
 import hashlib
 import yaml
 
+gamedir = None
+
+def file_path(directory, filename):
+    global gamedir
+    dirname = os.path.join(gamedir, directory)
+    debug (dirname)
+    filepath = os.path.join(dirname, filename)
+    debug ('Loading file: ', filepath)
+    return filepath
 
 def user_hash():
     user_string = '%s%s' % (bottle.request.environ.get('REMOTE_ADDR'), bottle.request.environ.get('HTTP_USER_AGENT'))
@@ -61,11 +70,7 @@ def writekey(key, value, json):
 
 def readfile(source='', name='', filename='', json=False, default=None):
     debug('%s - %s: %s' % (source, name, filename))
-    if not filename:
-        filenames = find_files(source, name)
-        if filenames:
-            filename = filenames[0]
-    handle=open(filename, 'r')
+    handle=open(file_path(source, filename), 'r')
     s = handle.read()
     handle.close()
     if not json:

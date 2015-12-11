@@ -15,7 +15,7 @@ if exepath == '/usr/games/mirthless':
     settingsfile = '/etc/mirthless/mirthless.cfg'
 else:
     settingsfile = os.path.dirname(exepath)+'/../../etc/mirthless/mirthless.cfg'
-    gamedir =  os.path.dirname(exepath)+'/../share/mirthless'
+    gamedir =  os.path.abspath(os.path.dirname(exepath)+'/../share/mirthless')
 
 if os.path.exists('/etc/mirthless/mirthless.cfg'):
     settingsfile = '/etc/mirthless/mirthless.cfg'
@@ -27,13 +27,18 @@ if gamedir is None:
     gamedir = settings['gamedir']
 
 sys.path.append(os.path.join(gamedir,'lib'))
-from graphics import get_screen
+from graphics import get_screen 
+import util
 
 
 if __name__ == "__main__":
+    util.gamedir = gamedir
     quit = False
     pygame.init()
-    screen = get_screen(settings['res_x'], settings['res_y'], settings['hardware_buffer'], settings['fullscreen'])
+    screen = get_screen(settings['res_x'], settings['res_y'], settings['hardware_buffer'], settings['fullscreen'])  
+    pygame.display.set_caption('Mirthless RPG')
+
+    pygame.display.flip()    
     while not quit:
         for event in pygame.event.get():
             if event.type == pygame.QUIT or event.type == KEYDOWN: 

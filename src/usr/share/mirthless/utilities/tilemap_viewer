@@ -1,0 +1,81 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+import yaml
+import os
+import sys
+import pygame
+from pygame.locals import *
+
+#The following slightly convoluted import block allows the game to run from the source tree for development
+#When you do so, the local source paths take precedence over the installed paths.
+#TODO: Add a windows check and alter default paths to work on that platform.
+exepath = os.path.abspath(__file__)
+gamedir = None
+if exepath == '/usr/share/mirthless/utilities':
+    settingsfile = '/etc/mirthless/mirthless.cfg'
+else:
+    settingsfile = os.path.dirname(exepath)+'/../../../../etc/mirthless/mirthless.cfg'
+    gamedir =  os.path.abspath(os.path.dirname(exepath)+'/..')
+
+if os.path.exists('/etc/mirthless/mirthless.cfg'):
+    settingsfile = '/etc/mirthless/mirthless.cfg'
+settingstr = open(settingsfile).read()
+
+settings = yaml.load(settingstr)
+
+if gamedir is None:
+    gamedir = settings['gamedir']
+
+sys.path.append(os.path.join(gamedir,'lib'))
+from graphics import get_screen, Tilemap, scrn_print
+import util
+
+
+if __name__ == "__main__":
+    util.gamedir = gamedir
+    quit = False
+    pygame.init()
+    screen = get_screen(settings['res_x'], settings['res_y'], settings['hardware_buffer'], settings['fullscreen'])
+    pygame.display.set_caption('Mirthless TileMap Viewer')
+
+    if len(sys.argv) != 2:
+        util.debug('Usage %s <tilemap file>' % sys.argv[0])
+        sys.exit()
+    tilename = sys.argv[1]
+    if not os.path.dirname(tilename):
+        tilename = util.file_path('images', tilename)
+
+    if not os.path.exists(tilename):
+        util.debug('Error %s does not exist, please provide a valid tilemap file')
+        sys.exit(1)
+
+    tilemap = Tilemap(tilename,16,16)
+    table = tilemap.table()
+
+    screen.fill((255, 255, 255))
+
+    scrn_print (screen, "Press any key to quit", screen.get_rect().centerx, screen.get_rect().height - 36)
+
+    font = pygame.font.Font(None, 16)
+    for x, row in enumerate(table):
+        scrn_print(screen, x, x*32+16, 8, size=16)
+    for y, tile in enumerate(row):
+        scrn_print(screen, y, 8, y*32+16, size=16)
+
+    for x, row in enumerate(table):
+        for y, tile in enumerate(row):
+            screen.blit(tile, (x*32 + 16, y*32 + 16))
+    pygame.display.flip()    
+    while not quit:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT or event.type == KEYDOWN: 
+                quit = True
+
+    
+
+    
+
+
+
+
+
