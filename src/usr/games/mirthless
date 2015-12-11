@@ -1,4 +1,40 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
+import yaml
+import os
 import sys
-sys.path.append('/usr/share/games/mirthless/lib')
+import pygame
+from pygame.locals import *
+
+#The following slightly convoluted import block allows the game to run from the source tree for development
+#When you do so, the local source paths take precedence over the installed paths.
+#TODO: Add a windows check and alter default paths to work on that platform.
+exepath = os.path.abspath(__file__)
+gamedir = None
+if exepath == '/usr/games/mirthless':
+    settingsfile = '/etc/mirthless/mirthless.cfg'
+else:
+    settingsfile = os.path.dirname(exepath)+'/../../etc/mirthless/mirthless.cfg'
+    gamedir =  os.path.dirname(exepath)+'/../share/mirthless'
+
+if os.path.exists('/etc/mirthless/mirthless.cfg'):
+    settingsfile = '/etc/mirthless/mirthless.cfg'
+settingstr = open(settingsfile).read()
+
+settings = yaml.load(settingstr)
+
+if gamedir is None:
+    gamedir = settings['gamedir']
+
+sys.path.append(os.path.join(gamedir,'lib'))
+from graphics import get_screen
+
+
+screen = get_screen(settings['res_x'], settings['res_y'], settings['hardware_buffer'], settings['fullscreen'])
+pygame.event.wait()
+    
+
+
+
+
 
