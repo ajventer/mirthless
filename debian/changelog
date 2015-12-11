@@ -1,0 +1,19 @@
+mirthless (1.0) UNRELEASED; urgency=medium
+
+  * Renamed skeleton package to mirthless.
+  * Renamed skeleton package to mirthless.
+
+ -- A.J. Venter <silentcoder@aj>  Fri, 11 Dec 2015 18:51:56 +0200
+
+mirthless (0.2) unstable; urgency=low
+
+  * Adding default LSB headers for squeeze
+
+ -- Devin Breen <devin@ometa.org>  Thu, 24 Mar 2011 09:43:36 -0700
+
+mirthless (0.1) unstable; urgency=low
+
+  * Cloned from debian package skeleton.
+
+ -- Devin Breen <devin@ometa.org>  Mon, 20 Sep 2010 08:01:59 -0700
+
