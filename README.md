@@ -26,10 +26,14 @@ TODO list for initial release (in no particular order):
 I am going to try and get an initial playable alpha release up to the end of the opening chapter done by the end of December, more helpers will reduce that time. But the TODO list is quite long, even though the engine inheritted from EZDM is largely complete this involves quite a bit of work. So please be patient.
 
 The built in make file can install the game:
-`make install`
-You can also build a debian/ubuntu/mint package instead:
-`make deb`
-If you prefer to track the installation.
 
+`make install`
+
+You can also build a debian/ubuntu/mint package instead:
+
+`make deb`
+
+If you prefer to track the installation.
 To run the unit tests use:
+
 `make test`
