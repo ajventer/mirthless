@@ -1,0 +1,661 @@
+
+cha/1/henchmen: '0'
+cha/1/loyalty: '-8'
+cha/1/reaction_adjustment: '-7'
+cha/10/henchmen: '4'
+cha/10/loyalty: '0'
+cha/10/reaction_adjustment: '0'
+cha/11/henchmen: '4'
+cha/11/loyalty: '0'
+cha/11/reaction_adjustment: '0'
+cha/12/henchmen: '5'
+cha/12/loyalty: '0'
+cha/12/reaction_adjustment: '0'
+cha/13/henchmen: '5'
+cha/13/loyalty: '0'
+cha/13/reaction_adjustment: '1'
+cha/14/henchmen: '6'
+cha/14/loyalty: '1'
+cha/14/reaction_adjustment: '2'
+cha/15/henchmen: '7'
+cha/15/loyalty: '3'
+cha/15/reaction_adjustment: '3'
+cha/16/henchmen: '8'
+cha/16/loyalty: '4'
+cha/16/reaction_adjustment: '5'
+cha/17/henchmen: '10'
+cha/17/loyalty: '6'
+cha/17/reaction_adjustment: '6'
+cha/18/henchmen: '15'
+cha/18/loyalty: '8'
+cha/18/reaction_adjustment: '7'
+cha/19/henchmen: '20'
+cha/19/loyalty: '10'
+cha/19/reaction_adjustment: '8'
+cha/2/henchmen: '1'
+cha/2/loyalty: '-7'
+cha/2/reaction_adjustment: '-6'
+cha/20/henchmen: '25'
+cha/20/loyalty: '12'
+cha/20/reaction_adjustment: '9'
+cha/21/henchmen: '30'
+cha/21/loyalty: '14'
+cha/21/reaction_adjustment: '10'
+cha/22/henchmen: '35'
+cha/22/loyalty: '16'
+cha/22/reaction_adjustment: '11'
+cha/23/henchmen: '40'
+cha/23/loyalty: '18'
+cha/23/reaction_adjustment: '12'
+cha/24/henchmen: '45'
+cha/24/loyalty: '20'
+cha/24/reaction_adjustment: '13'
+cha/25/henchmen: '50'
+cha/25/loyalty: '20'
+cha/25/reaction_adjustment: '14'
+cha/3/henchmen: '1'
+cha/3/loyalty: '-6'
+cha/3/reaction_adjustment: '-5'
+cha/4/henchmen: '1'
+cha/4/loyalty: '-5'
+cha/4/reaction_adjustment: '-4'
+cha/5/henchmen: '2'
+cha/5/loyalty: '-4'
+cha/5/reaction_adjustment: '-3'
+cha/6/henchmen: '2'
+cha/6/loyalty: '-3'
+cha/6/reaction_adjustment: '-2'
+cha/7/henchmen: '3'
+cha/7/loyalty: '-2'
+cha/7/reaction_adjustment: '-1'
+cha/8/henchmen: '3'
+cha/8/loyalty: '-1'
+cha/8/reaction_adjustment: '0'
+cha/9/henchmen: '4'
+cha/9/loyalty: '0'
+cha/9/reaction_adjustment: '0'
+con/1/hit: '-3'
+con/1/ppd: '-2'
+con/1/regen: '0'
+con/1/res_survive: 30%
+con/1/system-shock: 25%
+con/10/hit: '0'
+con/10/ppd: '0'
+con/10/regen: '0'
+con/10/res_survive: 75%
+con/10/system-shock: 70%
+con/11/hit: '0'
+con/11/ppd: '0'
+con/11/regen: '0'
+con/11/res_survive: 80%
+con/11/system-shock: 75%
+con/12/hit: '0'
+con/12/ppd: '0'
+con/12/regen: '0'
+con/12/res_survive: 85%
+con/12/system-shock: 80%
+con/13/hit: '0'
+con/13/ppd: '0'
+con/13/regen: '0'
+con/13/res_survive: 90%
+con/13/system-shock: 85%
+con/14/hit: '0'
+con/14/ppd: '0'
+con/14/regen: '0'
+con/14/res_survive: 92%
+con/14/system-shock: 90%
+con/15/hit: '1'
+con/15/ppd: '0'
+con/15/regen: '0'
+con/15/res_survive: 94%
+con/15/system-shock: 92%
+con/16/hit: '2'
+con/16/ppd: '0'
+con/16/regen: '0'
+con/16/res_survive: 96%
+con/16/system-shock: 94%
+con/17/hit: '2'
+con/17/ppd: '0'
+con/17/regen: '0'
+con/17/res_survive: 98%
+con/17/system-shock: 96%
+con/18/hit: '2'
+con/18/ppd: '0'
+con/18/regen: '0'
+con/18/res_survive: 100%
+con/18/system-shock: 98%
+con/19/hit: '2'
+con/19/ppd: '1'
+con/19/regen: '0'
+con/19/res_survive: 100%
+con/19/system-shock: 99%
+con/2/hit: '-2'
+con/2/ppd: '-1'
+con/2/regen: '0'
+con/2/res_survive: 35%
+con/2/system-shock: 30%
+con/20/hit: '2'
+con/20/ppd: '1'
+con/20/regen: '6'
+con/20/res_survive: 100%
+con/20/system-shock: 99%
+con/21/hit: '2'
+con/21/ppd: '2'
+con/21/regen: '5'
+con/21/res_survive: 100%
+con/21/system-shock: 99%
+con/22/hit: '2'
+con/22/ppd: '2'
+con/22/regen: '4'
+con/22/res_survive: 100%
+con/22/system-shock: 99%
+con/23/hit: '2'
+con/23/ppd: '3'
+con/23/regen: '3'
+con/23/res_survive: 100%
+con/23/system-shock: 99%
+con/24/hit: '2'
+con/24/ppd: '3'
+con/24/regen: '2'
+con/24/res_survive: 100%
+con/24/system-shock: 99%
+con/25/hit: '2'
+con/25/ppd: '4'
+con/25/regen: '1'
+con/25/res_survive: 100%
+con/25/system-shock: 100%
+con/3/hit: '-2'
+con/3/ppd: '0'
+con/3/regen: '0'
+con/3/res_survive: 40%
+con/3/system-shock: 35%
+con/4/hit: '-1'
+con/4/ppd: '0'
+con/4/regen: '0'
+con/4/res_survive: 45%
+con/4/system-shock: 40%
+con/5/hit: '-1'
+con/5/ppd: '0'
+con/5/regen: '0'
+con/5/res_survive: 50%
+con/5/system-shock: 45%
+con/6/hit: '-1'
+con/6/ppd: '0'
+con/6/regen: '0'
+con/6/res_survive: 55%
+con/6/system-shock: 50%
+con/7/hit: '0'
+con/7/ppd: '0'
+con/7/regen: '0'
+con/7/res_survive: 60%
+con/7/system-shock: 55%
+con/8/hit: '0'
+con/8/ppd: '0'
+con/8/regen: '0'
+con/8/res_survive: 65%
+con/8/system-shock: 60%
+con/9/hit: '0'
+con/9/ppd: '0'
+con/9/regen: '0'
+con/9/res_survive: 70%
+con/9/system-shock: 65%
+dex/1/defense: '5'
+dex/1/missile: '-6'
+dex/1/reaction: '-6'
+dex/10/defense: '0'
+dex/10/missile: '0'
+dex/10/reaction: '0'
+dex/11/defense: '0'
+dex/11/missile: '0'
+dex/11/reaction: '0'
+dex/12/defense: '0'
+dex/12/missile: '0'
+dex/12/reaction: '0'
+dex/13/defense: '0'
+dex/13/missile: '0'
+dex/13/reaction: '0'
+dex/14/defense: '0'
+dex/14/missile: '0'
+dex/14/reaction: '0'
+dex/15/defense: '-1'
+dex/15/missile: '0'
+dex/15/reaction: '0'
+dex/16/defense: '-2'
+dex/16/missile: '1'
+dex/16/reaction: '1'
+dex/17/defense: '-3'
+dex/17/missile: '2'
+dex/17/reaction: '2'
+dex/18/defense: '-4'
+dex/18/missile: '2'
+dex/18/reaction: '2'
+dex/19/defense: '-4'
+dex/19/missile: '3'
+dex/19/reaction: '3'
+dex/2/defense: '5'
+dex/2/missile: '-4'
+dex/2/reaction: '-4'
+dex/20/defense: '-4'
+dex/20/missile: '3'
+dex/20/reaction: '3'
+dex/21/defense: '-5'
+dex/21/missile: '4'
+dex/21/reaction: '4'
+dex/22/defense: '-5'
+dex/22/missile: '4'
+dex/22/reaction: '4'
+dex/23/defense: '-5'
+dex/23/missile: '4'
+dex/23/reaction: '4'
+dex/24/defense: '-6'
+dex/24/missile: '5'
+dex/24/reaction: '4'
+dex/25/defense: '-6'
+dex/25/missile: '5'
+dex/25/reaction: '5'
+dex/3/defense: '4'
+dex/3/missile: '-3'
+dex/3/reaction: '-3'
+dex/4/defense: '3'
+dex/4/missile: '-2'
+dex/4/reaction: '-2'
+dex/5/defense: '2'
+dex/5/missile: '-1'
+dex/5/reaction: '-1'
+dex/6/defense: '1'
+dex/6/missile: '0'
+dex/6/reaction: '0'
+dex/7/defense: '0'
+dex/7/missile: '0'
+dex/7/reaction: '0'
+dex/8/defense: '0'
+dex/8/missile: '0'
+dex/8/reaction: '0'
+dex/9/defense: '0'
+dex/9/missile: '0'
+dex/9/reaction: '0'
+int/1/illusion_immunity: '0'
+int/1/lang: '0'
+int/1/maxspells: '0'
+int/1/spell level: '0'
+int/1/spell_learn: 0%
+int/10/illusion_immunity: '0'
+int/10/lang: '2'
+int/10/maxspells: '7'
+int/10/spell level: '5'
+int/10/spell_learn: 45%
+int/11/illusion_immunity: '0'
+int/11/lang: '2'
+int/11/maxspells: '7'
+int/11/spell level: '5'
+int/11/spell_learn: 50%
+int/12/illusion_immunity: '0'
+int/12/lang: '3'
+int/12/maxspells: '7'
+int/12/spell level: '6'
+int/12/spell_learn: 55%
+int/13/illusion_immunity: '0'
+int/13/lang: '3'
+int/13/maxspells: '9'
+int/13/spell level: '6'
+int/13/spell_learn: 60%
+int/14/illusion_immunity: '0'
+int/14/lang: '4'
+int/14/maxspells: '9'
+int/14/spell level: '7'
+int/14/spell_learn: 65%
+int/15/illusion_immunity: '0'
+int/15/lang: '4'
+int/15/maxspells: '11'
+int/15/spell level: '7'
+int/15/spell_learn: 70%
+int/16/illusion_immunity: '0'
+int/16/lang: '5'
+int/16/maxspells: '11'
+int/16/spell level: '8'
+int/16/spell_learn: 75%
+int/17/illusion_immunity: '0'
+int/17/lang: '6'
+int/17/maxspells: '14'
+int/17/spell level: '8'
+int/17/spell_learn: 80%
+int/18/illusion_immunity: '0'
+int/18/lang: '7'
+int/18/maxspells: '18'
+int/18/spell level: '9'
+int/18/spell_learn: 85%
+int/19/illusion_immunity: '1'
+int/19/lang: '8'
+int/19/maxspells: '999'
+int/19/spell level: '9'
+int/19/spell_learn: 95%
+int/2/illusion_immunity: '0'
+int/2/lang: '1'
+int/2/maxspells: '0'
+int/2/spell level: '0'
+int/2/spell_learn: 0%
+int/20/illusion_immunity: '2'
+int/20/lang: '9'
+int/20/maxspells: '999'
+int/20/spell level: '9'
+int/20/spell_learn: 96%
+int/21/illusion_immunity: '3'
+int/21/lang: '10'
+int/21/maxspells: '999'
+int/21/spell level: '9'
+int/21/spell_learn: 97%
+int/22/illusion_immunity: '4'
+int/22/lang: '11'
+int/22/maxspells: '999'
+int/22/spell level: '9'
+int/22/spell_learn: 98%
+int/23/illusion_immunity: '5'
+int/23/lang: '12'
+int/23/maxspells: '999'
+int/23/spell level: '9'
+int/23/spell_learn: 99%
+int/24/illusion_immunity: '6'
+int/24/lang: '15'
+int/24/maxspells: '999'
+int/24/spell level: '9'
+int/24/spell_learn: 100%
+int/25/illusion_immunity: '7'
+int/25/lang: '20'
+int/25/maxspells: '999'
+int/25/spell level: '9'
+int/25/spell_learn: 100%
+int/3/illusion_immunity: '0'
+int/3/lang: '1'
+int/3/maxspells: '0'
+int/3/spell level: '0'
+int/3/spell_learn: 0%
+int/4/illusion_immunity: '0'
+int/4/lang: '1'
+int/4/maxspells: '0'
+int/4/spell level: '0'
+int/4/spell_learn: 0%
+int/5/illusion_immunity: '0'
+int/5/lang: '1'
+int/5/maxspells: '0'
+int/5/spell level: '0'
+int/5/spell_learn: 0%
+int/6/illusion_immunity: '0'
+int/6/lang: '1'
+int/6/maxspells: '0'
+int/6/spell level: '0'
+int/6/spell_learn: 0%
+int/7/illusion_immunity: '0'
+int/7/lang: '1'
+int/7/maxspells: '0'
+int/7/spell level: '0'
+int/7/spell_learn: 0%
+int/8/illusion_immunity: '0'
+int/8/lang: '1'
+int/8/maxspells: '0'
+int/8/spell level: '4'
+int/8/spell_learn: 35%
+int/9/illusion_immunity: '0'
+int/9/lang: '2'
+int/9/maxspells: '6'
+int/9/spell level: '4'
+int/9/spell_learn: 40%
+str/1/bend bars: 0%
+str/1/dmg: '-4'
+str/1/hit: '-5'
+str/1/maxpress: '3'
+str/1/open doors: '1'
+str/1/open locked doors: '0'
+str/1/weight allow: '1'
+str/10/bend bars: 2%
+str/10/dmg: '0'
+str/10/hit: '0'
+str/10/maxpress: '115'
+str/10/open doors: '6'
+str/10/open locked doors: '0'
+str/10/weight allow: '40'
+str/11/bend bars: 2%
+str/11/dmg: '0'
+str/11/hit: '0'
+str/11/maxpress: '115'
+str/11/open doors: '6'
+str/11/open locked doors: '0'
+str/11/weight allow: '40'
+str/12/bend bars: 4%
+str/12/dmg: '0'
+str/12/hit: '0'
+str/12/maxpress: '140'
+str/12/open doors: '7'
+str/12/open locked doors: '0'
+str/12/weight allow: '45'
+str/13/bend bars: 4%
+str/13/dmg: '0'
+str/13/hit: '0'
+str/13/maxpress: '140'
+str/13/open doors: '7'
+str/13/open locked doors: '0'
+str/13/weight allow: '45'
+str/14/bend bars: 7%
+str/14/dmg: '0'
+str/14/hit: '0'
+str/14/maxpress: '170'
+str/14/open doors: '8'
+str/14/open locked doors: '0'
+str/14/weight allow: '55'
+str/15/bend bars: 7%
+str/15/dmg: '0'
+str/15/hit: '0'
+str/15/maxpress: '170'
+str/15/open doors: '8'
+str/15/open locked doors: '0'
+str/15/weight allow: '55'
+str/16/bend bars: 10%
+str/16/dmg: '1'
+str/16/hit: '0'
+str/16/maxpress: '195'
+str/16/open doors: '9'
+str/16/open locked doors: '0'
+str/16/weight allow: '70'
+str/17/bend bars: 13%
+str/17/dmg: '1'
+str/17/hit: '1'
+str/17/maxpress: '220'
+str/17/open doors: '10'
+str/17/open locked doors: '0'
+str/17/weight allow: '85'
+str/18.001/bend bars: 40%
+str/18.001/dmg: '6'
+str/18.001/hit: '3'
+str/18.001/maxpress: '480'
+str/18.001/open doors: '16'
+str/18.001/open locked doors: '6'
+str/18.001/weight allow: '335'
+str/18.5/bend bars: 20%
+str/18.5/dmg: '3'
+str/18.5/hit: '1'
+str/18.5/maxpress: '280'
+str/18.5/open doors: '12'
+str/18.5/open locked doors: '0'
+str/18.5/weight allow: '135'
+str/18.75/bend bars: 25%
+str/18.75/dmg: '3'
+str/18.75/hit: '2'
+str/18.75/maxpress: '305'
+str/18.75/open doors: '13'
+str/18.75/open locked doors: '0'
+str/18.75/weight allow: '160'
+str/18.9/bend bars: 30%
+str/18.9/dmg: '4'
+str/18.9/hit: '2'
+str/18.9/maxpress: '330'
+str/18.9/open doors: '14'
+str/18.9/open locked doors: '0'
+str/18.9/weight allow: '185'
+str/18.99/bend bars: 35%
+str/18.99/dmg: '5'
+str/18.99/hit: '2'
+str/18.99/maxpress: '380'
+str/18.99/open doors: '15'
+str/18.99/open locked doors: '3'
+str/18.99/weight allow: '235'
+str/18/bend bars: 16%
+str/18/dmg: '2'
+str/18/hit: '1'
+str/18/maxpress: '255'
+str/18/open doors: '11'
+str/18/open locked doors: '0'
+str/18/weight allow: '110'
+str/19/bend bars: 50%
+str/19/dmg: '7'
+str/19/hit: '3'
+str/19/maxpress: '640'
+str/19/open doors: '16'
+str/19/open locked doors: '8'
+str/19/weight allow: '485'
+str/2/bend bars: 0%
+str/2/dmg: '-2'
+str/2/hit: '-3'
+str/2/maxpress: '5'
+str/2/open doors: '1'
+str/2/open locked doors: '0'
+str/2/weight allow: '1'
+str/20/bend bars: 60%
+str/20/dmg: '8'
+str/20/hit: '3'
+str/20/maxpress: '700'
+str/20/open doors: '17'
+str/20/open locked doors: '10'
+str/20/weight allow: '535'
+str/21/bend bars: 70%
+str/21/dmg: '9'
+str/21/hit: '4'
+str/21/maxpress: '810'
+str/21/open doors: '17'
+str/21/open locked doors: '12'
+str/21/weight allow: '635'
+str/22/bend bars: 80%
+str/22/dmg: '10'
+str/22/hit: '4'
+str/22/maxpress: '970'
+str/22/open doors: '18'
+str/22/open locked doors: '14'
+str/22/weight allow: '785'
+str/23/bend bars: 90%
+str/23/dmg: '11'
+str/23/hit: '5'
+str/23/maxpress: '1130'
+str/23/open doors: '18'
+str/23/open locked doors: '16'
+str/23/weight allow: '935'
+str/24/bend bars: 95%
+str/24/dmg: '12'
+str/24/hit: '6'
+str/24/maxpress: '1440'
+str/24/open doors: '19'
+str/24/open locked doors: '17'
+str/24/weight allow: '1235'
+str/25/bend bars: 99%
+str/25/dmg: '14'
+str/25/hit: '7'
+str/25/maxpress: '1750'
+str/25/open doors: '19'
+str/25/open locked doors: '18'
+str/25/weight allow: '1535'
+str/3/bend bars: 0%
+str/3/dmg: '-1'
+str/3/hit: '-3'
+str/3/maxpress: '10'
+str/3/open doors: '2'
+str/3/open locked doors: '0'
+str/3/weight allow: '5'
+str/4/bend bars: 0%
+str/4/dmg: '-1'
+str/4/hit: '-2'
+str/4/maxpress: '25'
+str/4/open doors: '3'
+str/4/open locked doors: '0'
+str/4/weight allow: '10'
+str/5/bend bars: 0%
+str/5/dmg: '-1'
+str/5/hit: '-2'
+str/5/maxpress: '25'
+str/5/open doors: '3'
+str/5/open locked doors: '0'
+str/5/weight allow: '10'
+str/6/bend bars: 0%
+str/6/dmg: '0'
+str/6/hit: '-1'
+str/6/maxpress: '55'
+str/6/open doors: '4'
+str/6/open locked doors: '0'
+str/6/weight allow: '20'
+str/7/bend bars: 0%
+str/7/dmg: '0'
+str/7/hit: '-1'
+str/7/maxpress: '55'
+str/7/open doors: '4'
+str/7/open locked doors: '0'
+str/7/weight allow: '20'
+str/8/bend bars: 1%
+str/8/dmg: '0'
+str/8/hit: '0'
+str/8/maxpress: '90'
+str/8/open doors: '5'
+str/8/open locked doors: '0'
+str/8/weight allow: '35'
+str/9/bend bars: 1%
+str/9/dmg: '0'
+str/9/hit: '0'
+str/9/maxpress: '90'
+str/9/open doors: '5'
+str/9/open locked doors: '0'
+str/9/weight allow: '35'
+wis/1/magic_defence: '-6'
+wis/1/spell_failure: 80%
+wis/10/magic_defence: '0'
+wis/10/spell_failure: 15%
+wis/11/magic_defence: '0'
+wis/11/spell_failure: 10%
+wis/12/magic_defence: '0'
+wis/12/spell_failure: 5%
+wis/13/magic_defence: '0'
+wis/13/spell_failure: 0%
+wis/14/magic_defence: '0'
+wis/14/spell_failure: 0%
+wis/15/magic_defence: '1'
+wis/15/spell_failure: 0%
+wis/16/magic_defence: '2'
+wis/16/spell_failure: 0%
+wis/17/magic_defence: '3'
+wis/17/spell_failure: 0%
+wis/18/magic_defence: '4'
+wis/18/spell_failure: 0%
+wis/19/magic_defence: '4'
+wis/19/spell_failure: 0%
+wis/2/magic_defence: '-4'
+wis/2/spell_failure: 60%
+wis/20/magic_defence: '4'
+wis/20/spell_failure: 0%
+wis/21/magic_defence: '4'
+wis/21/spell_failure: 0%
+wis/22/magic_defence: '4'
+wis/22/spell_failure: 0%
+wis/23/magic_defence: '4'
+wis/23/spell_failure: 0%
+wis/24/magic_defence: '4'
+wis/24/spell_failure: 0%
+wis/25/magic_defence: '4'
+wis/25/spell_failure: 0%
+wis/3/magic_defence: '-3'
+wis/3/spell_failure: 50%
+wis/4/magic_defence: '-2'
+wis/4/spell_failure: 45%
+wis/5/magic_defence: '-1'
+wis/5/spell_failure: 40%
+wis/6/magic_defence: '-1'
+wis/6/spell_failure: 35%
+wis/7/magic_defence: '-1'
+wis/7/spell_failure: 30%
+wis/8/magic_defence: '0'
+wis/8/spell_failure: 25%
+wis/9/magic_defence: '0'
+wis/9/spell_failure: 20%

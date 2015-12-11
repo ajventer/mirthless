@@ -1,0 +1,529 @@
+
+abilities/climb walls/racial_bonus/dwarf: -10
+abilities/climb walls/racial_bonus/elf: 0
+abilities/climb walls/racial_bonus/gnome: -15
+abilities/climb walls/racial_bonus/half-elf: 0
+abilities/climb walls/racial_bonus/halfling: -15
+abilities/detect noise/racial_bonus/dwarf: 0
+abilities/detect noise/racial_bonus/elf: 5
+abilities/detect noise/racial_bonus/gnome: 10
+abilities/detect noise/racial_bonus/half-elf: 0
+abilities/detect noise/racial_bonus/halfling: -15
+abilities/find-remove traps/dexterity bonus/10: -10
+abilities/find-remove traps/dexterity bonus/11: -5
+abilities/find-remove traps/dexterity bonus/12-17: 0
+abilities/find-remove traps/dexterity bonus/18: 5
+abilities/find-remove traps/dexterity bonus/19-999: 10
+abilities/find-remove traps/dexterity bonus/9: -10
+abilities/find-remove traps/racial_bonus/dwarf: 15
+abilities/find-remove traps/racial_bonus/elf: 0
+abilities/find-remove traps/racial_bonus/gnome: 10
+abilities/find-remove traps/racial_bonus/half-elf: 0
+abilities/find-remove traps/racial_bonus/halfling: 5
+abilities/hide in shadows/dexterity bonus/10: -5
+abilities/hide in shadows/dexterity bonus/11-16: 0
+abilities/hide in shadows/dexterity bonus/17: 5
+abilities/hide in shadows/dexterity bonus/18: 10
+abilities/hide in shadows/dexterity bonus/19-999: 15
+abilities/hide in shadows/dexterity bonus/9: -10
+abilities/hide in shadows/racial_bonus/dwarf: 0
+abilities/hide in shadows/racial_bonus/elf: 10
+abilities/hide in shadows/racial_bonus/gnome: 5
+abilities/hide in shadows/racial_bonus/half-elf: 5
+abilities/hide in shadows/racial_bonus/halfling: 15
+abilities/hide in shadows/ranger/10: '63'
+abilities/hide in shadows/ranger/11: '70'
+abilities/hide in shadows/ranger/12: '77'
+abilities/hide in shadows/ranger/13: '85'
+abilities/hide in shadows/ranger/14: '93'
+abilities/hide in shadows/ranger/15-999: '99'
+abilities/hide in shadows/ranger/1: '10'
+abilities/hide in shadows/ranger/2: '15'
+abilities/hide in shadows/ranger/3: '20'
+abilities/hide in shadows/ranger/4: '25'
+abilities/hide in shadows/ranger/5: '31'
+abilities/hide in shadows/ranger/6: '37'
+abilities/hide in shadows/ranger/7: '43'
+abilities/hide in shadows/ranger/8: '49'
+abilities/hide in shadows/ranger/9: '56'
+abilities/move silently/dexterity bonus/10: -15
+abilities/move silently/dexterity bonus/11: -10
+abilities/move silently/dexterity bonus/12: -5
+abilities/move silently/dexterity bonus/13-15: 0
+abilities/move silently/dexterity bonus/16: 5
+abilities/move silently/dexterity bonus/17: 10
+abilities/move silently/dexterity bonus/18: 10
+abilities/move silently/dexterity bonus/19-999: 15
+abilities/move silently/dexterity bonus/9: -20
+abilities/move silently/racial_bonus/dwarf: 0
+abilities/move silently/racial_bonus/elf: 5
+abilities/move silently/racial_bonus/gnome: 5
+abilities/move silently/racial_bonus/half-elf: 0
+abilities/move silently/racial_bonus/halfling: 10
+abilities/move silently/ranger/10: '78'
+abilities/move silently/ranger/11: '86'
+abilities/move silently/ranger/12: '94'
+abilities/move silently/ranger/13-999: '99'
+abilities/move silently/ranger/1: '15'
+abilities/move silently/ranger/2: '21'
+abilities/move silently/ranger/3: '27'
+abilities/move silently/ranger/4: '33'
+abilities/move silently/ranger/5: '40'
+abilities/move silently/ranger/6: '47'
+abilities/move silently/ranger/7: '55'
+abilities/move silently/ranger/8: '62'
+abilities/move silently/ranger/9: '70'
+abilities/open locks/dexterity bonus/10: -5
+abilities/open locks/dexterity bonus/11-5: 0
+abilities/open locks/dexterity bonus/16: 5
+abilities/open locks/dexterity bonus/17: 10
+abilities/open locks/dexterity bonus/18: 15
+abilities/open locks/dexterity bonus/19-999: 20
+abilities/open locks/dexterity bonus/9: -10
+abilities/open locks/racial_bonus/dwarf: 10
+abilities/open locks/racial_bonus/elf: -5
+abilities/open locks/racial_bonus/gnome: 5
+abilities/open locks/racial_bonus/half-elf: 0
+abilities/open locks/racial_bonus/halfling: 5
+abilities/pick pockets/dexterity bonus/10: -10
+abilities/pick pockets/dexterity bonus/11: -5
+abilities/pick pockets/dexterity bonus/12-16: 0
+abilities/pick pockets/dexterity bonus/17: 5
+abilities/pick pockets/dexterity bonus/18: 10
+abilities/pick pockets/dexterity bonus/19-999: 15
+abilities/pick pockets/dexterity bonus/9: -15
+abilities/pick pockets/racial_bonus/dwarf: 0
+abilities/pick pockets/racial_bonus/elf: 5
+abilities/pick pockets/racial_bonus/gnome: 0
+abilities/pick pockets/racial_bonus/half-elf: 10
+abilities/pick pockets/racial_bonus/halfling: 5
+abilities/read languages/racial_bonus/dwarf: -5
+abilities/read languages/racial_bonus/elf: 0
+abilities/read languages/racial_bonus/gnome: 0
+abilities/read languages/racial_bonus/half-elf: 0
+abilities/read languages/racial_bonus/halfling: -5
+spell progression/bard/1/wizard spells/1: 0
+spell progression/bard/1/wizard spells/2: 0
+spell progression/bard/1/wizard spells/3: 0
+spell progression/bard/1/wizard spells/4: 0
+spell progression/bard/1/wizard spells/5: 0
+spell progression/bard/1/wizard spells/6: 0
+spell progression/bard/10/wizard spells/1: 3
+spell progression/bard/10/wizard spells/2: 3
+spell progression/bard/10/wizard spells/3: 2
+spell progression/bard/10/wizard spells/4: 1
+spell progression/bard/10/wizard spells/5: 0
+spell progression/bard/10/wizard spells/6: 0
+spell progression/bard/11/wizard spells/1: 3
+spell progression/bard/11/wizard spells/2: 3
+spell progression/bard/11/wizard spells/3: 3
+spell progression/bard/11/wizard spells/4: 1
+spell progression/bard/11/wizard spells/5: 0
+spell progression/bard/11/wizard spells/6: 0
+spell progression/bard/12/wizard spells/1: 3
+spell progression/bard/12/wizard spells/2: 3
+spell progression/bard/12/wizard spells/3: 3
+spell progression/bard/12/wizard spells/4: 2
+spell progression/bard/12/wizard spells/5: 0
+spell progression/bard/12/wizard spells/6: 0
+spell progression/bard/13/wizard spells/1: 3
+spell progression/bard/13/wizard spells/2: 3
+spell progression/bard/13/wizard spells/3: 3
+spell progression/bard/13/wizard spells/4: 2
+spell progression/bard/13/wizard spells/5: 1
+spell progression/bard/13/wizard spells/6: 0
+spell progression/bard/14/wizard spells/1: 3
+spell progression/bard/14/wizard spells/2: 3
+spell progression/bard/14/wizard spells/3: 3
+spell progression/bard/14/wizard spells/4: 3
+spell progression/bard/14/wizard spells/5: 1
+spell progression/bard/14/wizard spells/6: 0
+spell progression/bard/15/wizard spells/1: 3
+spell progression/bard/15/wizard spells/2: 3
+spell progression/bard/15/wizard spells/3: 3
+spell progression/bard/15/wizard spells/4: 3
+spell progression/bard/15/wizard spells/5: 2
+spell progression/bard/15/wizard spells/6: 0
+spell progression/bard/16/wizard spells/1: 4
+spell progression/bard/16/wizard spells/2: 3
+spell progression/bard/16/wizard spells/3: 3
+spell progression/bard/16/wizard spells/4: 3
+spell progression/bard/16/wizard spells/5: 2
+spell progression/bard/16/wizard spells/6: 1
+spell progression/bard/17/wizard spells/1: 4
+spell progression/bard/17/wizard spells/2: 4
+spell progression/bard/17/wizard spells/3: 3
+spell progression/bard/17/wizard spells/4: 3
+spell progression/bard/17/wizard spells/5: 2
+spell progression/bard/17/wizard spells/6: 1
+spell progression/bard/18/wizard spells/1: 4
+spell progression/bard/18/wizard spells/2: 4
+spell progression/bard/18/wizard spells/3: 4
+spell progression/bard/18/wizard spells/4: 3
+spell progression/bard/18/wizard spells/5: 3
+spell progression/bard/18/wizard spells/6: 2
+spell progression/bard/19/wizard spells/1: 4
+spell progression/bard/19/wizard spells/2: 4
+spell progression/bard/19/wizard spells/3: 4
+spell progression/bard/19/wizard spells/4: 4
+spell progression/bard/19/wizard spells/5: 3
+spell progression/bard/19/wizard spells/6: 2
+spell progression/bard/2/wizard spells/1: 1
+spell progression/bard/2/wizard spells/2: 0
+spell progression/bard/2/wizard spells/3: 0
+spell progression/bard/2/wizard spells/4: 0
+spell progression/bard/2/wizard spells/5: 0
+spell progression/bard/2/wizard spells/6: 0
+spell progression/bard/20-999/wizard spells/1: 4
+spell progression/bard/20-999/wizard spells/2: 4
+spell progression/bard/20-999/wizard spells/3: 4
+spell progression/bard/20-999/wizard spells/4: 4
+spell progression/bard/20-999/wizard spells/5: 4
+spell progression/bard/20-999/wizard spells/6: 3
+spell progression/bard/3/wizard spells/1: 2
+spell progression/bard/3/wizard spells/2: 0
+spell progression/bard/3/wizard spells/3: 0
+spell progression/bard/3/wizard spells/4: 0
+spell progression/bard/3/wizard spells/5: 0
+spell progression/bard/3/wizard spells/6: 0
+spell progression/bard/4/wizard spells/1: 2
+spell progression/bard/4/wizard spells/2: 1
+spell progression/bard/4/wizard spells/3: 0
+spell progression/bard/4/wizard spells/4: 0
+spell progression/bard/4/wizard spells/5: 0
+spell progression/bard/4/wizard spells/6: 0
+spell progression/bard/5/wizard spells/1: 3
+spell progression/bard/5/wizard spells/2: 1
+spell progression/bard/5/wizard spells/3: 0
+spell progression/bard/5/wizard spells/4: 0
+spell progression/bard/5/wizard spells/5: 0
+spell progression/bard/5/wizard spells/6: 0
+spell progression/bard/6/wizard spells/1: 3
+spell progression/bard/6/wizard spells/2: 2
+spell progression/bard/6/wizard spells/3: 0
+spell progression/bard/6/wizard spells/4: 0
+spell progression/bard/6/wizard spells/5: 0
+spell progression/bard/6/wizard spells/6: 0
+spell progression/bard/7/wizard spells/1: 3
+spell progression/bard/7/wizard spells/2: 2
+spell progression/bard/7/wizard spells/3: 1
+spell progression/bard/7/wizard spells/4: 0
+spell progression/bard/7/wizard spells/5: 0
+spell progression/bard/7/wizard spells/6: 0
+spell progression/bard/8/wizard spells/1: 3
+spell progression/bard/8/wizard spells/2: 3
+spell progression/bard/8/wizard spells/3: 1
+spell progression/bard/8/wizard spells/4: 0
+spell progression/bard/8/wizard spells/5: 0
+spell progression/bard/8/wizard spells/6: 0
+spell progression/bard/9/wizard spells/1: 3
+spell progression/bard/9/wizard spells/2: 3
+spell progression/bard/9/wizard spells/3: 2
+spell progression/bard/9/wizard spells/4: 0
+spell progression/bard/9/wizard spells/5: 0
+spell progression/bard/9/wizard spells/6: 0
+spell progression/paladin/1-8/casting_level: 0
+spell progression/paladin/1-8/priest spells/1: 0
+spell progression/paladin/1-8/priest spells/2: 0
+spell progression/paladin/1-8/priest spells/3: 0
+spell progression/paladin/1-8/priest spells/4: 0
+spell progression/paladin/10/casting_level: 2
+spell progression/paladin/10/priest spells/1: 2
+spell progression/paladin/10/priest spells/2: 0
+spell progression/paladin/10/priest spells/3: 0
+spell progression/paladin/10/priest spells/4: 0
+spell progression/paladin/11/casting_level: 3
+spell progression/paladin/11/priest spells/1: 2
+spell progression/paladin/11/priest spells/2: 1
+spell progression/paladin/11/priest spells/3: 0
+spell progression/paladin/11/priest spells/4: 0
+spell progression/paladin/12/casting_level: 4
+spell progression/paladin/12/priest spells/1: 2
+spell progression/paladin/12/priest spells/2: 2
+spell progression/paladin/12/priest spells/3: 0
+spell progression/paladin/12/priest spells/4: 0
+spell progression/paladin/13/casting_level: 5
+spell progression/paladin/13/priest spells/1: 2
+spell progression/paladin/13/priest spells/2: 2
+spell progression/paladin/13/priest spells/3: 1
+spell progression/paladin/13/priest spells/4: 0
+spell progression/paladin/14/casting_level: 6
+spell progression/paladin/14/priest spells/1: 3
+spell progression/paladin/14/priest spells/2: 2
+spell progression/paladin/14/priest spells/3: 1
+spell progression/paladin/14/priest spells/4: 0
+spell progression/paladin/15/casting_level: 7
+spell progression/paladin/15/priest spells/1: 3
+spell progression/paladin/15/priest spells/2: 2
+spell progression/paladin/15/priest spells/3: 1
+spell progression/paladin/15/priest spells/4: 1
+spell progression/paladin/16/casting_level: 8
+spell progression/paladin/16/priest spells/1: 3
+spell progression/paladin/16/priest spells/2: 3
+spell progression/paladin/16/priest spells/3: 2
+spell progression/paladin/16/priest spells/4: 1
+spell progression/paladin/17/casting_level: 9
+spell progression/paladin/17/priest spells/1: 3
+spell progression/paladin/17/priest spells/2: 3
+spell progression/paladin/17/priest spells/3: 3
+spell progression/paladin/17/priest spells/4: 1
+spell progression/paladin/18/casting_level: 9
+spell progression/paladin/18/priest spells/1: 3
+spell progression/paladin/18/priest spells/2: 3
+spell progression/paladin/18/priest spells/3: 3
+spell progression/paladin/18/priest spells/4: 1
+spell progression/paladin/19/casting_level: 9
+spell progression/paladin/19/priest spells/1: 3
+spell progression/paladin/19/priest spells/2: 3
+spell progression/paladin/19/priest spells/3: 3
+spell progression/paladin/19/priest spells/4: 2
+spell progression/paladin/20-999/casting_level: 9
+spell progression/paladin/20-999/priest spells/1: 3
+spell progression/paladin/20-999/priest spells/2: 3
+spell progression/paladin/20-999/priest spells/3: 3
+spell progression/paladin/20-999/priest spells/4: 3
+spell progression/paladin/9/casting_level: 1
+spell progression/paladin/9/priest spells/1: 1
+spell progression/paladin/9/priest spells/2: 0
+spell progression/paladin/9/priest spells/3: 0
+spell progression/paladin/9/priest spells/4: 0
+spell progression/priest/1/priest spells/1: 1
+spell progression/priest/10/priest spells/1: 4
+spell progression/priest/10/priest spells/2: 4
+spell progression/priest/10/priest spells/3: 3
+spell progression/priest/10/priest spells/4: 3
+spell progression/priest/10/priest spells/5: 2
+spell progression/priest/11/priest spells/1: 5
+spell progression/priest/11/priest spells/2: 4
+spell progression/priest/11/priest spells/3: 4
+spell progression/priest/11/priest spells/4: 3
+spell progression/priest/11/priest spells/5: 2
+spell progression/priest/11/priest spells/6: 1
+spell progression/priest/12/priest spells/1: 6
+spell progression/priest/12/priest spells/2: 5
+spell progression/priest/12/priest spells/3: 5
+spell progression/priest/12/priest spells/4: 3
+spell progression/priest/12/priest spells/5: 2
+spell progression/priest/12/priest spells/6: 2
+spell progression/priest/13/priest spells/1: 6
+spell progression/priest/13/priest spells/2: 6
+spell progression/priest/13/priest spells/3: 6
+spell progression/priest/13/priest spells/4: 4
+spell progression/priest/13/priest spells/5: 2
+spell progression/priest/13/priest spells/6: 2
+spell progression/priest/14/priest spells/1: 6
+spell progression/priest/14/priest spells/2: 6
+spell progression/priest/14/priest spells/3: 6
+spell progression/priest/14/priest spells/4: 5
+spell progression/priest/14/priest spells/5: 3
+spell progression/priest/14/priest spells/6: 2
+spell progression/priest/14/priest spells/7: 1
+spell progression/priest/15/priest spells/1: 6
+spell progression/priest/15/priest spells/2: 6
+spell progression/priest/15/priest spells/3: 6
+spell progression/priest/15/priest spells/4: 6
+spell progression/priest/15/priest spells/5: 4
+spell progression/priest/15/priest spells/6: 2
+spell progression/priest/15/priest spells/7: 1
+spell progression/priest/16/priest spells/1: 7
+spell progression/priest/16/priest spells/2: 7
+spell progression/priest/16/priest spells/3: 7
+spell progression/priest/16/priest spells/4: 6
+spell progression/priest/16/priest spells/5: 4
+spell progression/priest/16/priest spells/6: 3
+spell progression/priest/16/priest spells/7: 1
+spell progression/priest/17/priest spells/1: 7
+spell progression/priest/17/priest spells/2: 7
+spell progression/priest/17/priest spells/3: 7
+spell progression/priest/17/priest spells/4: 7
+spell progression/priest/17/priest spells/5: 5
+spell progression/priest/17/priest spells/6: 3
+spell progression/priest/17/priest spells/7: 2
+spell progression/priest/18/priest spells/1: 8
+spell progression/priest/18/priest spells/2: 8
+spell progression/priest/18/priest spells/3: 8
+spell progression/priest/18/priest spells/4: 8
+spell progression/priest/18/priest spells/6: 4
+spell progression/priest/18/priest spells/7: 2
+spell progression/priest/19/priest spells/1: 9
+spell progression/priest/19/priest spells/2: 9
+spell progression/priest/19/priest spells/3: 8
+spell progression/priest/19/priest spells/4: 8
+spell progression/priest/19/priest spells/6: 4
+spell progression/priest/19/priest spells/7: 2
+spell progression/priest/2/priest spells/1: 2
+spell progression/priest/20-999/priest spells/1: 9
+spell progression/priest/20-999/priest spells/2: 9
+spell progression/priest/20-999/priest spells/3: 8
+spell progression/priest/20-999/priest spells/4: 8
+spell progression/priest/20-999/priest spells/6: 5
+spell progression/priest/20-999/priest spells/7: 2
+spell progression/priest/3/priest spells/1: 2
+spell progression/priest/3/priest spells/2: 1
+spell progression/priest/4/priest spells/1: 3
+spell progression/priest/4/priest spells/2: 2
+spell progression/priest/5/priest spells/1: 3
+spell progression/priest/5/priest spells/2: 3
+spell progression/priest/5/priest spells/3: 1
+spell progression/priest/6/priest spells/1: 3
+spell progression/priest/6/priest spells/2: 3
+spell progression/priest/6/priest spells/3: 2
+spell progression/priest/7/priest spells/1: 3
+spell progression/priest/7/priest spells/2: 3
+spell progression/priest/7/priest spells/3: 2
+spell progression/priest/7/priest spells/4: 1
+spell progression/priest/8/priest spells/1: 3
+spell progression/priest/8/priest spells/2: 3
+spell progression/priest/8/priest spells/3: 3
+spell progression/priest/8/priest spells/4: 2
+spell progression/priest/9/priest spells/1: 4
+spell progression/priest/9/priest spells/2: 4
+spell progression/priest/9/priest spells/3: 3
+spell progression/priest/9/priest spells/4: 2
+spell progression/priest/9/priest spells/5: 1
+spell progression/ranger/1-7/casting_level: 0
+spell progression/ranger/1-7/priest spells/1: 0
+spell progression/ranger/1-7/priest spells/2: 0
+spell progression/ranger/1-7/priest spells/3: 0
+spell progression/ranger/10/casting_level: 3
+spell progression/ranger/10/priest spells/1: 2
+spell progression/ranger/10/priest spells/2: 1
+spell progression/ranger/10/priest spells/3: 0
+spell progression/ranger/11/casting_level: 4
+spell progression/ranger/11/priest spells/1: 2
+spell progression/ranger/11/priest spells/2: 2
+spell progression/ranger/11/priest spells/3: 0
+spell progression/ranger/12/casting_level: 5
+spell progression/ranger/12/priest spells/1: 3
+spell progression/ranger/12/priest spells/2: 2
+spell progression/ranger/12/priest spells/3: 1
+spell progression/ranger/13/casting_level: 6
+spell progression/ranger/13/priest spells/1: 3
+spell progression/ranger/13/priest spells/2: 2
+spell progression/ranger/13/priest spells/3: 1
+spell progression/ranger/14/casting_level: 7
+spell progression/ranger/14/priest spells/1: 3
+spell progression/ranger/14/priest spells/2: 2
+spell progression/ranger/14/priest spells/3: 2
+spell progression/ranger/15/casting_level: 8
+spell progression/ranger/15/priest spells/1: 3
+spell progression/ranger/15/priest spells/2: 2
+spell progression/ranger/15/priest spells/3: 2
+spell progression/ranger/16-999/casting_level: 9
+spell progression/ranger/16-999/priest spells/1: 3
+spell progression/ranger/16-999/priest spells/2: 3
+spell progression/ranger/16-999/priest spells/3: 3
+spell progression/ranger/8/casting_level: 1
+spell progression/ranger/8/priest spells/1: 1
+spell progression/ranger/8/priest spells/2: 0
+spell progression/ranger/8/priest spells/3: 0
+spell progression/ranger/9/casting_level: 2
+spell progression/ranger/9/priest spells/1: 2
+spell progression/ranger/9/priest spells/2: 0
+spell progression/ranger/9/priest spells/3: 0
+spell progression/wizard/1/wizard spells/1: 1
+spell progression/wizard/10/wizard spells/1: 4
+spell progression/wizard/10/wizard spells/2: 4
+spell progression/wizard/10/wizard spells/3: 3
+spell progression/wizard/10/wizard spells/4: 2
+spell progression/wizard/10/wizard spells/5: 2
+spell progression/wizard/11/wizard spells/1: 4
+spell progression/wizard/11/wizard spells/2: 4
+spell progression/wizard/11/wizard spells/3: 4
+spell progression/wizard/11/wizard spells/4: 3
+spell progression/wizard/11/wizard spells/5: 3
+spell progression/wizard/12/wizard spells/1: 4
+spell progression/wizard/12/wizard spells/2: 4
+spell progression/wizard/12/wizard spells/3: 4
+spell progression/wizard/12/wizard spells/4: 4
+spell progression/wizard/12/wizard spells/5: 4
+spell progression/wizard/12/wizard spells/6: 1
+spell progression/wizard/13/wizard spells/1: 5
+spell progression/wizard/13/wizard spells/2: 5
+spell progression/wizard/13/wizard spells/3: 5
+spell progression/wizard/13/wizard spells/4: 4
+spell progression/wizard/13/wizard spells/5: 4
+spell progression/wizard/13/wizard spells/6: 2
+spell progression/wizard/14/wizard spells/1: 5
+spell progression/wizard/14/wizard spells/2: 5
+spell progression/wizard/14/wizard spells/3: 5
+spell progression/wizard/14/wizard spells/4: 4
+spell progression/wizard/14/wizard spells/5: 4
+spell progression/wizard/14/wizard spells/6: 2
+spell progression/wizard/15/wizard spells/1: 5
+spell progression/wizard/15/wizard spells/2: 5
+spell progression/wizard/15/wizard spells/3: 5
+spell progression/wizard/15/wizard spells/4: 5
+spell progression/wizard/15/wizard spells/5: 5
+spell progression/wizard/15/wizard spells/6: 2
+spell progression/wizard/15/wizard spells/7: 1
+spell progression/wizard/16/wizard spells/1: 5
+spell progression/wizard/16/wizard spells/2: 5
+spell progression/wizard/16/wizard spells/3: 5
+spell progression/wizard/16/wizard spells/4: 5
+spell progression/wizard/16/wizard spells/5: 5
+spell progression/wizard/16/wizard spells/6: 3
+spell progression/wizard/16/wizard spells/7: 2
+spell progression/wizard/16/wizard spells/8: 1
+spell progression/wizard/17/wizard spells/1: 5
+spell progression/wizard/17/wizard spells/2: 5
+spell progression/wizard/17/wizard spells/3: 5
+spell progression/wizard/17/wizard spells/4: 5
+spell progression/wizard/17/wizard spells/5: 5
+spell progression/wizard/17/wizard spells/6: 3
+spell progression/wizard/17/wizard spells/7: 2
+spell progression/wizard/17/wizard spells/8: 2
+spell progression/wizard/18/wizard spells/1: 5
+spell progression/wizard/18/wizard spells/2: 5
+spell progression/wizard/18/wizard spells/3: 5
+spell progression/wizard/18/wizard spells/4: 5
+spell progression/wizard/18/wizard spells/5: 5
+spell progression/wizard/18/wizard spells/6: 3
+spell progression/wizard/18/wizard spells/7: 3
+spell progression/wizard/18/wizard spells/8: 2
+spell progression/wizard/18/wizard spells/9: 1
+spell progression/wizard/19/wizard spells/1: 5
+spell progression/wizard/19/wizard spells/2: 5
+spell progression/wizard/19/wizard spells/3: 5
+spell progression/wizard/19/wizard spells/4: 5
+spell progression/wizard/19/wizard spells/5: 5
+spell progression/wizard/19/wizard spells/6: 3
+spell progression/wizard/19/wizard spells/7: 3
+spell progression/wizard/19/wizard spells/8: 3
+spell progression/wizard/19/wizard spells/9: 1
+spell progression/wizard/2/wizard spells/1: 2
+spell progression/wizard/20-999/wizard spells/1: 5
+spell progression/wizard/20-999/wizard spells/2: 5
+spell progression/wizard/20-999/wizard spells/3: 5
+spell progression/wizard/20-999/wizard spells/4: 5
+spell progression/wizard/20-999/wizard spells/5: 5
+spell progression/wizard/20-999/wizard spells/6: 4
+spell progression/wizard/20-999/wizard spells/7: 3
+spell progression/wizard/20-999/wizard spells/8: 3
+spell progression/wizard/20-999/wizard spells/9: 2
+spell progression/wizard/3/wizard spells/1: 2
+spell progression/wizard/3/wizard spells/2: 1
+spell progression/wizard/4/wizard spells/1: 3
+spell progression/wizard/4/wizard spells/2: 2
+spell progression/wizard/5/wizard spells/1: 4
+spell progression/wizard/5/wizard spells/2: 2
+spell progression/wizard/5/wizard spells/3: 1
+spell progression/wizard/6/wizard spells/1: 4
+spell progression/wizard/6/wizard spells/2: 2
+spell progression/wizard/6/wizard spells/3: 3
+spell progression/wizard/7/wizard spells/1: 4
+spell progression/wizard/7/wizard spells/2: 3
+spell progression/wizard/7/wizard spells/3: 2
+spell progression/wizard/7/wizard spells/4: 1
+spell progression/wizard/8/wizard spells/1: 4
+spell progression/wizard/8/wizard spells/2: 3
+spell progression/wizard/8/wizard spells/3: 3
+spell progression/wizard/8/wizard spells/4: 2
+spell progression/wizard/9/wizard spells/1: 4
+spell progression/wizard/9/wizard spells/2: 3
+spell progression/wizard/9/wizard spells/3: 3
+spell progression/wizard/9/wizard spells/4: 2
+spell progression/wizard/9/wizard spells/5: 1
+various/attacks_per_round/warrior/1-6: '1'
+various/attacks_per_round/warrior/13-999: '3'
+various/attacks_per_round/warrior/7-12: '2'

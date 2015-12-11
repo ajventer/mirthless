@@ -1,0 +1,37 @@
+
+conditional/core.type=armor/ac: 0
+conditional/core.type=armor/material: __[shield,cloth,leather,mail,plate]
+conditional/core.type=armor/slot: __[head,chest,legs,feet,wrists,hands,finger,neck,lefthand]
+conditional/core.type=spell/spell_level: 1
+conditional/core.type=spell/spell_school: __[Abjuration,Alteration,Conjuration,Enchantment,Divination,Illusion,Invocation,Necromancy]
+conditional/core.type=spell/spell_type: __[priest spells,wizard spells]
+conditional/core.type=weapon/__Idmg: ''
+conditional/core.type=weapon/__Ito_hit: ''
+conditional/core.type=weapon/damage_type: __[slice,hack,stab]
+conditional/core.type=weapon/events/__Tonstrike: ''
+conditional/core.type=weapon/range: __[short,medium,long]
+conditional/core.type=weapon/save_against: __[ppd,rod,pp,breath,spell,none]
+conditional/core.type=weapon/slot: __[lefthand,righthand,twohand]
+conditional/core.type=weapon/weapon_type: __[melee,magic,misile]
+core/__Tdescription: ''
+core/__Ycurrent_rounds_performed: 0
+core/__Yin_use: false
+core/charges: 0
+core/icon: ''
+core/identified: __[false,true]
+core/lightradius: 0
+core/name: ''
+core/price/copper: 0
+core/price/gold: 0
+core/price/silver: 0
+core/rounds_per_charge: 0
+core/size: __[small,medium,large]
+core/type: __[weapon,armor,spell,other]
+core/weight: 0
+events/__Tondrop: ''
+events/__Tonequip: ''
+events/__Tonfinish: ''
+events/__Tonpickup: ''
+events/__Tonround: ''
+events/__Tonunequip: ''
+events/__Tonuse: ''

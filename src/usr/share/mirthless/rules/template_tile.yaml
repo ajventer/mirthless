@@ -1,0 +1,38 @@
+
+
+  True)
+  tile.put(''/core/background'', tile.get(''/conditional/background'',tile.get(''/core/background'','''')))'
+conditional/core.type=door/background_alternate: ''
+conditional/core.type=door/canenter: false
+conditional/core.type=door/events/__Tonenter: ''
+conditional/core.type=door/events/__Tontryunlock: ''
+conditional/core.type=door/events/__Tonunlock: 'tile.put(''/conditional/canenter,
+conditional/core.type=door/locked: true
+conditional/core.type=door/npcs: []
+conditional/core.type=floor/canenter: true
+conditional/core.type=floor/copper: 0
+conditional/core.type=floor/events/onenter: ''
+conditional/core.type=floor/gold: 0
+conditional/core.type=floor/items: []
+conditional/core.type=floor/npcs: {}
+conditional/core.type=floor/players: []
+conditional/core.type=floor/silver: 0
+conditional/core.type=link/canenter: true
+conditional/core.type=link/newmap/mapname: ''
+conditional/core.type=link/newmap/x: 0
+conditional/core.type=link/newmap/y: 0
+conditional/core.type=link/npcs: []
+conditional/core.type=other/canenter: false
+conditional/core.type=other/events: ''
+conditional/core.type=shop/canenter: true
+conditional/core.type=shop/items: []
+conditional/core.type=shop/npcs: []
+conditional/core.type=signpost/canenter: true
+conditional/core.type=signpost/message: ''
+conditional/core.type=signpost/npcs: []
+conditional/core.type=wall/canenter: false
+conditional/core.type=wall/events: ''
+core/icon: ''
+core/name: ''
+core/revealed: __[true,false]
+core/type: __[floor,door,wall,link,other,shop,signpost]
