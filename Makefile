@@ -2,10 +2,13 @@
 
 SRCDIR=src
 
-all:
+test:
+	nosetests --with-doctest --verbosity=3 --detailed-errors --with-coverage --cover-erase --doctest-options='+ELLIPSIS' -exe -w src/usr/share/mirthless/lib
+
+all: 
 # Add commands here to build code.
 
-install:
+install: test
 	find ${SRCDIR} -type f | while read file ; do  \
 			echo $$file ;\
 			install -v -m 755 -o root -g root -d "$$(dirname "$(DESTDIR)/$$file")"; \

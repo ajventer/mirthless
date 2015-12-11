@@ -2,7 +2,7 @@ Source: mirthless
 Section: metapackages
 Priority: extra
 Maintainer: Ometa <oracle@ometa.org>
-Build-Depends: debhelper (>= 5)
+Build-Depends: debhelper (>= 5) , python-nose
 Standards-Version: 3.7.2
 
 Package: mirthless
