@@ -38,6 +38,7 @@ if __name__ == "__main__":
     quit = False
     pygame.init()
     screen = get_screen(settings['res_x'], settings['res_y'], settings['hardware_buffer'], settings['fullscreen'])  
+    screen.fill((255,255,255))
     pygame.display.set_caption('Mirthless RPG')
 
     tilemap = Tilemap(util.file_path('images','roguelikeDungeon_transparent.png'),16,16)
@@ -60,9 +61,7 @@ if __name__ == "__main__":
             eventstack.handle_event(event)
         sprites.clear(screen, background)
         dirty = sprites.draw(screen)
-        #overlays.draw(screen)
         pygame.display.update(dirty)
-        #clock.tick(15)
         screen.blit(mapview.surface,(100,100))
         pygame.display.flip()
 

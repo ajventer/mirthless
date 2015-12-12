@@ -100,26 +100,25 @@ class EventStack():
 
 
 class Button(pygame.sprite.DirtySprite):
-    restcolor = (0,255,0)
-    highcolor = (255,0,0)
-    clickcolor = (0,0,255)
+    restcolor = (212,161,144)
+    highcolor = (161,212,144)
+    clickcolor = (194,144,212)
     def __init__(self, label, onclick, eventstack, pos=(0,0)):
         super(pygame.sprite.DirtySprite, self).__init__()
         self.pos = pos
         self.onclick = onclick
         self.label = render_text (label, size=32, color=(0,0,0))
         rect = self.label.get_rect()
-        self.surface = pygame.Surface((rect.w * 3, rect.h))
-        self.rect = self.surface.get_rect()
-        self.rest_rect = pygame.Rect(0,0,rect.w,rect.h)
-        self.hi_rect = pygame.Rect(rect.w,0,rect.w,rect.h)
-        self.click_rect = pygame.Rect(rect.w*2,0, rect.w,rect.h)
-        debug("Rect", self.rect)
+        self.surface = pygame.Surface((rect.w * 3 + 9, rect.h + 3))
+        self.surface.fill((0,0,0))
+        self.rest_rect = pygame.Rect(0,0,rect.w +3,rect.h +3)
+        self.hi_rect = pygame.Rect(rect.w +3,0,rect.w +3,rect.h +3)
+        self.click_rect = pygame.Rect(rect.w*2 +6,0, rect.w +3,rect.h)
         debug("Rest_rect", self.rest_rect)
         debug("Hi_rect", self.hi_rect)
         debug("Click_rect", self.click_rect)
-        self.surface.fill(self.restcolor, self.rest_rect)
-        self.surface.fill(self.highcolor, self.hi_rect)
+        self.surface.fill(self.restcolor, self.shadowed(self.rest_rect))
+        self.surface.fill(self.highcolor, self.shadowed(self.hi_rect))
         self.surface.fill(self.clickcolor, self.click_rect)
         self.surface.blit(self.label,(0,0))
         self.surface.blit(self.label,(self.hi_rect.x, 0))
@@ -133,6 +132,9 @@ class Button(pygame.sprite.DirtySprite):
         self.eventstack.register_event("button1", self, self.click)
 
         self.mouseout()
+
+    def shadowed(self,rect):
+        return pygame.Rect(rect.x, rect.y, rect.w -3, rect.h -3)
 
     def mouseover(self):
         self.image = self.surface.subsurface(self.hi_rect)
