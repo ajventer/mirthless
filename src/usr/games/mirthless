@@ -27,9 +27,11 @@ if gamedir is None:
     gamedir = settings['gamedir']
 
 sys.path.append(os.path.join(gamedir,'lib'))
-from graphics import get_screen, Mapview, Tilemap
+from graphics import get_screen, Mapview, Tilemap, Button, EventStack
 import util
 
+def hello():
+    print "Hello world"
 
 if __name__ == "__main__":
     util.gamedir = gamedir
@@ -42,13 +44,30 @@ if __name__ == "__main__":
 
     mapview = Mapview(tilemap, 10, 10)
     mapview.set_bg(0,0,2,5)
-    screen.blit(mapview.surface,(100,100))
+    eventstack =EventStack()
+    quit_button = Button("Quit", sys.exit, eventstack, (0,0))
+    yes_button = Button("Yes", hello, eventstack, (30,50))
+    sprites = pygame.sprite.RenderUpdates()
+    sprites.add(quit_button)
+    sprites.add(yes_button)
+    background = screen.copy()
 
-    pygame.display.flip()    
-    while not quit:
+        
+    while not quit:       
         for event in pygame.event.get():
             if event.type == pygame.QUIT or event.type == KEYDOWN: 
                 quit = True
+            eventstack.handle_event(event)
+        sprites.clear(screen, background)
+        dirty = sprites.draw(screen)
+        #overlays.draw(screen)
+        pygame.display.update(dirty)
+        #clock.tick(15)
+        screen.blit(mapview.surface,(100,100))
+        pygame.display.flip()
+
+
+
 
     
 

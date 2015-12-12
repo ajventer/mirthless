@@ -14,13 +14,17 @@ def get_screen(resx, resy, hardware, fullscreen):
     return  pygame.display.set_mode((resx, resy), flags)
 
 
-def scrn_print(surface, text, x, y, size=32, color=(0,0,0)):
+def render_text (text, size=32, color=(0,0,0)):
     font = pygame.font.Font(None, size)
-    text = font.render(str(text), 1, color)
-    textpos = text.get_rect()
+    rendered = font.render(str(text), 1, color)
+    return rendered 
+
+def scrn_print(surface, text, x, y, size=32, color=(0,0,0)):
+    rendered_text = render_text(text, size=size, color=color)
+    textpos = rendered_text.get_rect()
     textpos.centerx = x
-    textpos.centery = y
-    surface.blit(text, textpos)
+    textpos.centery = y      
+    surface.blit(rendered_text, textpos)
 
 class Tilemap(object):
     def __init__(self, filename, width, height, scale=False):
@@ -59,11 +63,97 @@ class Tilemap(object):
             return image
         return self.tile_table[x][y]
 
+class EventStack():
+    def __init__(self):
+        self.events = {
+            "mouseover": {},
+            "mouseout": {},
+            "button1": {},
+            "button1up": {}
+        }
+
+    def register_event(self, event, sprite, method):
+        self.events[event][sprite] = method
+
+    def handle_event(self, event):
+        deleteme =[]
+        if event.type == MOUSEMOTION:
+            x,y = event.pos
+            for sprite in self.events["mouseover"]:
+                if sprite.rect.collidepoint(x,y):
+                    self.events["mouseover"][sprite]()
+                elif sprite in self.events["mouseout"]:
+                    self.events["mouseout"][sprite]()
+                    del self.events["mouseout"][sprite]  
+        if pygame.mouse.get_pressed()[0]:
+            x,y = pygame.mouse.get_pos()
+            for sprite in self.events["mouseover"]:
+                if sprite.rect.collidepoint(x,y):
+                    self.events["button1"][sprite]()
+        else:
+            for sprite in self.events["button1up"]:
+                self.events["button1up"][sprite]()
+                deleteme.append(sprite)
+            for sprite in deleteme:
+                del self.events["button1up"][sprite]
+
+
+
+class Button(pygame.sprite.DirtySprite):
+    restcolor = (0,255,0)
+    highcolor = (255,0,0)
+    clickcolor = (0,0,255)
+    def __init__(self, label, onclick, eventstack, pos=(0,0)):
+        super(pygame.sprite.DirtySprite, self).__init__()
+        self.pos = pos
+        self.onclick = onclick
+        self.label = render_text (label, size=32, color=(0,0,0))
+        rect = self.label.get_rect()
+        self.surface = pygame.Surface((rect.w * 3, rect.h))
+        self.rect = self.surface.get_rect()
+        self.rest_rect = pygame.Rect(0,0,rect.w,rect.h)
+        self.hi_rect = pygame.Rect(rect.w,0,rect.w,rect.h)
+        self.click_rect = pygame.Rect(rect.w*2,0, rect.w,rect.h)
+        debug("Rect", self.rect)
+        debug("Rest_rect", self.rest_rect)
+        debug("Hi_rect", self.hi_rect)
+        debug("Click_rect", self.click_rect)
+        self.surface.fill(self.restcolor, self.rest_rect)
+        self.surface.fill(self.highcolor, self.hi_rect)
+        self.surface.fill(self.clickcolor, self.click_rect)
+        self.surface.blit(self.label,(0,0))
+        self.surface.blit(self.label,(self.hi_rect.x, 0))
+        self.surface.blit(self.label,(self.click_rect.x, 0))
+        self.eventstack = eventstack
+
+        self.rect = pygame.Rect(pos[0], pos[1], rect.w, rect.h)
+        debug("Width",self.rect.w)
+
+        self.eventstack.register_event("mouseover", self, self.mouseover)
+        self.eventstack.register_event("button1", self, self.click)
+
+        self.mouseout()
+
+    def mouseover(self):
+        self.image = self.surface.subsurface(self.hi_rect)
+        self.eventstack.register_event("mouseout", self, self.mouseout)
+
+
+    def mouseout(self):
+        self.image = self.surface.subsurface(self.rest_rect)
+     
+    def click(self):
+        self.image = self.surface.subsurface(self.click_rect)
+        self.eventstack.register_event("button1up", self, self.mouseout)
+        if self.onclick is not None:
+            self.onclick()
+
+
+
 class Mapview(object):
     def __init__(self, tilemap, w, h):
         self.tilemap = tilemap
         self.surface = pygame.Surface((w * tilemap.w, h * tilemap.h))
-        debug(self.surface)
 
     def set_bg(self, x, y, tx, ty):
         pos_x = x * self.tilemap.w
