@@ -7,21 +7,44 @@ import sys
 import hashlib
 import yaml
 
-gamedir = None
+gamedir = 'TESTDATA'
+
+def forcegamedir():
+    """
+    >>> forcegamedir().endswith('mirthless')
+    True
+    """
+    global gamedir
+    if gamedir == 'TESTDATA':
+        gamedir = os.path.abspath(__file__) + '/../../'
+        gamedir = os.path.abspath(gamedir)
+        return gamedir
+    else:
+     return gamedir
+
+
 
 def file_list(directory, needle='*'):
     result = []
     global gamedir
+    gamedir = forcegamedir()
+    debug(gamedir)
     dirname = os.path.join(gamedir, directory)
     return glob(dirname+'/'+needle)
 
 def file_path(directory, filename):
     global gamedir
-    dirname = os.path.join(gamedir, directory)
-    debug (dirname)
-    filepath = os.path.join(dirname, filename)
-    debug ('Loading file: ', filepath)
-    return filepath
+    gamedir = forcegamedir()
+    debug(gamedir)
+    filename = os.path.join(gamedir, directory, filename)
+    if not os.path.exists(filename):
+        testpath = os.path.join(gamedir,'testdata', directory, os.path.basename(filename))
+        if os.path.exists(testpath):
+            filename = testpath
+        else:
+            raise IOError(testpath)
+    debug ('Loading file: ', filename)
+    return filename
 
 def user_hash():
     user_string = '%s%s' % (bottle.request.environ.get('REMOTE_ADDR'), bottle.request.environ.get('HTTP_USER_AGENT'))
@@ -73,8 +96,6 @@ def stripslashes(s):
 
 
 def readkey(key, json, default=None):
-    if not isinstance(json, dict):
-        raise ValueError("%s must be a dict" % repr(json))
     key = stripslashes(key)
     debug('Reading ', key)
     if key in json:
@@ -94,11 +115,66 @@ def readall(key, json):
             result[k] = json[k]
     return result
 
+def readsubtree(key, json):
+    """
+    >>> readsubtree ('/a', {'a/b': 1, 'f/g':2, 'a/c/x' :2 }) == {'b': 1, 'c/x': 2}
+    True
+    """
+    result = {}
+    key = stripslashes(key)
+    splitkey = key.split('/')
+    parent = splitkey[-1]
+    parentsize = len(splitkey) -1
+    for k in json:
+        if k.startswith(key):
+            keys = k.split('/')
+            if not keys[-1] == parent:
+                subkey = '/'.join(keys[keys.index(parent)+1:])
+                result[subkey] = json[k]
+    return result
+
+def subkeys(json):
+    result = []
+    for k in json:
+        keys = k.split('/')
+        result.append(keys[0])
+    return list(set(result))
 
 
 def writekey(key, value, json):
     key = stripslashes(key)
     json[key] = value
+
+def flatten(init, lkey=''):
+    ret = {}
+    for rkey, val in list(init.items()):
+        key = lkey + rkey
+        if isinstance(val, dict) and val:
+            ret.update(flatten(val, key + '/'))
+        else:
+            ret[key] = val
+    return ret
+
+def writesubtree(json, key, data):
+    emptytree(json,key)
+    key = stripslashes(key)
+    d = flatten(data)
+    for k in d:
+        subkey = key+'/'+k
+        json[subkey] = d[k]
+    return json
+
+def emptytree(json, key):
+    key = stripslashes(key)
+    delme = []
+    for k in json:
+        if k.startswith(key):
+            delme.append(k)
+    for k in delme:
+        del json[k]
+    json[key] = ''
+    return json
+
 
 def readyaml(directory, filename):
     path = file_path(directory, filename)

@@ -6,19 +6,34 @@ import os
 import sys
 from messagebox import MessageBox
 
+class Campaign(object):
+    def ___init__(self,screen):
+        #Temporary class until new game class is done
+        pass
+    def warning(*args):
+        pass
+
+    def message(*args):
+        pass
+
+    def error(*args):
+        pass
+
 
 class Frontend(object):
-    def __init__(self,screen):
-        self.screen = screen
-        self.screensize = self.screen.get_rect()
-        self.layout = {
-            "header": [],
-            "mainwindow": [],
-            "rightmenu": [],
-            "messagebox":  '',
-            "dialog": None
-            } 
-        self.mb = MessageBox(pygame.Rect(0,self.screensize.h - 190,self.screensize.w, self.screensize.h))
+    campaign = Campaign()
+    def __init__(self,screen=None):
+        if screen:
+            self.screen = screen
+            self.screensize = self.screen.get_rect()
+            self.layout = {
+                "header": [],
+                "mainwindow": [],
+                "rightmenu": [],
+                "messagebox":  '',
+                "dialog": None
+                } 
+            self.mb = MessageBox(pygame.Rect(0,self.screensize.h - 190,self.screensize.w, self.screensize.h))
 
     def background(self):
         #Header:
@@ -100,7 +115,7 @@ class ImageCache(dict):
 
 
 imagecache = ImageCache()
-frontend = None
+frontend = Frontend()
 
 def initpygame(settings, caption):
     global imagecache

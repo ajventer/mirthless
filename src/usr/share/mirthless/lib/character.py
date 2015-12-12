@@ -1,4 +1,4 @@
-from util import npc_hash, rolldice, inrange, price_in_copper, convert_money, save_json, load_json, readkey, writekey, debug
+from util import npc_hash, rolldice, inrange, price_in_copper, convert_money, save_json, load_json, readkey, writekey, debug, subkeys, emptytree, readall, readsubtree
 from item import Item
 from objects import EzdmObject, event
 from gamemap import GameMap
@@ -11,7 +11,7 @@ from graphics import frontend
 
 class Character(EzdmObject):
     """
-    >>> char = Character(load_json('characters', 'bardic_rogue.json'))
+    >>> char = Character(load_json('characters', 'bardic_rogue.yaml'))
     >>> char.displayname()
     '[BARDIC ROGUE]'
     """
@@ -20,7 +20,7 @@ class Character(EzdmObject):
 
     def __init__(self, json):
         """
-        >>> json = load_json('characters', 'bardic_rogue.json')
+        >>> json = load_json('characters', 'bardic_rogue.yaml')
         >>> char = Character(json)
         >>> char.json == json
         True
@@ -32,9 +32,9 @@ class Character(EzdmObject):
 
     def roll_hit_dice(self):
         """
-        >>> json = load_json('characters', 'bardic_rogue.json')
+        >>> json = load_json('characters', 'bardic_rogue.yaml')
         >>> char = Character(json)
-        >>> hitdice = int(char()['core']['combat']['level-hitdice'])
+        >>> hitdice = int(char()['core/combat/level-hitdice'])
         >>> max = int(hitdice * 8)
         >>> char.roll_hit_dice()
         >>> char.get('/core/combat/hitpoints', 0) <= max
@@ -114,12 +114,12 @@ class Character(EzdmObject):
 
     def location(self):
         """
-        >>> json = load_json('characters', 'bardic_rogue.json')
+        >>> json = load_json('characters', 'bardic_rogue.yaml')
         >>> char = Character(json)
         >>> char.location()['map'] == 'simple_room.json'
         True
         """
-        return self.get('/core/location', {})
+        return self.getsubtree('/core/location')
 
     @property
     def lightradius(self):
@@ -177,17 +177,17 @@ class Character(EzdmObject):
 
     def inventory_generator(self, sections=['pack', 'equiped', 'spells']):
         for section in sections:
-            items = self.get('/core/inventory/%s' % section, [])
+            items = self.get('core/inventory/%s' % section, [])
             idx = -1
             if isinstance(items, list):
                 for item in items:
                     idx += 1
                     yield (section, Item(item), idx)
-            elif isinstance(items, dict):
-                for k, v in list(items.items()):
-                    yield (k, Item(v), 0)
             else:
-                self.put('/core/inventory/%s', [])
+                items = self.getsubtree('core/inventory/%s' % section)
+                for slots in subkeys(items):
+                    itemdata =  self.get('core/inventory/equiped/%s' %slot)
+                    yield(section, Item(item),slot)
 
     @property
     def is_casting(self):
@@ -200,38 +200,15 @@ class Character(EzdmObject):
         return False
 
     def interrupt_cast(self):
-        """
-        >>> json = load_json('characters', 'bardic_rogue.json')
-        >>> char = Character(json)
-        >>> tar = Character(load_json('characters', 'tiny_tim.json'))
-        >>> spell = Item(load_json('items', 'magic_misile.json'))
-        >>> char.acquire_item(spell)
-        >>> spell = Item(char.get('/core/inventory/pack', [])[0])
-        >>> spell.onuse(char, tar)
-        >>> char()['core']['inventory']['pack'][0] = spell()
-        >>> print (char.get('/core/inventory/pack', []))
-        [...]
-        >>> char.is_casting
-        True
-        >>> char.interrupt_cast()
-        >>> char.is_casting
-        False
-        """
-        for item in self.inventory_generator():
-            if item[1].get('/core/in_use', False):
-                item[1].interrupt()
-            if item[0] in ['spells', 'pack']:
-                self()['core']['inventory'][item[0]][item[2]] = item[1]()
-            else:
-                self.put('/core/inventory/equiped_by_type/%s' % item[0], item[1]())
-        self.autosave()
+        #TODO - rewrite
+        pass
 
     def character_type(self):
         """
-        >>> char = Character(load_json('characters', 'tiny_tim.json'))
+        >>> char = Character(load_json('characters', 'bardic_rogue.yaml'))
         >>> char.character_type()
         'player'
-        >>> char = Character(load_json('characters', 'random_monster.json'))
+        >>> char = Character(load_json('characters', 'random_monster.yaml'))
         >>> char.character_type()
         'npc'
         """
@@ -269,7 +246,7 @@ class Character(EzdmObject):
 
     def heal(self, amount):
         """
-        >>> char = Character(load_json('characters', 'tiny_tim.json'))
+        >>> char = Character(load_json('characters', 'bardic_rogue.yaml'))
         >>> start = char.get('/core/combat/hitpoints', 1)
         >>> max = char.get('/core/combat/max_hp', 1)
         >>> if max - start < 1:
@@ -293,7 +270,7 @@ class Character(EzdmObject):
 
     def take_damage(self, damage):
         """
-        >>> char = Character(load_json('characters', 'tiny_tim.json'))
+        >>> char = Character(load_json('characters', 'bardic_rogue.yaml'))
         >>> start = 30
         >>> char.put('/core/combat/hitpoints', start)
         >>> char.take_damage(1)
@@ -322,11 +299,11 @@ class Character(EzdmObject):
 
     def name(self):
         """
-        >>> char = Character(load_json('characters', 'tiny_tim.json'))
+        >>> char = Character(load_json('characters', 'bardic_rogue.yaml'))
         >>> char.name()
-        'tiny_tim.json'
+        'bardic_rogue.yaml'
         """
-        name = '%s_%s.json' % (self.get('/core/personal/name/first', ''), self.get('/core/personal/name/last', ''))
+        name = '%s_%s.yaml' % (self.get('/core/personal/name/first', ''), self.get('/core/personal/name/last', ''))
         return name.lower().replace(' ', '_').replace("'", "")
 
     def save(self):
@@ -341,11 +318,11 @@ class Character(EzdmObject):
 
     def to_hit_mod(self):
         """
-        >>> char = Character(load_json('characters', 'tiny_tim.json'))
+        >>> char = Character(load_json('characters', 'bardic_rogue.yaml'))
         >>> isinstance(char.to_hit_mod(), int)
         True
         """
-        ability_mods = load_json('adnd2e', 'ability_scores')
+        ability_mods = load_json('rules', 'ability_scores.yaml')
         strength = self.get('/core/abilities/str', 1)
         base = int(readkey('/str/%s/hit' % strength, ability_mods, 0))
         bonus = 0
@@ -361,52 +338,53 @@ class Character(EzdmObject):
 
     def ppd_mod(self):
         """
-        >>> char = Character(load_json('characters', 'tiny_tim.json'))
+        >>> char = Character(load_json('characters', 'bardic_rogue.yaml'))
         >>> isinstance(char.ppd_mod(), int)
         True
         """
-        ability_mods = load_json('adnd2e', 'ability_scores')
+        ability_mods = load_json('rules', 'ability_scores.yaml')
         con = self.get('/core/abilities/con', 1)
         return int(readkey('/con/%s/ppd' % con, ability_mods))
 
     def dmg_mod(self):
         """
-        >>> char = Character(load_json('characters', 'tiny_tim.json'))
+        >>> char = Character(load_json('characters', 'bardic_rogue.yaml'))
         >>> isinstance(char.dmg_mod(), int)
         True
         """
-        ability_mods = load_json('adnd2e', 'ability_scores')
+        ability_mods = load_json('rules', 'ability_scores.yaml')
         strength = self.get('/core/abilities/str', 0)
         return int(readkey('/str/%s/dmg' % strength, ability_mods, 0))
 
     def def_mod(self):
         """
-        >>> char = Character(load_json('characters', 'tiny_tim.json'))
+        >>> char = Character(load_json('characters', 'bardic_rogue.yaml'))
         >>> isinstance(char.def_mod(), int)
         True
         """
-        ability_mods = load_json('adnd2e', 'ability_scores')
+        ability_mods = load_json('rules', 'ability_scores.yaml')
         dex = self.get('/core/abilities/dex', 0)
         return int(readkey('/dex/%s/defense' % dex, ability_mods, 0))
 
     @property
     def saving_throws(self):
         """
-        >>> char = Character(load_json('characters', 'tiny_tim.json'))
+        >>> char = Character(load_json('characters', 'bardic_rogue.yaml'))
         >>> isinstance(char.saving_throws, dict)
         True
         """
         key = self.get('/core/class/parent', '')
-        sts = load_json("adnd2e", "saving_throws")[key]
+        sts = load_json("rules", "saving_throws.yaml")
+        sts = readsubtree(key, sts)
         hitdice = self.get('/core/combat/level-hitdice', 0)
-        for key2 in list(sts.keys()):
+        for key2 in subkeys(sts):
             if inrange(hitdice, key2):
-                st = sts[key2]
+                st = readsubtree('%s' % (key2), sts)
                 st['ppd'] = int(st['ppd']) + self.ppd_mod()
                 return(st)
 
     def saving_throw(self, against):
-        saving = load_json('adnd2e', 'saving_throws') or {}
+        saving = load_json('rules', 'saving_throws.yaml') or {}
         prettyname = saving['names'][against]
         race = self.get('/core/personal/race', '')
         con = int(self.get('/core/abilities/con', 0))
@@ -430,7 +408,7 @@ class Character(EzdmObject):
 
     def current_weapon(self):
         """
-        >>> char = Character(load_json('characters', 'tiny_tim.json'))
+        >>> char = Character(load_json('characters', 'bardic_rogue.yaml'))
         >>> isinstance(char.current_weapon(), Item)
         True
         """
@@ -446,7 +424,7 @@ class Character(EzdmObject):
 
     def level_up(self):
         """
-        >>> char = Character(load_json('characters', 'tiny_tim.json'))
+        >>> char = Character(load_json('characters', 'bardic_rogue.yaml'))
         >>> level = char.get('/core/combat/level-hitdice', 1)
         >>> hp = char.get('/core/combat/hitpoints', 1)
         >>> max = char.get('/core/combat/max_hp', 1)
@@ -462,20 +440,20 @@ class Character(EzdmObject):
         level += 1
         out = '%s has reached level %s !' % (self.displayname(), level)
         self.put('/core/combat/level-hitdice', level)
-        ability_scores = load_json('adnd2e', 'ability_scores')
+        ability_scores = load_json('rules', 'ability_scores.yaml')
         con = self.get('/core/abilities/con', 1)
         out += '<br>Character constitution: %s' % con
         con_bonus = int(readkey('/con/%s/hit' % con, ability_scores, 0))
         out += '<br>Constitution Bonus: %s' % con_bonus
-        xp_levels = load_json('adnd2e', 'xp_levels')
+        xp_levels = load_json('rules', 'xp_levels.yaml')
         pclass = self.get('/core/class/parent', '')
-        xp_levels = readkey('%s' % (pclass), xp_levels)
-        hitdice = str(readkey('/%s/hit_dice' % (level), xp_levels, 1))
+        xp_levels = readall('%s' % (pclass), xp_levels)
+        hitdice = str(readkey('%s/%s/hit_dice' % (pclass, level), xp_levels, 1))
         debug("Read hitdice as ", hitdice)
         if '+' not in hitdice:
             hitdice = hitdice + '+0'
         hitdice, bonus = hitdice.split('+')
-        dice = int(readkey('/dice', xp_levels, 1))
+        dice = int(readkey('%s/dice' % pclass, xp_levels, 1))
         more_hp, roll = rolldice(numdice=int(hitdice), numsides=dice, modifier=con_bonus)
         out += '<br>%s' % roll
         more_hp += int(bonus)
@@ -483,8 +461,7 @@ class Character(EzdmObject):
         new_max = current_max + more_hp
         out += '<br>Maximum hitpoints increased by %s. Maximum hitpoints now: %s' % (more_hp, new_max)
         self.put('core/combat/max_hp', new_max)
-        current_hp = int(self.get('/core/combat/hitpoints', 0))
-        new_hp = current_hp + more_hp
+        new_hp = new_max
         out += '<br>Character hitpoints now %s' % new_hp
         self.put('/core/combat/hitpoints', new_hp)
         self.__init__(self())
@@ -492,7 +469,7 @@ class Character(EzdmObject):
 
     def give_xp(self, xp):
         """
-        >>> char = Character(load_json('characters', 'tiny_tim.json'))
+        >>> char = Character(load_json('characters', 'bardic_rogue.yaml'))
         >>> level = char.get('/core/combat/level-hitdice', 1)
         >>> nl = char.next_level()
         >>> debug(char.give_xp(nl + 10))
@@ -512,24 +489,25 @@ class Character(EzdmObject):
         return new_xp
 
     def next_level(self):
-        parentclass = self.get('/core/class/parent', '')
-        childclass = self.get('/core/class/class', '')
+        parentclass = self.get('core/class/parent', '')
+        childclass = self.get('core/class/class', '')
         if childclass == 'paladin':
             childclass = 'ranger'
         debug('Checking next level for %s' % self.displayname())
-        nl = int(self.get('/core/combat/level-hitdice', 1)) + 1
+        nl = int(self.get('core/combat/level-hitdice', 1)) + 1
         if nl > 20:
             return -1
-        xp_levels = readkey('/%s/%s' % (parentclass, str(nl)), load_json('adnd2e', 'xp_levels'), {})
-        if 'all' in xp_levels:
-            next_xp = int(xp_levels['all'])
+        xp_levels = readall('/%s/%s' % (parentclass, str(nl)), load_json('rules', 'xp_levels.yaml'))
+        
+        if '%s/%s/all' %(parentclass, str(nl)) in xp_levels:
+            next_xp = int(xp_levels['%s/%s/all' %(parentclass, str(nl))])
         else:
-            next_xp = int(xp_levels[childclass])
+            next_xp = int(xp_levels['%s/%s/%s' %(parentclass, str(nl),childclass)])
         return next_xp
 
     def is_misile(self):
         try:
-            return self.weapons[self.weapon]['conditionals']['weapon_type'] == "misile"
+            return self.weapons[self.weapon+'/conditionals/weapon_type'] == "misile"
         except IndexError:
             return False
 
@@ -554,9 +532,9 @@ class Character(EzdmObject):
                 return (roll[0], "Miss !", roll[1])
 
     def spell_success(self):
-        ability_scores = load_json('adnd2e', 'ability_scores')
+        ability_scores = load_json('rules', 'ability_scores.yaml')
         wis = str(self.get('/core/abilities/wis', 0))
-        failrate = int(ability_scores["wis"][wis]["spell_failure"].split('%')[0])
+        failrate = int(ability_scores["wis/%s/spell_failure" %(wis)].split('%')[0])
         out = "Spell failure rate: %s percent" % failrate
         roll = rolldice(numdice=1, numsides=100)
         out += '<br>%s' % roll[1]
@@ -579,7 +557,7 @@ class Character(EzdmObject):
         spelltype = spellitem.get('/conditional/spell_type', 'wizard spells')
         parentclass = self.get('/core/class/parent', '')
         childclass = self.get('/core/class/class', '')
-        canlearn = load_json('adnd2e', 'various.json')["spell progression"]
+        canlearn = load_json('rules', 'various.yaml')["spell progression"]
         found = False
         for key in canlearn:
             if key == parentclass or key == childclass:
@@ -592,7 +570,7 @@ class Character(EzdmObject):
         if spelltype not in canlearn[key][oneline]:
             return "%s cannot learn %s, failed to learn spell %s" % (self.displayname(), spelltype, spellitem.displayname())
         intelect = str(self.get('/core/abilities/int', 1))
-        chance = load_json('adnd2e', 'ability_scores.json')
+        chance = load_json('rules', 'ability_scores.yaml')
         chance = readkey('/int/%s/spell_learn' % intelect, chance)
         out = "<strong>%s has a %s chance to learn a new spell</strong>" % (self.displayname(), chance)
         chance = int(chance.replace('%', ''))
@@ -606,75 +584,80 @@ class Character(EzdmObject):
         return "%s<br><strong>%s has learned %s</strong>" % (out, self.displayname(), spellitem.displayname())
 
     def unlearn_spell(self, index):
-        del(self()['core']['inventory']['spells'][index])
+        del(self()['core/inventory/spells'][index])
 
     def acquire_item(self, item):
         """
         >>> char = Character({})
-        >>> item = Item(load_json('items', 'health_potion.json'))
+        >>> item = Item(load_json('items', 'health_potion.yaml'))
         >>> char.acquire_item(item)
-        >>> Item(char()['core']['inventory']['pack'][0]).displayname() == 'Health Potion'
+        >>> Item(char()['core/inventory/pack'][0]).displayname() == 'Health Potion'
         True
         """
-        if not isinstance(self.get('/core/inventory/pack', ''), list):
-            self.put('/core/inventory/pack', [])
         if self.character_type() == 'player':
             item.onpickup(self)
-        self()['core']['inventory']['pack'].insert(0, item())
+        li = self.get('core/inventory/pack',[])
+        li.insert(0, item())
+        self.put('core/inventory/pack',li)
+
 
     def equip_item(self, itemname):
         """
         >>> char = Character({})
-        >>> mhand = Item(load_json('items', 'mainhand_dagger.json'))
-        >>> ohand = Item(load_json('items', 'offhand_dagger.json'))
-        >>> twohand = Item(load_json('items', 'halberd.json'))
+        >>> mhand = Item(load_json('items', 'mainhand_dagger.yaml'))
+        >>> ohand = Item(load_json('items', 'offhand_dagger.yaml'))
+        >>> twohand = Item(load_json('items', 'halberd.yaml'))
         >>> char.acquire_item(twohand)
         >>> char.equip_item(0)
         (True, '[ ] has equiped Halberd')
         >>> char.weapons
-        [<ezdm_libs.item.Item object at ...>]
+        [<item.Item object at ...>]
         >>> char.weapons[0].name()
-        'halberd.json'
+        'halberd.yaml'
         >>> len(char.weapons)
         1
         >>> char.acquire_item(mhand)
         >>> char.equip_item(0)
         (True, '[ ] has equiped Mainhand Dagger')
         >>> char.weapons
-        [<ezdm_libs.item.Item object at ...>]
+        [<item.Item object at ...>]
         >>> char.weapons[0].displayname() == 'Mainhand Dagger'
         True
         >>> char.acquire_item(ohand)
         >>> char.equip_item(0)
         (True, '[ ] has equiped Offhand_Dagger')
         >>> char.weapons
-        [<ezdm_libs.item.Item object at ...>, <ezdm_libs.item.Item object at ...>]
+        [<item.Item object at ...>, <item.Item object at ...>]
         >>> len(char.weapons)
         2
         >>> char.acquire_item(twohand)
         >>> char.equip_item(0)
         (True, '[ ] has equiped Halberd')
         >>> char.weapons[0].name()
-        'halberd.json'
+        'halberd.yaml'
         >>> len(char.weapons)
         1
         """
         slots = []
         canwear = self.get('/conditional/armor_types', 0)
-        armor_types = load_json('adnd2e', 'armor_types.json')
+        armor_types = load_json('rules', 'armor_types.yaml')
         shields = self.get('/conditional/shields', False)
 
         if isinstance(itemname, int):
-            item = Item(self.get('/core/inventory/pack', [])[itemname])
+            try:
+                item = Item(self.get('core/inventory/pack', [])[itemname])
+            except IndexError:
+                raise IndexError('%s - %s' % (itemname, self.get('core/inventory/pack')))
         else:
             for item in [Item(i) for i in self.get('/core/inventory/pack', [])]:
+                debug (itemname, item.displayname())
                 if item.displayname() == itemname:
                     break
-        if not item.identified():
-            item.identify()
-        if self.character_type() == 'player':
-            item.onequip(self)
         if item:
+            if not item.identified():
+                item.identify()
+            if self.character_type() == 'player':
+                item.onequip(self)           
             if item.armortype() == 'shield' and not shields:
                 return (False, "%s cannot wear %s shields like %s" % (self.displayname(), item.armortype(), item.displayname()))
             elif item.armortype() != 'shield' and item.itemtype() == 'armor' and canwear < armor_types[item.armortype()]:
@@ -682,8 +665,8 @@ class Character(EzdmObject):
             if item.slot() == 'twohand':
                 slots = ['lefthand', 'righthand']
             elif item.slot() == 'finger':
-                left = self.get('/core/inventory/leftfinger', {})
-                right = self.get('/core/inventory/rightfinger', {})
+                left = self.getsubtree('/core/inventory/equiped/leftfinger')
+                right = self.getsubtree('/core/inventory/equiped/rightfinger')
                 if not left:
                     slots = ['leftfinger']
                 if not right:
@@ -694,36 +677,33 @@ class Character(EzdmObject):
                 slots = [item.slot()]
             for slot in slots:
                 self.unequip_item(slot)
-                self.put('/core/inventory/equiped/%s' % slot.strip(), item())
+                self.putsubtree('/core/inventory/equiped/%s' % slot.strip(), item())
             self.drop_item(item.displayname())
         return (True, "%s has equiped %s" % (self.displayname(), item.displayname()))
 
     def unequip_item(self, slot):
         """
         >>> char = Character({})
-        >>> twohand = Item(load_json('items', 'halberd.json'))
+        >>> twohand = Item(load_json('items', 'halberd.yaml'))
         >>> char.acquire_item(twohand)
         >>> char.equip_item(twohand)
         (True, '[ ] has equiped Halberd')
         >>> char.unequip_item('lefthand')
-        >>> char.get('/core/inventory/equiped/lefthand', {})
-        {}
-        >>> char.get('/core/inventory/equiped/lefthand', {})
-        {}
         >>> char.weapons[0].name()
-        'fist.json'
+        'fist.yaml'
         """
         slot = slot.strip()
-        current = Item(self.get('/core/inventory/equiped/%s' % slot, {}))
+        current = self.getsubtree('core/inventory/equiped/%s' % slot)
         debug(current)
-        if current():
-            if current.name() != 'fist.json':
+        if current:
+            current = Item(current)
+            if current.name() != 'fist.yaml':
                 self.acquire_item(current)
             if current.get('/conditional/slot', '') == 'twohand':
                 debug('Unequipping a twohanded weapon')
                 for slot in ['lefthand', 'righthand']:
                     debug('unequiping from %s' % slot)
-                    self.put('/core/inventory/equiped/%s' % slot, {})
+                    emptytree(self(), '/core/inventory/equiped/%s' % slot)
             else:
                 self.put('/core/inventory/equiped/%s' % slot, {})
             if self.character_type() == 'player':
@@ -760,7 +740,7 @@ class Character(EzdmObject):
         >>> char = Character({})
         >>> char.for_sale()
         []
-        >>> char.acquire_item(Item(load_json('items', 'health_potion.json')))
+        >>> char.acquire_item(Item(load_json('items', 'health_potion.yaml')))
         >>> char.for_sale()
         [(0, 'Health Potion', 'Gold 4, Silver 10, Copper 10')]
         """
@@ -780,11 +760,11 @@ class Character(EzdmObject):
     def drop_item(self, itemname, section='pack'):
         """
         >>> char = Character({})
-        >>> char.acquire_item(Item(load_json('items','health_potion')))
+        >>> char.acquire_item(Item(load_json('items','health_potion.yaml')))
         >>> char.drop_item('Health Potion')
         >>> len(char.get('/core/inventory/pack', []))
         0
-        >>> char.acquire_item(Item(load_json('items','health_potion')))
+        >>> char.acquire_item(Item(load_json('items','health_potion.yaml')))
         >>> char.drop_item(0)
         >>> len(char.get('/core/inventory/pack', []))
         0
@@ -799,10 +779,10 @@ class Character(EzdmObject):
             todrop = itemname
         if todrop is None:
             return
-        item = Item(self.json['core']['inventory']['pack'][todrop])
+        item = Item(self.json['core/inventory/pack'][todrop])
         if self.character_type() == 'player':
             item.ondrop(player=self)
-        del(self.json['core']['inventory']['pack'][todrop])
+        del(self.json['core/inventory/pack'][todrop])
 
     def money_tuple(self):
         gold = self.get('/core/inventory/money/gold', 0)
@@ -843,9 +823,12 @@ class Character(EzdmObject):
 
     def equiped_by_type(self, itemtype):
         arm = []
-        equiped = self.get('/core/inventory/equiped', {})
-        for slot in equiped:
-            item = Item(equiped[slot])
+        equiped = self.getsubtree('/core/inventory/equiped')
+        for slot in subkeys(equiped):
+            itemdata = self.getsubtree('/core/inventory/equiped/%s' % slot)
+            if not itemdata:
+                continue
+            item = Item(itemdata)
             if item.itemtype() == itemtype:
                 arm.append(item)
         return arm
@@ -859,12 +842,12 @@ class Character(EzdmObject):
         """
         >>> char = Character({})
         >>> char.weapons[0].name()
-        'fist.json'
-        >>> char.acquire_item(Item(load_json('items','halberd.json')))
+        'fist.yaml'
+        >>> char.acquire_item(Item(load_json('items','halberd.yaml')))
         >>> char.equip_item(0)
         (True, '[ ] has equiped Halberd')
         >>> char.weapons[0].name()
-        'halberd.json'
+        'halberd.yaml'
         >>> len(char.weapons)
         1
         """
@@ -872,7 +855,7 @@ class Character(EzdmObject):
         debug(equipedweapons)
         if not equipedweapons:
             debug('No weapons equipped - equipping fist')
-            fist = Item(load_json('items', 'fist.json'))
+            fist = Item(load_json('items', 'fist.yaml'))
             self.acquire_item(fist)
             self.equip_item(0)
             equipedweapons = self.equiped_by_type('weapon')
@@ -884,7 +867,7 @@ class Character(EzdmObject):
         return len(self.weapons)
 
     def num_attacks(self):
-        atr_json = load_json('adnd2e', 'various')
+        atr_json = load_json('rules', 'various.yaml')
         atr = readkey('/various/attacks_per_round', atr_json)
         parentclass = self.get('/core/class/parent', '')
         if parentclass not in atr:
@@ -902,7 +885,7 @@ class Character(EzdmObject):
         subclass = self.get('/core/class/class', '')
         parentclass = self.get('/core/class/parent', '')
         level = self.get('/core/combat/level-hitdice', '')
-        various = load_json('adnd2e', 'various')
+        various = load_json('rules', 'various.yaml')
         abilities = various['abilities']
         conditionals = self.get('/conditional/abilities', {})
         race = self.get('/core/personal/race', self())
@@ -945,7 +928,6 @@ class Character(EzdmObject):
 
     def displayname(self):
         out = "%s %s" % (self.get('/core/personal/name/first', ''), self.get('/core/personal/name/last', ''))
-        index = frontend.campaign.characterlist.index(self)
         if self.character_type() == 'npc':
             loc = self.location()
             if index > -1:
@@ -960,14 +942,14 @@ class Character(EzdmObject):
             key = "creature"
         else:
             key = self.get('/core/class/parent', '')
-        thac0s = load_json("adnd2e", "thac0")[key]
+        thac0s = load_json("rules", "thac0.yaml")[key]
         for key2 in list(thac0s.keys()):
             if inrange(self.get('/core/combat/level-hitdice', 1), key2):
                 return int(thac0s[key2])
 
     def render(self):
         """
-        >>> char = Character(load_json('characters','tiny_tim.json'))
+        >>> char = Character(load_json('characters','bardic_rogue.yaml'))
         >>> char.render()
         {...}
         >>> char = Character({})
@@ -981,7 +963,7 @@ class Character(EzdmObject):
             out['core']['lightradius'] = self.lightradius
             if 'saving_throws' in out['core']['combat']:
                 del out['core']['combat']['saving_throws']
-            prettynames = load_json('adnd2e', 'saving_throws')
+            prettynames = load_json('rules', 'saving_throws.yaml')
             writekey('/conditional/abilities', self.abilities(), out)
             if not self.character_type() == 'player':
                 out['XP Worth'] = self.xp_worth()
@@ -1000,7 +982,7 @@ class Character(EzdmObject):
             xp = self.get('/core/personal/xp', 0)
             nl = self.next_level()
             out['core']['personal']['xp'] = '%s/%s (%s to go)' % (xp, nl, nl - xp)
-            armor_types = load_json('adnd2e', 'armor_types.json')
+            armor_types = load_json('rules', 'armor_types.yaml')
             armor_types = sorted(iter(armor_types.items()), key=operator.itemgetter(1))
             out['core']['combat']['Armor allowed'] = []
             for atype in armor_types:

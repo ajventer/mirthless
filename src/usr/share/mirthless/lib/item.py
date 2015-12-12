@@ -1,6 +1,7 @@
 from util import save_json, debug
 from objects import EzdmObject, event
 import copy
+from graphics import frontend
 
 
 class Item(EzdmObject):
@@ -16,7 +17,7 @@ class Item(EzdmObject):
         pass
 
     def name(self):
-        name = '%s.json' % self.get('/core/name', '')
+        name = '%s.yaml' % self.get('/core/name', '')
         return name.lower().replace(' ', '_').replace("'", "")
 
     def slot(self):
@@ -70,7 +71,7 @@ class Item(EzdmObject):
         return (gold, silver, copper)
 
     def itemtype(self):
-        return self.get('/core/type', 'other')
+        return self.get('core/type')
 
     def armortype(self):
         return self.get('/conditional/material', 'plate')
@@ -100,7 +101,9 @@ class Item(EzdmObject):
             if not success[0]:
                 return
         self.put('/core/in_use', True)
-        self.put('/core/target', frontend.campaign.characterlist.index(target))
+        #TODO - expect the next line to break in use. Needs to be redone once the 
+        #new game class is finished
+        self.put('/core/target', target)
         event(self, "/events/onuse", {'item': self, 'player': player, 'target': target, 'campaign': frontend.campaign})
         try:
             target = frontend.campaign.characterlist[target.index]

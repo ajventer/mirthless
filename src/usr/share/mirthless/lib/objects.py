@@ -1,4 +1,4 @@
-from util import readkey, writekey, debug
+from util import readkey, writekey, debug, readall, readsubtree, writesubtree
 from json import dumps
 
 def event(obj, key, localvars):
@@ -46,7 +46,7 @@ class EzdmObject(object):
         """
         self.__init__(json)
 
-    def get(self, key, default):
+    def get(self, key, default=None):
         """
         >>> o = EzdmObject({'a/b': 1, 'a/c': 2})
         >>> o.get('/a', '') 
@@ -60,6 +60,12 @@ class EzdmObject(object):
             return default
         return readkey(key, self(), default)
 
+    def getall(self, key):
+        return readall(key,self())
+
+    def getsubtree(self, key):
+        return readsubtree(key, self())
+
     def put(self, key, value):
         """
         >>> o = EzdmObject({'a/b': 1, 'a/c': 2})
@@ -68,6 +74,9 @@ class EzdmObject(object):
         16
         """
         return writekey(key, value, self.json)
+
+    def putsubtree(self, key, value):
+        return writesubtree(self(), key, value)
 
     def save(self):
         pass

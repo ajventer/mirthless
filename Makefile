@@ -3,7 +3,7 @@
 SRCDIR=src
 
 test:
-	nosetests --with-doctest --verbosity=3 --detailed-errors --with-coverage --cover-erase --doctest-options='+ELLIPSIS' -exe -w src/usr/share/mirthless/lib
+	nosetests  -x --with-doctest --verbosity=3 --detailed-errors --with-coverage --cover-erase --doctest-options='+ELLIPSIS' -exe -w src/usr/share/mirthless/lib
 
 all: 
 # Add commands here to build code.
