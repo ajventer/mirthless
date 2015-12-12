@@ -1,4 +1,4 @@
-from util import npc_hash, inflate, flatten, rolldice, inrange, price_in_copper, convert_money, save_json, load_json, readkey, writekey, debug
+from util import npc_hash, rolldice, inrange, price_in_copper, convert_money, save_json, load_json, readkey, writekey, debug
 from item import Item
 from objects import EzdmObject, event
 from gamemap import GameMap
@@ -6,6 +6,7 @@ import copy
 from random import randrange
 import operator
 import json as simplejson
+from graphics import frontend
 
 
 class Character(EzdmObject):
@@ -329,10 +330,8 @@ class Character(EzdmObject):
         return name.lower().replace(' ', '_').replace("'", "")
 
     def save(self):
-        self.json = inflate(flatten(self.json))
-        if 'temp' in self():
-            del self()['temp']
-        return save_json('characters', self.name(), self.json)
+        #TODO
+        pass
 
     def autosave(self):
         if self.character_type() == 'player':

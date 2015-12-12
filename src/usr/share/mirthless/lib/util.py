@@ -64,14 +64,40 @@ def realkey(key):
             ret.append(k)
     return '/'.join(ret).strip('/')
 
+def stripslashes(s):
+    while s.startswith('/'):
+        s = s[1:]
+    while s.endswith('/'):
+        s = s[1:]
+    return s
+
 
 def readkey(key, json, default=None):
     if not isinstance(json, dict):
         raise ValueError("%s must be a dict" % repr(json))
-    key = key.strip('/')
-    return json[key]
+    key = stripslashes(key)
+    debug('Reading ', key)
+    if key in json:
+        return json[key]
+    else:
+        return default
+
+def readall(key, json):
+    """
+    >>> readall ('/a', {'a/b': 1, 'f/g':2, 'a/b/c' :2 }) == {'a/b': 1, 'a/b/c':2} 
+    True
+    """
+    result = {}
+    key = stripslashes(key)
+    for k in json:
+        if k.startswith(key):
+            result[k] = json[k]
+    return result
+
+
 
 def writekey(key, value, json):
+    key = stripslashes(key)
     json[key] = value
 
 def readyaml(directory, filename):
@@ -80,10 +106,16 @@ def readyaml(directory, filename):
     return yaml.load(open(path).read())
 
 
-def load_json(source='', name='', filename='', default=None):
-    if name and not name.endswith('.json'):
-        name = '%s.json' % name
-    return readfile(source=source, name=name, filename=filename, json=True, default=default)
+def load_json(directory, filename):
+    filename = file_path(directory, filename)
+    return yaml.load(open(filename).read())
+
+def save_json(directory, filename, json):
+    filename = file_path(directory, filename)
+    strings = yaml.safe_dump(json, default_flow_style=False, encoding='utf-8').split('\n')
+    strings.sort()
+    strings = '\n'.join(strings)
+    open(filename,'w').write(strings)
 
 def price_in_copper(gold, silver, copper):
     s = gold * 10 + silver

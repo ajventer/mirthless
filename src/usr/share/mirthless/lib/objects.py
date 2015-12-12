@@ -1,7 +1,5 @@
 from util import readkey, writekey, debug
 from json import dumps
-from frontend import mode
-
 
 def event(obj, key, localvars):
     code = obj.get(key, '')
@@ -50,9 +48,9 @@ class EzdmObject(object):
 
     def get(self, key, default):
         """
-        >>> o = EzdmObject({'a': {'b': 1, 'c': 2}})
-        >>> o.get('/a', '') == {'b': 1, 'c': 2}
-        True
+        >>> o = EzdmObject({'a/b': 1, 'a/c': 2})
+        >>> o.get('/a', '') 
+        ''
         >>> o.get('/a/b', '')
         1
         >>> o.get('/f/g', 5)
@@ -64,9 +62,9 @@ class EzdmObject(object):
 
     def put(self, key, value):
         """
-        >>> o = EzdmObject({'a': {'b': 1, 'c': 2}})
+        >>> o = EzdmObject({'a/b': 1, 'a/c': 2})
         >>> o.put('/f/g', 16)
-        >>> o()['f']['g']
+        >>> o()['f/g']
         16
         """
         return writekey(key, value, self.json)

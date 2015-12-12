@@ -12,9 +12,8 @@ class Item(EzdmObject):
         return name
 
     def save(self):
-        if 'temp' in self():
-            del self()['temp']
-        return save_json('items', self.name(), self.json)
+        #TODO
+        pass
 
     def name(self):
         name = '%s.json' % self.get('/core/name', '')
