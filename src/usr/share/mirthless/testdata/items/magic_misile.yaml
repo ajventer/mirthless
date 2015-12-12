@@ -1,0 +1,31 @@
+conditional/spell_level: 1
+conditional/spell_school: Conjuration
+conditional/spell_type: wizard spells
+core/charges: -1
+core/current_rounds_performed: 0
+core/description: Fires a bolt of arcane energy at the target, if it hits it does
+  1d6 damage.
+core/icon: icons/magic_misile.png
+core/identified: ''
+core/in_use: false
+core/lightradius: 0
+core/name: Magic Misile
+core/price/copper: 25
+core/price/gold: 200
+core/price/silver: 50
+core/rounds_per_charge: 2
+core/size: small
+core/type: spell
+core/weight: 0
+events/ondrop: ''
+events/onequip: ''
+events/onfinish: "campaign.warning('%s has finished casting Magic Misile at %s'  %\
+  \ (player.displayname(), target.displayname()))\r\nfrom ezdm_libs.util import rolldice\r\
+  \nspell_success = player.spell_success()\r\nif not spell_success[1]:\r\n\tcampaign.error(spell_success)\r\
+  \nelse:\r\n\tdmg = rolldice(numdice=1, numsides=6, modifier=1)\r\n\tcampaign.error(dmg[1])\r\
+  \n\tresult = target.take_damage(dmg[0])\r\n\tcampaign.error(result[1])\r\n"
+events/onpickup: ''
+events/onround: campaign.error('%s continues to cast Magic Misile at %s' % (player.displayname(),
+  target.displayname()))
+events/onuse: campaign.error('%s is casting Magic Missile at %s' % (player.displayname(),
+  target.displayname()))

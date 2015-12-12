@@ -1,0 +1,27 @@
+core/charges: 1
+core/current_rounds_performed: 0
+core/description: This scroll is inscribed with powerful magic that can identify the
+  hidden properties of unknown items. It will always identify the first unknown item
+  in your pack.
+core/icon: icons/scrolloflove.png
+core/identified: true
+core/in_use: false
+core/lightradius: 0
+core/name: Scroll of Identify
+core/price/copper: 0
+core/price/gold: 50
+core/price/silver: 0
+core/rounds_per_charge: 0
+core/size: small
+core/type: other
+core/weight: 1
+events/ondrop: campaign.warning('%s has dropped %s' % (player.displayname(), item.displayname()))
+events/onequip: ''
+events/onfinish: ''
+events/onpickup: ''
+events/onround: ''
+events/onunequip: ''
+events/onuse: "for pitem in player.inventory_generator(sections=['pack']):\r\n\tif\
+  \ not pitem[1].identified():\r\n   \t\tpitem[1].identify()\r\n\t   \tplayer()['core']['inventory']['pack'][pitem[2]]\
+  \ = pitem[1]()\r\n\t   \tbreak\r\ncampaign.error('%s has identified %s' % (player.displayname(),\
+  \ pitem[1].displayname()))\r\n\r\n\r\n   "

@@ -1,0 +1,27 @@
+conditional/damage_type: stab
+conditional/dmg: 4
+conditional/range: ''
+conditional/save_against: none
+conditional/slot: ' righthand'
+conditional/to_hit: 0
+conditional/weapon_type: melee
+core/charges: 0
+core/current_rounds_performed: 0
+core/description: A small dagger balanced for use in the main hand.
+core/icon: icons/dagger.png
+core/identified: false
+core/in_use: false
+core/name: Mainhand Dagger
+core/price/copper: ''
+core/price/gold: 2
+core/price/silver: ''
+core/rounds_per_charge: 0
+core/size: small
+core/type: weapon
+core/weight: ''
+events/ondrop: campaign.warning('%s has dropped %s' % (player.displayname(), item.displayname()))
+events/onequip: ''
+events/onfinish: ''
+events/onpickup: ''
+events/onround: ''
+events/onuse: ''
