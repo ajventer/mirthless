@@ -27,7 +27,7 @@ if gamedir is None:
     gamedir = settings['gamedir']
 
 sys.path.append(os.path.join(gamedir,'lib'))
-from graphics import get_screen 
+from graphics import get_screen, Mapview, Tilemap
 import util
 
 
@@ -37,6 +37,12 @@ if __name__ == "__main__":
     pygame.init()
     screen = get_screen(settings['res_x'], settings['res_y'], settings['hardware_buffer'], settings['fullscreen'])  
     pygame.display.set_caption('Mirthless RPG')
+
+    tilemap = Tilemap(util.file_path('images','roguelikeDungeon_transparent.png'),16,16)
+
+    mapview = Mapview(tilemap, 10, 10)
+    mapview.set_bg(0,0,2,5)
+    screen.blit(mapview.surface,(100,100))
 
     pygame.display.flip()    
     while not quit:
