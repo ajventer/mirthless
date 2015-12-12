@@ -38,4 +38,9 @@ To run the unit tests use:
 
 `make test`
 
-Game art from: kenney.nl
+Credits:
+Game art from: 
+*kenney.nl
+
+Wallpaper:
+*http://opengameart.org/content/landscape

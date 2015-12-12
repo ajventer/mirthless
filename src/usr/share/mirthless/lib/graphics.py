@@ -32,9 +32,6 @@ class Tilemap(object):
 
         image = pygame.image.load(filename).convert()
         image_width, image_height = image.get_size()
-        if scale:
-            image_width = image_width *2
-            image_height = image_height *2
         tile_table = []
         for tile_x in range(0, image_width/width):
             line = []

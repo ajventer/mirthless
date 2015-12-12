@@ -38,19 +38,22 @@ if __name__ == "__main__":
     quit = False
     pygame.init()
     screen = get_screen(settings['res_x'], settings['res_y'], settings['hardware_buffer'], settings['fullscreen'])  
-    screen.fill((255,255,255))
+    
+    wallpaper = pygame.image.load(util.file_path('images', 'landscape.png')).convert()
+    wallpaper = pygame.transform.smoothscale(wallpaper, (settings["res_x"], settings["res_y"]))
+    
+    screen.blit(wallpaper,(0,0))    
+
     pygame.display.set_caption('Mirthless RPG')
 
-    tilemap = Tilemap(util.file_path('images','roguelikeDungeon_transparent.png'),16,16)
+    tilemap = Tilemap(util.file_path('images','roguelikeDungeon_transparent.png'),16,16, True)
 
     mapview = Mapview(tilemap, 10, 10)
     mapview.set_bg(0,0,2,5)
     eventstack =EventStack()
     quit_button = Button("Quit", sys.exit, eventstack, (0,0))
-    yes_button = Button("Yes", hello, eventstack, (30,50))
     sprites = pygame.sprite.RenderUpdates()
     sprites.add(quit_button)
-    sprites.add(yes_button)
     background = screen.copy()
 
         
@@ -62,7 +65,7 @@ if __name__ == "__main__":
         sprites.clear(screen, background)
         dirty = sprites.draw(screen)
         pygame.display.update(dirty)
-        screen.blit(mapview.surface,(100,100))
+        screen.blit(mapview.surface,(0,50))
         pygame.display.flip()
 
 
