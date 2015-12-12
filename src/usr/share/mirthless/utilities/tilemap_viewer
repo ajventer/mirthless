@@ -27,27 +27,20 @@ if gamedir is None:
     gamedir = settings['gamedir']
 
 sys.path.append(os.path.join(gamedir,'lib'))
-from graphics import get_screen, Tilemap, scrn_print
+from graphics import get_screen, Tilemap, scrn_print, initpygame
 import util
 
 
 if __name__ == "__main__":
     util.gamedir = gamedir
     quit = False
-    pygame.init()
-    screen = get_screen(settings['res_x'], settings['res_y'], settings['hardware_buffer'], settings['fullscreen'])
-    pygame.display.set_caption('Mirthless TileMap Viewer')
+    screen, background, frontend = initpygame(settings, 'Mirthless TileMap viewer')
 
     if len(sys.argv) != 2:
         util.debug('Usage %s <tilemap file>' % sys.argv[0])
         sys.exit()
     tilename = sys.argv[1]
-    if not os.path.dirname(tilename):
-        tilename = util.file_path('images', tilename)
 
-    if not os.path.exists(tilename):
-        util.debug('Error %s does not exist, please provide a valid tilemap file')
-        sys.exit(1)
 
     tilemap = Tilemap(tilename,16,16)
     table = tilemap.table()

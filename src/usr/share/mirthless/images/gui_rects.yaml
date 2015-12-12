@@ -16,8 +16,48 @@ button_hi:
     h: 55
 seperator:
     y: 70
-    x: 790
-    w: 210
+    x: 800
+    w: 180
     h: 20
+frame_topleft:
+    x: 860
+    w: 20
+    y: 193
+    h: 20
+frame_topright:
+    x: 978
+    w: 20
+    y: 193
+    h: 20
+frame_bottomleft:
+    x: 860
+    w: 20
+    y: 293
+    h: 20
+frame_bottomright:
+    x: 978
+    w: 20
+    y: 293
+    h: 20
+frame_left:
+    x: 860
+    w: 10
+    y: 227
+    h: 55
+frame_right:
+    x: 990
+    w: 8
+    y: 227
+    h: 55
+frame_top:
+    x: 895
+    w: 55
+    y: 193
+    h: 10
+frame_bottom:
+    x: 895
+    w: 55
+    y: 303
+    h: 10
 
 

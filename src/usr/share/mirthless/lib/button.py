@@ -1,0 +1,70 @@
+import pygame
+from pygame.locals import *
+from util import debug, file_list, readyaml, gamedir
+from messagebox import MessageBox
+from imagecache import ImageCache
+
+def render_text (text, size=32, color=(0,0,0)):
+    font = pygame.font.Font(None, size)
+    rendered = font.render(str(text), 1, color)
+    return rendered 
+
+def scrn_print(surface, text, x, y, size=32, color=(0,0,0)):
+    rendered_text = render_text(text, size=size, color=color)
+    textpos = rendered_text.get_rect()
+    textpos.centerx = x
+    textpos.centery = y      
+    surface.blit(rendered_text, textpos)
+
+
+class Button(pygame.sprite.DirtySprite):
+    restcolor = (212,161,144)
+    highcolor = (161,212,144)
+    clickcolor = (194,144,212)
+    def __init__(self, label, onclick, eventstack,imagecache, pos=(0,0)):
+        super(pygame.sprite.DirtySprite, self).__init__()
+        button_rest = imagecache['button_rest']
+        button_hi = imagecache['button_hi']
+        button_click = imagecache['button_click']
+        self.pos = pos
+        self.onclick = onclick
+        self.label = render_text (label, size=32, color=(0,0,0))
+
+        labelrect = self.label.get_rect()
+        
+        self.button_rest = pygame.transform.smoothscale(button_rest, (labelrect.w + 20, labelrect.h + 12))
+        self.button_rest.blit(self.label,(10,6))
+
+        self.button_hi = pygame.transform.smoothscale(button_hi, (labelrect.w + 20, labelrect.h + 12))
+        self.button_hi.blit(self.label,(10,6))
+
+        self.button_click = pygame.transform.smoothscale(button_click, (labelrect.w + 20, labelrect.h + 12))
+        self.button_click.blit(self.label,(10,6))
+
+
+        rect = self.button_rest.get_rect()
+
+        self.eventstack = eventstack
+
+        self.rect = pygame.Rect(pos[0], pos[1], rect.w, rect.h)
+
+        self.eventstack.register_event("mouseover", self, self.mouseover)
+        self.eventstack.register_event("button1", self, self.click)
+
+        self.mouseout()
+
+    def mouseover(self):
+        self.image = self.button_hi
+        self.image.convert()
+        self.eventstack.register_event("mouseout", self, self.mouseout)
+
+
+    def mouseout(self):
+        self.image = self.button_rest
+        self.image.convert()
+     
+    def click(self):
+        self.image = self.button_click
+        self.image.convert()
+        if self.onclick is not None:
+            self.onclick()
