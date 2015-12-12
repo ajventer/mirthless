@@ -9,6 +9,12 @@ import yaml
 
 gamedir = None
 
+def file_list(directory, needle='*'):
+    result = []
+    global gamedir
+    dirname = os.path.join(gamedir, directory)
+    return glob(dirname+'/'+needle)
+
 def file_path(directory, filename):
     global gamedir
     dirname = os.path.join(gamedir, directory)
@@ -68,21 +74,10 @@ def readkey(key, json, default=None):
 def writekey(key, value, json):
     json[key] = value
 
-def readfile(source='', name='', filename='', json=False, default=None):
-    debug('%s - %s: %s' % (source, name, filename))
-    handle=open(file_path(source, filename), 'r')
-    s = handle.read()
-    handle.close()
-    if not json:
-        try:
-            return s
-        except:
-            return default
-    try:
-
-        return yaml.load(s)
-    except:
-        return default
+def readyaml(directory, filename):
+    path = file_path(directory, filename)
+    debug('Loading %s ' % (path))
+    return yaml.load(open(path).read())
 
 
 def load_json(source='', name='', filename='', default=None):

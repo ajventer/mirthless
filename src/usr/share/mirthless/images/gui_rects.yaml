@@ -1,0 +1,23 @@
+---
+button_rest: 
+    x: 10
+    y: 125
+    w: 290
+    h: 55
+button_click: 
+    x: 10
+    y: 205
+    w: 290
+    h: 55
+button_hi: 
+    x: 10
+    y: 280
+    w: 290
+    h: 55
+seperator:
+    y: 70
+    x: 790
+    w: 210
+    h: 20
+
+

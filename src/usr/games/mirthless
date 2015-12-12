@@ -27,45 +27,34 @@ if gamedir is None:
     gamedir = settings['gamedir']
 
 sys.path.append(os.path.join(gamedir,'lib'))
-from graphics import get_screen, Mapview, Tilemap, Button, EventStack
 import util
+util.gamedir = gamedir
+util.debug('Library path:', '\n\t'.join(sys.path))
+from graphics import get_screen, Mapview, Tilemap, Button, EventStack,initpygame
+
 
 def hello():
     print "Hello world"
 
 if __name__ == "__main__":
-    util.gamedir = gamedir
+    screen, background, frontend = initpygame(settings, 'Mirthless RPG')
     quit = False
-    pygame.init()
-    screen = get_screen(settings['res_x'], settings['res_y'], settings['hardware_buffer'], settings['fullscreen'])  
-    
-    wallpaper = pygame.image.load(util.file_path('images', 'landscape.png')).convert()
-    wallpaper = pygame.transform.smoothscale(wallpaper, (settings["res_x"], settings["res_y"]))
-    
-    screen.blit(wallpaper,(0,0))    
-
-    pygame.display.set_caption('Mirthless RPG')
-
-    tilemap = Tilemap(util.file_path('images','roguelikeDungeon_transparent.png'),16,16, True)
+   
+    tilemap = Tilemap('roguelikeDungeon_transparent.png',16,16)
 
     mapview = Mapview(tilemap, 10, 10)
     mapview.set_bg(0,0,2,5)
     eventstack =EventStack()
-    quit_button = Button("Quit", sys.exit, eventstack, (0,0))
-    sprites = pygame.sprite.RenderUpdates()
-    sprites.add(quit_button)
-    background = screen.copy()
+    quit_button = Button("Quit", sys.exit, eventstack, (5,5))
 
-        
+    frontend.layout['header'].append(quit_button)
+
     while not quit:       
         for event in pygame.event.get():
             if event.type == pygame.QUIT or event.type == KEYDOWN: 
                 quit = True
             eventstack.handle_event(event)
-        sprites.clear(screen, background)
-        dirty = sprites.draw(screen)
-        pygame.display.update(dirty)
-        screen.blit(mapview.surface,(0,50))
+        frontend.draw()
         pygame.display.flip()
 
 
