@@ -23,7 +23,6 @@ class Messages(object):
         debug('Registering wheel handlers')
         eventstack.register_event("wheelup", self, self.scrollup) 
         eventstack.register_event("wheeldown", self, self.scrolldown)
-        debug(eventstack.events["wheelup"])
 
     def scrollup(self):
         if self.messageindex > 5:
@@ -62,6 +61,7 @@ class Messages(object):
 
 class Frontend(object):
     def __init__(self,screen=None):
+        self.messages = Messages(pygame.Rect(0,0,0,0))
         if screen:
             self.screen = screen
             self.screensize = self.screen.get_rect()

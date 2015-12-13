@@ -1,6 +1,6 @@
 from objects import EzdmObject, event
 from item import Item
-from util import save_json, load_json, readkey, debug
+from util import save_yaml, load_yaml,debug
 from graphics import frontend
 
 
@@ -88,7 +88,7 @@ class GameMap(EzdmObject):
                 players = tile.get('/conditional/players', [])
                 if players:
                     for player in players:
-                        j = EzdmObject(load_json('characters', player))
+                        j = EzdmObject(load_yaml('characters', player))
                         loc = j.get('/core/location', {})
                         if not 'map' in loc:
                             continue
@@ -104,7 +104,7 @@ class GameMap(EzdmObject):
         self.json['tiles'] = [[{}] * max_x for _ in range(max_y)]
 
     def load_tile(self, x, y, tile):
-        tjson = load_json('tiles', tile)
+        tjson = load_yaml('tiles', tile)
         self.load_tile_from_json(x, y, tjson)
 
     def load_tile_from_json(self, x, y, json):
@@ -142,7 +142,7 @@ class GameMap(EzdmObject):
             return {}
         out = []
         for thingy in tile.get('/conditional/items', []):
-            json = load_json('items', thingy)
+            json = load_yaml('items', thingy)
             if json:
                 i = Item(json)
                 out.append((i.displayname(), readkey('/core/icon', json, ''), 'items'))

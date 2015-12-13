@@ -1,4 +1,4 @@
-from util import rolldice, load_json, debug
+from util import rolldice, load_yaml, debug
 from math import hypot
 
 
@@ -63,7 +63,7 @@ def attack_roll(player, target, attack_modifiers, custom_tohit):
     if player.is_casting:
         player.interrupt_cast()
         frontend.campaign.message('%s is casting. Cast will be interrupted if you attack %s' % (player.displayname(), target.displayname))
-    attack_mods = load_json('adnd2e', 'attack_mods')
+    attack_mods = load_yaml('adnd2e', 'attack_mods')
     total_modifier = custom_tohit
     for mod in attack_modifiers:
         total_modifier += int(attack_mods[mod])
@@ -94,7 +94,7 @@ def attack(player, target, attack_modifiers, custom_tohit, custom_dmg):
     frontend.campaign.message('%s is attacking %s' % (player.displayname(), target.displayname()))
     target_alive = True
     attack_number = 1
-    attack_mods = load_json('adnd2e', 'attack_mods')
+    attack_mods = load_yaml('adnd2e', 'attack_mods')
     num_attacks = player.num_attacks()
     debug("COMBAT: num_attacks:", num_attacks)
     while attack_number <= num_attacks and target_alive:

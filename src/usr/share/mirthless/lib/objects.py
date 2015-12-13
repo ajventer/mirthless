@@ -1,5 +1,5 @@
-from util import readkey, writekey, debug, readall, readsubtree, writesubtree
-from json import dumps
+from util import debug, dump_yaml
+from flatteneddict import FlattenedDict, stripslashes
 
 def event(obj, key, localvars):
     code = obj.get(key, '')
@@ -9,14 +9,15 @@ def event(obj, key, localvars):
         try:
             exec (code, {}, localvars)
         except Exception as e:
-            raise Exception("Exception %s, while running event code, key: %s, object: %s, localvars: %s\n%s" % (e, key, obj.displayname(), localvars, code))
+            raise Exception("Exception [%s], while running event code, key: %s, object: %s, localvars: %s\n%s" % (e, key, obj.displayname(), localvars, code))
 
 
 class EzdmObject(object):
-    json = {}
+    objdata = FlattenedDict()
 
-    def __init__(self, json):
-        self.json = json
+    def __init__(self, objdata):
+        self.objdata = objdata
+        self.objdata = FlattenedDict(self.objdata)
 
     def __call__(self):
         """
@@ -24,17 +25,13 @@ class EzdmObject(object):
         >>> o() == {'test': 0}
         True
         """
-        return self.json
+        return self.objdata
 
     def __str__(self):
-        """
-        >>> o = EzdmObject({'test': 0})
-        >>> str(o) == dumps({'test': 0}, indent=4)
-        True
-        """
-        return dumps(self(), indent=4)
 
-    def update(self, json):
+        return dump_yaml(self())
+
+    def update(self, objdata):
         """
         >>> j1 = {'test': 0}
         >>> j2 = {'foo': 'bar'}
@@ -44,7 +41,7 @@ class EzdmObject(object):
         True
 
         """
-        self.__init__(json)
+        self.__init__(objdata)
 
     def get(self, key, default=None):
         """
@@ -56,15 +53,16 @@ class EzdmObject(object):
         >>> o.get('/f/g', 5)
         5
         """
-        if not self():
+        key = stripslashes(key)
+        if default is not None and (not self() or not key in self() ):
             return default
-        return readkey(key, self(), default)
+        return self()[key]
 
     def getall(self, key):
         return readall(key,self())
 
     def getsubtree(self, key):
-        return readsubtree(key, self())
+        return self.objdata.readsubtree(key)
 
     def put(self, key, value):
         """
@@ -73,10 +71,10 @@ class EzdmObject(object):
         >>> o()['f/g']
         16
         """
-        return writekey(key, value, self.json)
+        self.objdata[stripslashes(key)] = value
 
     def putsubtree(self, key, value):
-        return writesubtree(self(), key, value)
+        return self.objdata.writesubtree(key, value)
 
     def save(self):
         pass

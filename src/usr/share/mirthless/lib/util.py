@@ -6,6 +6,7 @@ import binascii
 import sys
 import hashlib
 import yaml
+from flatteneddict import FlattenedDict, stripslashes, flatten
 
 gamedir = 'TESTDATA'
 
@@ -54,8 +55,8 @@ def user_hash():
 
 def filename_parser(displayname):
     name = displayname
-    if not name.endswith('json'):
-        name = '%s.json' % name
+    if not name.endswith('yaml'):
+        name = '%s.yaml' % name
     return name.lower().replace(' ', '_').replace("'", "")
 
 
@@ -78,119 +79,23 @@ def npc_hash():
     return str(binascii.b2a_hex(os.urandom(64)))
 
 
-def realkey(key):
-    ret = []
-    for k in key.split('/'):
-        if k.startswith('__'):
-            ret.append(k[3:])
-        else:
-            ret.append(k)
-    return '/'.join(ret).strip('/')
-
-def stripslashes(s):
-    while s.startswith('/'):
-        s = s[1:]
-    while s.endswith('/'):
-        s = s[1:]
-    return s
-
-
-def readkey(key, json, default=None):
-    key = stripslashes(key)
-    debug('Reading ', key)
-    if key in json:
-        return json[key]
-    else:
-        return default
-
-def readall(key, json):
-    """
-    >>> readall ('/a', {'a/b': 1, 'f/g':2, 'a/b/c' :2 }) == {'a/b': 1, 'a/b/c':2} 
-    True
-    """
-    result = {}
-    key = stripslashes(key)
-    for k in json:
-        if k.startswith(key):
-            result[k] = json[k]
-    return result
-
-def readsubtree(key, json):
-    """
-    >>> readsubtree ('/a', {'a/b': 1, 'f/g':2, 'a/c/x' :2 }) == {'b': 1, 'c/x': 2}
-    True
-    """
-    result = {}
-    key = stripslashes(key)
-    splitkey = key.split('/')
-    parent = splitkey[-1]
-    parentsize = len(splitkey) -1
-    for k in json:
-        if k.startswith(key):
-            keys = k.split('/')
-            if not keys[-1] == parent:
-                subkey = '/'.join(keys[keys.index(parent)+1:])
-                result[subkey] = json[k]
-    return result
-
-def subkeys(json):
-    result = []
-    for k in json:
-        keys = k.split('/')
-        result.append(keys[0])
-    return list(set(result))
-
-
-def writekey(key, value, json):
-    key = stripslashes(key)
-    json[key] = value
-
-def flatten(init, lkey=''):
-    ret = {}
-    for rkey, val in list(init.items()):
-        key = lkey + rkey
-        if isinstance(val, dict) and val:
-            ret.update(flatten(val, key + '/'))
-        else:
-            ret[key] = val
-    return ret
-
-def writesubtree(json, key, data):
-    emptytree(json,key)
-    key = stripslashes(key)
-    d = flatten(data)
-    for k in d:
-        subkey = key+'/'+k
-        json[subkey] = d[k]
-    return json
-
-def emptytree(json, key):
-    key = stripslashes(key)
-    delme = []
-    for k in json:
-        if k.startswith(key):
-            delme.append(k)
-    for k in delme:
-        del json[k]
-    json[key] = ''
-    return json
-
-
 def readyaml(directory, filename):
     path = file_path(directory, filename)
     debug('Loading %s ' % (path))
     return yaml.load(open(path).read())
 
 
-def load_json(directory, filename):
+def load_yaml(directory, filename):
     filename = file_path(directory, filename)
-    return yaml.load(open(filename).read())
+    return FlattenedDict(yaml.load(open(filename).read()))
 
-def save_json(directory, filename, json):
+def dump_yaml(data):
+    yaml.safe_dump(data, default_flow_style=False, encoding='utf-8')
+
+
+def save_yaml(directory, filename, data):
     filename = file_path(directory, filename)
-    strings = yaml.safe_dump(json, default_flow_style=False, encoding='utf-8').split('\n')
-    strings.sort()
-    strings = '\n'.join(strings)
+    strings = dump_yaml(data)
     open(filename,'w').write(strings)
 
 def price_in_copper(gold, silver, copper):

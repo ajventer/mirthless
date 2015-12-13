@@ -1,4 +1,4 @@
-from util import save_json, debug
+from util import save_yaml, debug
 from objects import EzdmObject, event
 import copy
 from graphics import frontend
