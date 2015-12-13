@@ -1,29 +1,66 @@
 # -*- coding: utf-8 -*-
 import pygame
 from pygame.locals import *
-from util import debug, file_list, readyaml, gamedir
+from util import debug, file_list, readyaml, gamedir, file_path
 import os
 import sys
 from messagebox import MessageBox
 from imagecache import ImageCache
-from button import Button, render_text, scrn_print
+from button import Button, render_text, scrn_print, ButtonArrow
 from dialog import Dialog
+from eventstack import EventStack
 
-class Campaign(object):
-    def ___init__(self,screen):
-        #Temporary class until new game class is done
-        pass
-    def warning(*args):
-        pass
+imagecache = ImageCache()
+eventstack = EventStack()
 
-    def message(*args):
-        pass
 
-    def error(*args):
-        pass
+class Messages(object):
+    messages=[]
+    messageindex = 0
+    def __init__(self, rect):
+        global eventstack
+        self.rect = rect
+        debug('Registering wheel handlers')
+        eventstack.register_event("wheelup", self, self.scrollup) 
+        eventstack.register_event("wheeldown", self, self.scrolldown)
+        debug(eventstack.events["wheelup"])
+
+    def scrollup(self):
+        if self.messageindex > 5:
+            self.messageindex -= 1
+        else:
+            self.messageindex = 0
+
+    def scrolldown(self):
+        if self.messageindex < len(self.messages) -6:
+            self.messageindex += 1
+        else:
+            self.messageindex = len(self.messages) -6
+
+    def read(self):
+        if not self.messages:
+            return ''
+        result =''
+        if len(self.messages) < 5:
+            for line in self.messages:
+                result += '\n'+line.strip()
+            return result
+        end = min([self.messageindex + 5, len(self.messages) -1])
+        for I in range(self.messageindex, end):
+            result += '\n'+self.messages[I].strip()
+        return result
+
+    def warning(self,s):
+        self.messages.append('{color 125, 0, 0; %s} ' % s.strip())
+
+    def message(self,s):
+        self.messages.append(s.strip())
+
+    def error(self,s):
+        self.messages.append('{color 255, 0, 0; %s} ' % s.strip())
+        debug('Error:', self.read())
 
 class Frontend(object):
-    campaign = Campaign()
     def __init__(self,screen=None):
         if screen:
             self.screen = screen
@@ -31,14 +68,16 @@ class Frontend(object):
             dialogx = self.screensize.w /2
             if dialogx < 700:
                 dialogx = 700
+            self.rightwindow_rect = pygame.Rect(dialogx, 75, self.screensize.w - 100 -dialogx, self.screensize.h - 300)
+            self.messagebox_rect = pygame.Rect(0,self.screensize.h - 190,self.screensize.w, self.screensize.h)
+            self.messages = Messages(self.messagebox_rect)
             self.layout = {
                 "header": [],
-                "mainwindow": [],
-                "rightwindow": Dialog(pygame.Rect(dialogx, 75, self.screensize.w - 100 -dialogx, self.screensize.h - 300), imagecache),
-                "messagebox":  '',
+                "sprites": [],
+                "rightwindow": Dialog(self.rightwindow_rect, imagecache),
                 "dialog": None
                 } 
-            self.mb = MessageBox(pygame.Rect(0,self.screensize.h - 190,self.screensize.w, self.screensize.h))
+            self.mb = MessageBox(self.messagebox_rect)
 
     def background(self):
         #Header:
@@ -50,10 +89,15 @@ class Frontend(object):
         self.screen.blit(woodbg, (0,0))
 
         self.screen.blit(seperator, (0,42))
+        quit_button = Button("Quit", sys.exit, eventstack,imagecache, (5,5))
+        self.layout['sprites'].append(quit_button)
         
         #Messagebox
         self.screen.blit(seperator, (0,self.screensize.h -205))
-
+        mb_up = ButtonArrow(self.messages.scrollup, eventstack,imagecache, 'up', pos=(screensize.w - 27,screensize.h-190))
+        mb_down = ButtonArrow(self.messages.scrolldown, eventstack,imagecache, 'down', pos=(screensize.w - 27,screensize.h-100))
+        self.layout['sprites'].append(mb_down)
+        self.layout['sprites'].append(mb_up)
         #Mainwindow
         #20+10+640+10+20
 
@@ -64,9 +108,9 @@ class Frontend(object):
         screensize = self.screen.get_rect()
         sprites = pygame.sprite.RenderUpdates()
         self.mb.clear(self.screen, self.background)
-        g, r = self.mb.image(self.layout['messagebox'].replace('\n','/n'))
+        g, r = self.mb.image(self.messages.read().replace('\n','/n'))
         self.screen.blit(g, r)
-        for sprite in self.layout['header']:
+        for sprite in self.layout['sprites']:
             sprites.add(sprite)
         sprites.add(self.layout['rightwindow'])
         sprites.clear(self.screen, self.background)
@@ -74,6 +118,7 @@ class Frontend(object):
         pygame.display.update(dirty)
 
 
+frontend = Frontend()
 
 def get_screen(resx, resy, hardware, fullscreen):
     flags = DOUBLEBUF
@@ -84,9 +129,6 @@ def get_screen(resx, resy, hardware, fullscreen):
 
     return  pygame.display.set_mode((resx, resy), flags)
 
-
-imagecache = ImageCache()
-frontend = Frontend()
 
 def initpygame(settings, caption):
     global imagecache
@@ -99,10 +141,8 @@ def initpygame(settings, caption):
     screen.blit(wallpaper,(0,0))    
     pygame.display.set_caption(caption)  
     frontend = Frontend(screen)
-    frontend.layout['messagebox'] = """
-    This is a multiline messagebox where system messages to the user
-    will be displayed. The system supports quite a lot of very cool features here.
-    Even clickable links"""
+    frontend.messages.error('Welcome to Mirthless')
+    debug(frontend.messages.read())
     return screen, frontend.background(), frontend
 
 class Tilemap(object):

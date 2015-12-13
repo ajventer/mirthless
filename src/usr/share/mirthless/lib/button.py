@@ -18,9 +18,6 @@ def scrn_print(surface, text, x, y, size=32, color=(0,0,0)):
 
 
 class Button(pygame.sprite.DirtySprite):
-    restcolor = (212,161,144)
-    highcolor = (161,212,144)
-    clickcolor = (194,144,212)
     def __init__(self, label, onclick, eventstack,imagecache, pos=(0,0)):
         super(pygame.sprite.DirtySprite, self).__init__()
         button_rest = imagecache['button_rest']
@@ -68,3 +65,11 @@ class Button(pygame.sprite.DirtySprite):
         self.image.convert()
         if self.onclick is not None:
             self.onclick()
+
+class ButtonArrow(Button):
+    def __init__(self, onclick, eventstack,imagecache, direction, pos=(0,0)):
+        Button.__init__(self, '', onclick, eventstack, imagecache, pos)
+        self.button_rest = imagecache['arrow_%s' %direction]
+        self.button_hi = self.button_rest
+        self.button_click = self.button_rest
+        self.image = self.button_rest

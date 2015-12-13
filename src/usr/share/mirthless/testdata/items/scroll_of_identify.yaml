@@ -15,7 +15,7 @@ core/rounds_per_charge: 0
 core/size: small
 core/type: other
 core/weight: 1
-events/ondrop: campaign.warning('%s has dropped %s' % (player.displayname(), item.displayname()))
+events/ondrop: messages.warning('%s has dropped %s' % (player.displayname(), item.displayname()))
 events/onequip: ''
 events/onfinish: ''
 events/onpickup: ''
@@ -23,5 +23,5 @@ events/onround: ''
 events/onunequip: ''
 events/onuse: "for pitem in player.inventory_generator(sections=['pack']):\r\n\tif\
   \ not pitem[1].identified():\r\n   \t\tpitem[1].identify()\r\n\t   \tplayer()['core']['inventory']['pack'][pitem[2]]\
-  \ = pitem[1]()\r\n\t   \tbreak\r\ncampaign.error('%s has identified %s' % (player.displayname(),\
+  \ = pitem[1]()\r\n\t   \tbreak\r\nmessages.error('%s has identified %s' % (player.displayname(),\
   \ pitem[1].displayname()))\r\n\r\n\r\n   "

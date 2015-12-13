@@ -33,7 +33,7 @@ from pygame.locals import *
 DEFAULT = {
     'bkg'       : (11, 11, 11),
     'color'     : (201, 192, 187),
-    'font'      : Font(None, 32),
+    'font'      : Font(None, 16),
     'spacing'   : 0, #FONT.get_linesize(),
     }
 

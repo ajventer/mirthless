@@ -9,7 +9,9 @@ class EventStack():
             "mouseover": {},
             "mouseout": {},
             "button1": {},
-            "button1up": {}
+            "button1up": {},
+            "wheelup": {},
+            "wheeldown": {}
         }
 
     def register_event(self, event, sprite, method):
@@ -27,6 +29,17 @@ class EventStack():
                     del self.events["mouseout"][sprite]  
         if pygame.mouse.get_pressed()[0]:
             x,y = pygame.mouse.get_pos()
-            for sprite in self.events["mouseover"]:
+            for sprite in self.events["button1"]:
                 if sprite.rect.collidepoint(x,y):
                     self.events["button1"][sprite]()
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            if event.button == 4:
+                x,y = pygame.mouse.get_pos()
+                for sprite in self.events["wheelup"]:
+                    if sprite.rect.collidepoint(x,y):
+                        self.events["wheelup"][sprite]()
+            if event.button == 5:
+                x,y = pygame.mouse.get_pos()
+                for sprite in self.events["wheeldown"]:
+                    if sprite.rect.collidepoint(x,y):
+                        self.events["wheeldown"][sprite]()

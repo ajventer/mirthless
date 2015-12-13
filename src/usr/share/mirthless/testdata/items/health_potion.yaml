@@ -17,8 +17,8 @@ events/onequip: ''
 events/onfinish: ''
 events/onpickup: ''
 events/onround: ''
-events/onuse: "campaign.warning('%s is using a %s on %s' % (player.displayname(),\
+events/onuse: "messages.warning('%s is using a %s on %s' % (player.displayname(),\
   \ item.displayname(), target.displayname()))\r\nfrom ezdm_libs.util import rolldice\r\
-  \nhealth, roll_message = rolldice(numdice=1, numsides=6, modifier=0)\r\ncampaign.message(roll_message)\r\
-  \nresult = target.heal(health)\r\ncampaign.error('%s has been healed for %s, and\
+  \nhealth, roll_message = rolldice(numdice=1, numsides=6, modifier=0)\r\nmessages.message(roll_message)\r\
+  \nresult = target.heal(health)\r\nmessages.error('%s has been healed for %s, and\
   \ current hitpoints are %s' % (player.displayname(), health, result))"

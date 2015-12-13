@@ -19,13 +19,13 @@ core/type: spell
 core/weight: 0
 events/ondrop: ''
 events/onequip: ''
-events/onfinish: "campaign.warning('%s has finished casting Magic Misile at %s'  %\
+events/onfinish: "messages.warning('%s has finished casting Magic Misile at %s'  %\
   \ (player.displayname(), target.displayname()))\r\nfrom ezdm_libs.util import rolldice\r\
-  \nspell_success = player.spell_success()\r\nif not spell_success[1]:\r\n\tcampaign.error(spell_success)\r\
-  \nelse:\r\n\tdmg = rolldice(numdice=1, numsides=6, modifier=1)\r\n\tcampaign.error(dmg[1])\r\
-  \n\tresult = target.take_damage(dmg[0])\r\n\tcampaign.error(result[1])\r\n"
+  \nspell_success = player.spell_success()\r\nif not spell_success[1]:\r\n\tmessages.error(spell_success)\r\
+  \nelse:\r\n\tdmg = rolldice(numdice=1, numsides=6, modifier=1)\r\n\tmessages.error(dmg[1])\r\
+  \n\tresult = target.take_damage(dmg[0])\r\n\tmessages.error(result[1])\r\n"
 events/onpickup: ''
-events/onround: campaign.error('%s continues to cast Magic Misile at %s' % (player.displayname(),
+events/onround: messages.error('%s continues to cast Magic Misile at %s' % (player.displayname(),
   target.displayname()))
-events/onuse: campaign.error('%s is casting Magic Missile at %s' % (player.displayname(),
+events/onuse: messages.error('%s is casting Magic Missile at %s' % (player.displayname(),
   target.displayname()))

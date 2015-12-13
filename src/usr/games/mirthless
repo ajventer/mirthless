@@ -30,9 +30,8 @@ sys.path.append(os.path.join(gamedir,'lib'))
 import util
 util.gamedir = gamedir
 util.debug('Library path:', '\n\t'.join(sys.path))
-from graphics import get_screen, Mapview, Tilemap, Button, initpygame, imagecache
-from button import Button
-from eventstack import EventStack
+from graphics import Mapview, Tilemap, initpygame, imagecache, eventstack
+
 
 def hello():
     print "Hello world"
@@ -45,10 +44,6 @@ if __name__ == "__main__":
 
     mapview = Mapview(tilemap, 10, 10)
     mapview.set_bg(0,0,2,5)
-    eventstack =EventStack()
-    quit_button = Button("Quit", sys.exit, eventstack,imagecache, (5,5))
-
-    frontend.layout['header'].append(quit_button)
 
     while not quit:       
         for event in pygame.event.get():

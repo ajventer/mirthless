@@ -59,5 +59,15 @@ frame_bottom:
     w: 55
     y: 303
     h: 10
+arrow_up:
+    x: 464
+    w: 27
+    y: 319
+    h: 26
+arrow_down:
+    x: 621
+    w: 27
+    y: 319
+    h: 27
 
 

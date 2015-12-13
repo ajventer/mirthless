@@ -19,7 +19,7 @@ core/rounds_per_charge: 0
 core/size: small
 core/type: weapon
 core/weight: ''
-events/ondrop: campaign.warning('%s has dropped %s' % (player.displayname(), item.displayname()))
+events/ondrop: messages.warning('%s has dropped %s' % (player.displayname(), item.displayname()))
 events/onequip: ''
 events/onfinish: ''
 events/onpickup: ''
