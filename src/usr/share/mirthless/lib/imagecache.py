@@ -3,11 +3,11 @@ from pygame.locals import *
 from util import debug, file_list, readyaml, gamedir
 import os
 
-class ImageCache(dict):
-    def __init__(self):
-        super(dict, self).__init__() 
 
+
+class ImageCache(dict):
     def load(self):
+        global tilemaps
         for image in file_list('images', '*.png'):
             debug('Loading: ',image)
             key = os.path.basename(image)
@@ -20,7 +20,7 @@ class ImageCache(dict):
             except:
                 debug(key, rect)
                 raise
-
+        self.gui_map = gui_map
 
     def __call__(self, key):
         return self[key]

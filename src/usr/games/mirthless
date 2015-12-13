@@ -30,7 +30,7 @@ sys.path.append(os.path.join(gamedir,'lib'))
 import util
 util.gamedir = gamedir
 util.debug('Library path:', '\n\t'.join(sys.path))
-from graphics import Mapview, Tilemap, initpygame, imagecache, eventstack
+from graphics import Mapview, Tilemap, initpygame, imagecache, eventstack, tilemaps
 
 
 def hello():
@@ -39,12 +39,7 @@ def hello():
 if __name__ == "__main__":
     screen, background, frontend = initpygame(settings, 'Mirthless RPG')
     quit = False
-   
-    tilemap = Tilemap('roguelikeDungeon_transparent.png',16,16)
-
-    mapview = Mapview(tilemap, 10, 10)
-    mapview.set_bg(0,0,2,5)
-
+  
     while not quit:       
         for event in pygame.event.get():
             if event.type == pygame.QUIT or event.type == KEYDOWN: 

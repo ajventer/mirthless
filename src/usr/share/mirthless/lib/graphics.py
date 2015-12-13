@@ -50,7 +50,7 @@ class Messages(object):
         return result
 
     def warning(self,s):
-        self.messages.append('{color 125, 0, 0; %s} ' % s.strip())
+        self.messages.append('{color 237, 89, 9; %s} ' % s.strip())
 
     def message(self,s):
         self.messages.append(s.strip())
@@ -59,27 +59,46 @@ class Messages(object):
         self.messages.append('{color 255, 0, 0; %s} ' % s.strip())
         debug('Error:', self.read())
 
+def todo_event():
+    frontend.messages.warning('Event not yet implemented')
+
+
 class Frontend(object):
-    def __init__(self,screen=None):
+    game_menu = [
+        ("Main Menu", todo_event),
+        ("Inventory", todo_event),
+        ("Spellbook", todo_event),
+        ("About", todo_event),
+        ("Quit", sys.exit)
+    ]
+    editor_menu = [
+        ("Main Menu", todo_event),
+        ("Items and spells", todo_event),
+        ("NPCs and Monsters", todo_event),
+        ("Quests", todo_event),
+        ("Quit", sys.exit)
+    ]
+    def __init__(self,screen=None, mode='game'):
+        self.mode = mode
         self.messages = Messages(pygame.Rect(0,0,0,0))
         if screen:
             self.screen = screen
             self.screensize = self.screen.get_rect()
-            dialogx = self.screensize.w /2
-            if dialogx < 700:
-                dialogx = 700
+            dialogx = (self.screensize.w /2)+50
+            self.mapw = int(self.screensize.w /2)-50
+            self.mapscale = int(self.mapw /20)
+            debug ("Mapwidth: ", self.mapw, "Tile size", self.mapscale)
             self.rightwindow_rect = pygame.Rect(dialogx, 75, self.screensize.w - 100 -dialogx, self.screensize.h - 300)
             self.messagebox_rect = pygame.Rect(0,self.screensize.h - 190,self.screensize.w, self.screensize.h)
             self.messages = Messages(self.messagebox_rect)
             self.layout = {
                 "header": [],
                 "sprites": [],
-                "rightwindow": Dialog(self.rightwindow_rect, imagecache),
                 "dialog": None
                 } 
             self.mb = MessageBox(self.messagebox_rect)
 
-    def background(self):
+    def screenlayout(self):
         #Header:
         screensize = self.screen.get_rect()
         woodbg = imagecache['wood background.png']
@@ -89,9 +108,14 @@ class Frontend(object):
         self.screen.blit(woodbg, (0,0))
 
         self.screen.blit(seperator, (0,42))
-        quit_button = Button("Quit", sys.exit, eventstack,imagecache, (5,5))
-        self.layout['sprites'].append(quit_button)
-        
+        debug ('Game mode is', self.mode)
+        if self.mode == 'game':
+            menu = self.game_menu
+        else:
+            menu = self.editor_menu
+        for button in menu:
+            self.layout["sprites"].append(Button(button[0], button[1], eventstack,imagecache, (menu.index(button) * 220,5)))
+      
         #Messagebox
         self.screen.blit(seperator, (0,self.screensize.h -205))
         mb_up = ButtonArrow(self.messages.scrollup, eventstack,imagecache, 'up', pos=(screensize.w - 27,screensize.h-190))
@@ -100,6 +124,7 @@ class Frontend(object):
         self.layout['sprites'].append(mb_up)
         #Mainwindow
         #20+10+640+10+20
+        self.layout['sprites'].append(Dialog(self.rightwindow_rect, imagecache))
 
         self.background = self.screen.copy()
         return self.screen, self.background
@@ -112,43 +137,15 @@ class Frontend(object):
         self.screen.blit(g, r)
         for sprite in self.layout['sprites']:
             sprites.add(sprite)
-        sprites.add(self.layout['rightwindow'])
         sprites.clear(self.screen, self.background)
         dirty = sprites.draw(self.screen)
         pygame.display.update(dirty)
 
-
-frontend = Frontend()
-
-def get_screen(resx, resy, hardware, fullscreen):
-    flags = DOUBLEBUF
-    if hardware:
-        flags = flags | HWSURFACE
-    if fullscreen:
-        flags = flags | FULLSCREEN
-
-    return  pygame.display.set_mode((resx, resy), flags)
-
-
-def initpygame(settings, caption):
-    global imagecache
-    global frontend
-    pygame.init()
-    screen = get_screen(settings['res_x'], settings['res_y'], settings['hardware_buffer'], settings['fullscreen'])
-    imagecache.load()
-    wallpaper = imagecache['landscape.png']
-    wallpaper = pygame.transform.smoothscale(wallpaper, (settings["res_x"], settings["res_y"]))
-    screen.blit(wallpaper,(0,0))    
-    pygame.display.set_caption(caption)  
-    frontend = Frontend(screen)
-    frontend.messages.error('Welcome to Mirthless')
-    debug(frontend.messages.read())
-    return screen, frontend.background(), frontend
-
+#Holds a single tilemap
 class Tilemap(object):
-    def __init__(self, filename, width, height):
+    def __init__(self, filename):
+        width, height = 16, 16
         #Credit - this came almost directly from the tutorial at: https://qq.readthedocs.org/en/latest/tiles.html
-
         image = imagecache(filename)
         image_width, image_height = image.get_size()
         tile_table = []
@@ -165,6 +162,11 @@ class Tilemap(object):
         self.h = height
 
 
+    def iterall(self):
+        for x, row in enumerate(self.tile_table):
+            for y, tile in enumerate(row):
+                yield(tile)
+
     def size(self):
         return (self.x, self.y)
 
@@ -174,18 +176,73 @@ class Tilemap(object):
     def tile(self, x, y):
         return self.tile_table[x][y]
 
+#Holds all the tilemaps in a collection
+class Tilemaps(dict):
+    def initialize(self):
+        keyfilter = list(imagecache.gui_map.keys())
+        keyfilter.append('RPG_GUI_v1.png')
+        keyfilter.append('wood background.png')
+        keyfilter.append('paper background.png')
+        for key in imagecache:
+            if not key in keyfilter:
+                self[key] = Tilemap(key)
+        return self
+
+    #Get all tiles in a specific map sequentially
+    def iterall(self, key):
+        return self[key].iterall
+
+    def tile(self,mapname,x,y):
+        return self[mapname].tile(x,y)
+
+
+
+frontend = Frontend()
+tilemaps = Tilemaps()
+
+def get_screen(resx, resy, hardware, fullscreen):
+    flags = DOUBLEBUF
+    if hardware:
+        flags = flags | HWSURFACE
+    if fullscreen:
+        flags = flags | FULLSCREEN
+
+    return  pygame.display.set_mode((resx, resy), flags)
+
+
+def initpygame(settings, caption):
+    mode = 'game'
+    if '--editor' in sys.argv:
+        mode = 'editor'
+        debug ('Loading game editor')    
+    global imagecache
+    imagecache = ImageCache()
+    global frontend
+    frontend = Frontend(mode=mode)
+    global tilemaps
+    tilemaps = Tilemaps()
+    pygame.init()
+    screen = get_screen(settings['res_x'], settings['res_y'], settings['hardware_buffer'], settings['fullscreen'])
+    imagecache.load()
+    wallpaper = imagecache['landscape.png']
+    wallpaper = pygame.transform.smoothscale(wallpaper, (settings["res_x"], settings["res_y"]))
+    screen.blit(wallpaper,(0,0))    
+    pygame.display.set_caption(caption)  
+    frontend = Frontend(screen, mode=mode)
+    frontend.messages.error('Welcome to Mirthless')
+    debug(frontend.messages.read())
+    tilemaps.initialize()
+
+    return screen, frontend.screenlayout(), frontend
 
 
 class Mapview(object):
-    def __init__(self, tilemap, w, h):
+    #Remember maps are maximum 30x30 tiles
+    def __init__(self, ):
         self.tilemap = tilemap
         self.surface = pygame.Surface((w * tilemap.w, h * tilemap.h))
 
-    def set_bg(self, x, y, tx, ty):
-        pos_x = x * self.tilemap.w
-        pos_y = y * self.tilemap.h
-        debug ('Blitting %sx%s to position %sx%s' % (tx,ty,pos_x,pos_y))
-        self.surface.blit(self.tilemap.tile(tx, ty), (pos_x, pos_y))
+
 
 
 

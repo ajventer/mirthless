@@ -25,7 +25,7 @@ class Button(pygame.sprite.DirtySprite):
         button_click = imagecache['button_click']
         self.pos = pos
         self.onclick = onclick
-        self.label = render_text (label, size=32, color=(0,0,0))
+        self.label = render_text (label, size=24, color=(0,0,0))
 
         labelrect = self.label.get_rect()
         

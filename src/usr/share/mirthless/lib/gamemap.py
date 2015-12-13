@@ -5,8 +5,6 @@ from graphics import frontend
 
 
 class Tile(EzdmObject):
-    json = {}
-
     def revealed(self):
         if mode() == 'dm':
             return True

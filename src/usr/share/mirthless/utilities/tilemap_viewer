@@ -42,7 +42,7 @@ if __name__ == "__main__":
     tilename = sys.argv[1]
 
 
-    tilemap = Tilemap(tilename,16,16)
+    tilemap = Tilemap(tilename)
     table = tilemap.table()
 
     screen.fill((255, 255, 255))
