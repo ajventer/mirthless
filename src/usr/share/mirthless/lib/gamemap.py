@@ -1,18 +1,14 @@
 from objects import EzdmObject, event
 from item import Item
 from util import save_yaml, load_yaml,debug
-from graphics import frontend
 import copy
 from flatteneddict import FlattenedDict
-
 
 class Tile(EzdmObject):
     """
     >>> t = Tile({})
     """
     def revealed(self):
-        if frontend.mode == 'editor':
-            return True
         return self.get('core/revealed', False) is True
 
     def tiletype(self):
@@ -25,7 +21,7 @@ class Tile(EzdmObject):
             self.put('conditional/newmap', {'mapname': target, "x": x, "y": y})
 
     def background(self):
-        return self.get('core/background')
+        return self.get('core/background',False)
 
     def canenter(self, new=None):
         if new is None:
@@ -35,7 +31,6 @@ class Tile(EzdmObject):
     def save(self):
         #TODO
         pass
-
 
     def add(self, name, objtype):
         if isinstance(name, str) and not name.endswith('.yaml'):
@@ -68,8 +63,8 @@ class GameMap(EzdmObject):
     {}
     >>> g.initialize()
     """
-    max_x = 20
-    max_y = 20
+    max_x = 19
+    max_y = 19
     def initialize(self, data={}, name='',lightradius=1):
         if not data:
             self.new(name=name, lightradius=lightradius)
@@ -136,7 +131,7 @@ class GameMap(EzdmObject):
         money = self.getmoney(x, y)
         if money[0] or money[1] or money[2]:
             #TODO - select a new gold icon and put here in the proper format.
-            out.append(('money', 'tilemap[x][y]', 'money'))
+            out.append(('money', 'tilemap:x:y', 'money'))
         if not unique:
             return out
         else:

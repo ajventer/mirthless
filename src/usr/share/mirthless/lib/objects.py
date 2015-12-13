@@ -62,8 +62,9 @@ class EzdmObject(object):
         5
         """
         key = stripslashes(key)
-        if default is not None and (not self() or not key in self() ):
-            return default
+        if not self() or not key in self():
+            if default is not None:
+                return default
         return self()[key]
 
     def getall(self, key):

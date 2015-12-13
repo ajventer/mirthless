@@ -10,6 +10,10 @@ from flatteneddict import FlattenedDict, stripslashes, flatten
 
 gamedir = 'TESTDATA'
 
+def imagepath(s):
+    parts=s.split(':')
+    return (parts[0], int(parts[1]), int(parts[2]))
+
 def forcegamedir():
     """
     >>> forcegamedir().endswith('mirthless')

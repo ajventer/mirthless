@@ -1,7 +1,7 @@
 from util import save_yaml, debug
 from objects import EzdmObject, event
 import copy
-from graphics import frontend
+from messages import messages
 
 
 class Item(EzdmObject):
@@ -77,17 +77,17 @@ class Item(EzdmObject):
         return self.get('/conditional/material', 'plate')
 
     def onpickup(self, player):
-        event(self, "/events/onpickup", {'item': self, 'player': player, 'messages': frontend.messages})
+        event(self, "/events/onpickup", {'item': self, 'player': player, 'messages': messages})
         player.autosave()
 
     def onequip(self, player):
-        event(self, "/events/onequip", {'item': self, 'player': player, 'messages': frontend.messages})
+        event(self, "/events/onequip", {'item': self, 'player': player, 'messages': messages})
 
     def onunequip(self, player):
-        event(self, "/events/onunequip", {'item': self, 'player': player, 'messages': frontend.messages})
+        event(self, "/events/onunequip", {'item': self, 'player': player, 'messages': messages})
 
     def onstrike(self, player, target):
-        event(self, "/conditional/events/onstrike", {'item': self, 'player': player, 'target': target, 'messages': frontend.messages})
+        event(self, "/conditional/events/onstrike", {'item': self, 'player': player, 'target': target, 'messages': messages})
         debug("Item.onstrike save: %s" % target.autosave())
 
     def onuse(self, player, target):
@@ -97,25 +97,25 @@ class Item(EzdmObject):
             return
         if self.itemtype() == 'spell':
             success = player.spell_success()
-            frontend.messages.message(success[1])
+            messages.message(success[1])
             if not success[0]:
                 return
         self.put('/core/in_use', True)
         #TODO - expect the next line to break in use. Needs to be redone once the 
         #new game class is finished
         self.put('/core/target', target)
-        event(self, "/events/onuse", {'item': self, 'player': player, 'target': target, 'messages': frontend.messages})
+        event(self, "/events/onuse", {'item': self, 'player': player, 'target': target, 'messages': messages})
         try:
-            target = frontend.messages.characterlist[target.index]
+            target = messages.characterlist[target.index]
             debug("Item.onround save: %s" % target.autosave())
         except:
             return
-        frontend.messages.error("Item.onuse save: %s" % target.autosave())
+        messages.error("Item.onuse save: %s" % target.autosave())
 
     def onround(self, player):
         targetindex = self.get('/core/target', 0)
         try:
-            target = frontend.messages.characterlist[targetindex]
+            target = messages.characterlist[targetindex]
         except:
             return
         debug("[DEBUG] Item.onround: self: %s, player: %s, target: %s" % (self.displayname(), player.displayname(), target))
@@ -128,12 +128,12 @@ class Item(EzdmObject):
             self.put('/core/current_rounds_performed', current_rounds_performed)
             if current_rounds_performed < rounds:
                 debug("[DEBUG] item.onround: run onround event")
-                event(self, "/events/onround", {'item': self, 'player': player, 'target': target, 'messages': frontend.messages})
+                event(self, "/events/onround", {'item': self, 'player': player, 'target': target, 'messages': messages})
             else:
                 debug("[DEBUG] item.onround: running onfinish")
                 self.onfinish(player=player)
         try:
-            target = frontend.messages.characterlist[targetindex]
+            target = messages.characterlist[targetindex]
             debug("Item.onround save: %s" % target.autosave())
         except:
             return
@@ -143,7 +143,7 @@ class Item(EzdmObject):
         targetindex = self.get('/core/target', 0)
         debug("[DEBUG] item.onfinish target %s" % targetindex)
         try:
-            target = frontend.messages.characterlist[targetindex]
+            target = messages.characterlist[targetindex]
         except:
             return
         debug("[DEBUG] item.onfinish target %s" % target.displayname())
@@ -156,15 +156,15 @@ class Item(EzdmObject):
             self.put('/core/charges', charges)
         self.put('/core/current_rounds_performed', 0)
         debug("[DEBUG] item.onfinish before event")
-        event(self, "/events/onfinish", {'item': self, 'player': player, 'target': target, 'messages': frontend.messages})
+        event(self, "/events/onfinish", {'item': self, 'player': player, 'target': target, 'messages': messages})
         try:
-            target = frontend.messages.characterlist[targetindex]
+            target = messages.characterlist[targetindex]
             debug("Item.onfinish save: %s" % target.autosave())
         except:
             return
 
     def ondrop(self, player):
-        event(self, "/events/ondrop", {'item': self, 'player': player, 'messages': frontend.messages})
+        event(self, "/events/ondrop", {'item': self, 'player': player, 'messages': messages})
         player.autosave()
 
     def interrupt(self):
