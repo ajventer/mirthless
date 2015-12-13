@@ -19,6 +19,14 @@ class EzdmObject(object):
         self.objdata = objdata
         self.objdata = FlattenedDict(self.objdata)
 
+    def set_hash(self):
+        myhash = npc_hash()
+        self.put('hash', myhash)
+        return myhash
+
+    def get_hash(self):
+        return self.get('hash', '')
+
     def __call__(self):
         """
         >>> o = EzdmObject({'test': 0})

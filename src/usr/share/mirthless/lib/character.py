@@ -226,14 +226,6 @@ class Character(EzdmObject):
             xp = 3000 + ((int(xpkey) - 13) * 1000)
         return int(xp)
 
-    def set_hash(self):
-        myhash = npc_hash()
-        self.put('/hash', myhash)
-        return myhash
-
-    def get_hash(self):
-        return self.get('/hash', '')
-
     def save_to_tile(self):
         loc = self.location()
         gamemap = GameMap(load_yaml('maps', loc['map']))
