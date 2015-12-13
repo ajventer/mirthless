@@ -22,6 +22,7 @@ TODO list for initial release (in no particular order):
 8. Support for roguelike procedural maps (low priority)
 9. Fix the json loading and file-handling code to use preloading and not spend time waiting to process stuff like EZDM does.
 10. NPC AI - this can improve with time but at the very least NPCs and monsters should be able to fight - unlike in EZDM there won't be a game-master to control their actions.
+11. Add a platino easter egg somewhere to meet dawnhack attribution requirements.
 
 I am going to try and get an initial playable alpha release up to the end of the opening chapter done by the end of December, more helpers will reduce that time. But the TODO list is quite long, even though the engine inheritted from EZDM is largely complete this involves quite a bit of work. So please be patient.
 
@@ -40,7 +41,11 @@ To run the unit tests use:
 
 Credits:
 Game art from: 
-*kenney.nl
+1. kenney.nl
+2. http://opengameart.org/content/dawnlike-16x16-universal-rogue-like-tileset-v181
+
+The GLYPH text rendering library for pygame is included with the project and used in several parts of the interface.
+http://www.pygame.org/project-Glyph-1002-2794.html
 
 Wallpaper:
-*http://opengameart.org/content/landscape
+http://opengameart.org/content/landscape
