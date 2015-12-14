@@ -8,7 +8,7 @@ from messages import messages
 class Maptile(object):
     #self.mapw, self.mapscale, self.eventstack, self.tilemaps, self
     def __init__(self, x, y, map_x, map_y, tile, frontend):
-        self.frontend = fronted
+        self.frontend = frontend
         size = self.frontend.mapw
         self.tile = tile
         self.image = pygame.Surface((size,size))
@@ -35,8 +35,10 @@ class Maptile(object):
 
 class Mapview(object):
     def __init__(self, frontend):
-        self.rect = (50,65, self.frontend.mapw, self.frontend.mapw)
         self.frontend = frontend
+        size = self.frontend.mapw
+        self.tilesize = self.frontend.mapscale
+        self.rect = (50,65, self.frontend.mapw, self.frontend.mapw)
         self.image  = pygame.Surface((size, size))
         self.maptiles = []
 
