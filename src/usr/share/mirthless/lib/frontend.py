@@ -79,7 +79,7 @@ class Frontend(object):
         #20+10+640+10+20
         self.layout['sprites'].append(Dialog(self.rightwindow_rect, self.imagecache))
 
-        mapview = Mapview(self.mapw, self.mapscale, self.eventstack, self.tilemaps, self.mode)
+        mapview = Mapview(self)
         mapview.loadmap({})
         self.screen.blit(mapview.image, (50,65))
 
