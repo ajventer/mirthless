@@ -1,11 +1,15 @@
 # mirthless
 A single player RPG in which you are the evil bad guy.
-
 Mirthless is based on (heavily modified) code from EZDM and intends to create a full fledged single player role playing game with an ADND2E ruleset in which the player gets to play a truly evil character intent on becoming a dark lord.
 
 The story outline is complete for the main quest, lots of side quests would be good.
 
-I will migrate EZDM files into this tree one at a time as I get to them.
+*Contributors wanted*
+Right now more coders would be most valuable. Once the editor is complete we'll have lots of room for artists, writers, quest designers or other game-mod types.
+If you're keen to contribute in any way please join the contributors mailing list:
+https://groups.google.com/forum/#!forum/mirthless-rpg--contributors
+
+There is a lot of documentation to be written. I'll make an effort to expand the WIKI as things start approaching usable forms. Help would be greatly appreciated.
 
 TODO list for initial release (in no particular order):
 
