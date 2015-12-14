@@ -4,7 +4,8 @@ Mirthless is based on (heavily modified) code from EZDM and intends to create a 
 
 The story outline is complete for the main quest, lots of side quests would be good.
 
-*Contributors wanted*
+*Contributors wanted:*
+
 Right now more coders would be most valuable. Once the editor is complete we'll have lots of room for artists, writers, quest designers or other game-mod types.
 If you're keen to contribute in any way please join the contributors mailing list:
 https://groups.google.com/forum/#!forum/mirthless-rpg--contributors
