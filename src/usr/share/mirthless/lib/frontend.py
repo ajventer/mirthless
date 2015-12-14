@@ -32,6 +32,7 @@ class Frontend(object):
     def __init__(self,screen=None, imagecache=None, eventstack=None, tilemaps=None, mode='game'):
         self.mode = mode
         if screen:
+            self.sprites = {}
             self.imagecache = imagecache
             self.eventstack = eventstack
             self.screen = screen
@@ -46,7 +47,6 @@ class Frontend(object):
             self.messagebox_rect = pygame.Rect(0,self.screensize.h - 190,self.screensize.w, self.screensize.h)
             self.layout = {
                 "header": [],
-                "sprites": [],
                 "dialog": None
                 } 
             self.mb = MessageBox(self.messagebox_rect)
@@ -67,17 +67,19 @@ class Frontend(object):
         else:
             menu = self.editor_menu
         for button in menu:
-            self.layout["sprites"].append(Button(button[0], button[1], self.eventstack, self.imagecache, (menu.index(button) * 220,5)))
+            self.sprites[button[0]] = Button(button[0], button[1], self.eventstack, self.imagecache, (menu.index(button) * 220,5))
       
         #Messagebox
         self.screen.blit(seperator, (0,self.screensize.h -205))
         mb_up = ButtonArrow(messages.scrollup, self.eventstack, self.imagecache, 'up', pos=(screensize.w - 27,screensize.h-190))
         mb_down = ButtonArrow(messages.scrolldown, self.eventstack, self.imagecache, 'down', pos=(screensize.w - 27,screensize.h-100))
-        self.layout['sprites'].append(mb_down)
-        self.layout['sprites'].append(mb_up)
+        self.sprites['mb_up'] = mb_up
+        self.sprites['mb_dn'] = mb_down
         #Mainwindow
         #20+10+640+10+20
-        self.layout['sprites'].append(Dialog(self.rightwindow_rect, self.imagecache))
+        dialog = Dialog(self.rightwindow_rect, self.imagecache)
+        self.screen.blit(dialog.image, (self.rightwindow_rect.x, self.rightwindow_rect.y))
+        #self.sprites['rightwindow'] = dialog
 
         mapview = Mapview(self)
         mapview.loadmap({})
@@ -85,7 +87,7 @@ class Frontend(object):
 
         self.background = self.screen.copy()
         return self.screen, self.background
-        
+
 
     def draw(self):
         screensize = self.screen.get_rect()
@@ -93,8 +95,8 @@ class Frontend(object):
         self.mb.clear(self.screen, self.background)
         g, r = self.mb.image(messages.read().replace('\n','/n'))
         self.screen.blit(g, r)
-        for sprite in self.layout['sprites']:
-            sprites.add(sprite)
+        for sprite in self.sprites:
+            sprites.add(self.sprites[sprite])
         sprites.clear(self.screen, self.background)
         dirty = sprites.draw(self.screen)
         pygame.display.update()

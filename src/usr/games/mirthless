@@ -37,14 +37,13 @@ def hello():
     print "Hello world"
 
 if __name__ == "__main__":
-    screen, background, frontend = initpygame(settings, 'Mirthless RPG')
-    quit = False
-  
-    while not quit:       
+    screen, screenlayout, frontend = initpygame(settings, 'Mirthless RPG')
+    quit = False 
+    clock = pygame.time.Clock()
+    while not quit:     
+        clock.tick(15)  
         for event in pygame.event.get():
-            if event.type == pygame.QUIT or event.type == KEYDOWN: 
-                quit = True
-            eventstack.handle_event(event)
+            quit = eventstack.handle_event(event)
         frontend.draw()
         pygame.display.flip()
 

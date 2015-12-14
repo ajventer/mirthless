@@ -21,25 +21,30 @@ class EventStack():
 
     def handle_event(self, event):
         deleteme =[]
+        if event.type == pygame.QUIT:
+            return True
         if event.type == MOUSEMOTION:
             x,y = event.pos
             for sprite in self.events["mouseover"]:
                 if sprite.rect.collidepoint(x,y):
                     self.events["mouseover"][sprite]()
+                    return
                 elif sprite in self.events["mouseout"]:
                     self.events["mouseout"][sprite]()
-                    del self.events["mouseout"][sprite]  
+                    del self.events["mouseout"][sprite]
+                    return  
+        if pygame.mouse.get_pressed()[0]:
+            x,y = pygame.mouse.get_pos()
+            for sprite in self.events["button1"]:
+                if sprite.rect.collidepoint(x,y):
+                    self.events["button1"][sprite]()                    
         if event.type == pygame.MOUSEBUTTONDOWN:
-            x,y = event.pos
-            if event.button == 1:
-                for sprite in self.events["button1"]:
-                    if sprite.rect.collidepoint(x,y):
-                        self.events["button1"][sprite]()            
+            x,y = event.pos        
             if event.button == 4:
                 for sprite in self.events["wheelup"]:
                     if sprite.rect.collidepoint(x,y):
-                        self.events["wheelup"][sprite]()
+                        return self.events["wheelup"][sprite]()
             if event.button == 5:
                 for sprite in self.events["wheeldown"]:
                     if sprite.rect.collidepoint(x,y):
-                        self.events["wheeldown"][sprite]()
+                        return self.events["wheeldown"][sprite]()

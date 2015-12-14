@@ -3,13 +3,8 @@ from pygame.locals import *
 from gamemap import GameMap
 from util import imagepath, debug
 from messages import messages
-
-class ZoomSprite(pygame.sprite.DirtySprite):
-    def __init__(self,rect):
-        super(pygame.sprite.DirtySprite, self).__init__()
-        self.rect = rect
-        self.image = pygame.Surface((rect.w / 2, rect.h /2))
-        self.pos = (self.rect.x, self.rect.y)
+from button import render_text
+from random import randrange
 
 class Maptile(object):
     #self.mapw, self.mapscale, self.eventstack, self.tilemaps, self
@@ -30,22 +25,19 @@ class Maptile(object):
         if backgroundpath and tile.revealed():
             self.image.blit(backgroundimage,(0,0))
         else:
-            self.image.fill((0,0,0,0))
+            if self.frontend.mode == 'editor':
+                self.image.fill((randrange(0,255),0,0,0))
+                self.image.blit(render_text('%sX%s' %(self.map_x,self.map_y), size=16, color=(0,255,0)), (1,1))
+            else:
+                self.image.fill((0,0,0,0))
+                                
 
     def click(self):
-        debug(self.frontend.rightwindow_rect.y)
-        zoomrect = pygame.Rect(self.frontend.rightwindow_rect.x + 15,self.frontend.rightwindow_rect.y + 15,self.frontend.rightwindow_rect.w  - 15,self.frontend.rightwindow_rect.h - 15)
-        debug(zoomrect)        
-        zoomimage = pygame.transform.smoothscale(self.image, (zoomrect.w, zoomrect.h))
-        zoomsprite = ZoomSprite(zoomrect)
-        zoomsprite.image.blit(zoomimage, (0,0))
-        self.frontend.layout['sprites'].append(zoomsprite)
         if self.frontend.mode == 'editor':
             messages.message('Editor click: %sx%s' % (self.map_x, self.map_y))
-
             return 
         messages.message('Tile click: %sx%s' % (self.map_x, self.map_y))
-        return self.rect
+        return
 
 class Mapview(object):
     def __init__(self, frontend):
