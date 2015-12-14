@@ -31,7 +31,8 @@ TODO list for initial release (in no particular order):
 
 7. A fast-travel system for places previously discovered (low priority)
 
-8. Support for roguelike procedural maps (low priority)
+8. Support for roguelike procedural maps
+ - This was previously listed as "low priority".  I did a quick test and found that a viable procedural maps algorythm was ridiculously easy to write. It would also make a great way to reduce the labour involved in making a big game. You take a fixed map as a start, add a traversal link to a procedural map (with rules to fit the theme), maybe add a few more of those and then another fixed map where the the quest concludes and it's a much bigger and more fun quest than the two fixed maps alone for almost no extra work. So I am shifting this to higher priority and must be done for 1.0.
 
 9. Fix the json loading and file-handling code to use preloading and not spend time waiting to process stuff like EZDM does.
 
