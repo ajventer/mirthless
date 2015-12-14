@@ -10,18 +10,21 @@ I will migrate EZDM files into this tree one at a time as I get to them.
 TODO list for initial release (in no particular order):
 
 1. Clean up EZDM data files and convert to flat YAML format - DONE
-This is needed to fix some stability issues with the way much of EZDMlibs was written) 
+  - This is needed to fix some stability issues with the way much of EZDMlibs was written) 
 
-2. Modify EZDM libraries to utilize the new format data - DONE (well the unit tests are passing, dunno what gator-sized bugs may be lurking)
+2. Modify EZDM libraries to utilize the new format data - DONE 
+  -(well the unit tests are passing, dunno what gator-sized bugs may be lurking)
 
 3. Rewrite the game interface in pygame replacing the current web based interface. 
-  ...* The editor should also get this treatment but will likely be quite a bit more work and is less urgent
-  ...# If the editor isn't ported immediately then new format code should be backported to EZDM so that at least the browser-based editor can be used to create content.
+
+  - The editor should also get this treatment but will likely be quite a bit more work and is less urgent
+  
+  - If the editor isn't ported immediately then new format code should be backported to EZDM so that at least the browser-based editor can be used to create content.
 
 4. New character generator suitable for a game
 
 5. Improve the data finding system - gamedata part DONE
-  ...# seperate player savegame data from main game data properly
+  - seperate player savegame data from main game data properly
 
 6. Support for quests is missing
 
