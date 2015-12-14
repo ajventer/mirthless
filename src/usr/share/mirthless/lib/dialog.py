@@ -2,10 +2,10 @@ import pygame
 from pygame.locals import *
 from util import debug, file_list, gamedir
 
-class Dialog(object):
+class Dialog(pygame.sprite.DirtySprite):
 
     def __init__(self, rect, imagecache):
-        #super(pygame.sprite.DirtySprite, self).__init__()
+        super(pygame.sprite.DirtySprite, self).__init__()
         self.pos = (rect.x, rect.y)
         tl = imagecache['frame_topleft']
         tr = imagecache['frame_topright']
