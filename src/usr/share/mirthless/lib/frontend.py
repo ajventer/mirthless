@@ -79,7 +79,6 @@ class Frontend(object):
         #20+10+640+10+20
         dialog = Dialog(self.rightwindow_rect, self.imagecache)
         self.screen.blit(dialog.image, (self.rightwindow_rect.x, self.rightwindow_rect.y))
-        #self.sprites['rightwindow'] = dialog
 
         mapview = Mapview(self)
         mapview.loadmap({})

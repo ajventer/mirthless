@@ -60,7 +60,7 @@ class Button(pygame.sprite.DirtySprite):
         self.image = self.button_rest
         self.image.convert()
      
-    def click(self):
+    def click(self, pos):
         self.image = self.button_click
         self.image.convert()
         if self.onclick is not None:

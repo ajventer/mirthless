@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import pygame
 from pygame.locals import *
-from util import debug, file_list, gamedir, file_path
+from util import debug, file_list, gamedir, file_path, imagepath
 import os
 import sys
 from messagebox import MessageBox
@@ -70,6 +70,10 @@ class Tilemaps(dict):
 
     def tile(self,mapname,x,y):
         return self[mapname].tile(x,y)
+
+    def get_by_path(self, path):
+        backgroundpath = imagepath(path)
+        return self.tile(backgroundpath[0], backgroundpath[1], backgroundpath[2])
 
 tilemaps = Tilemaps()
 

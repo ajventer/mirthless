@@ -41,7 +41,7 @@ if __name__ == "__main__":
     quit = False 
     clock = pygame.time.Clock()
     while not quit:     
-        clock.tick(15)  
+        clock.tick(60)  
         for event in pygame.event.get():
             quit = eventstack.handle_event(event)
         frontend.draw()
