@@ -15,6 +15,7 @@ class Messages(object):
             eventstack.register_event("wheeldown", self, self.scrolldown)
 
     def scrollup(self):
+        debug(self.messageindex)
         if self.messageindex > 5:
             self.messageindex -= 1
         else:

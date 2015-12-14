@@ -85,6 +85,7 @@ class Frontend(object):
 
         self.background = self.screen.copy()
         return self.screen, self.background
+        
 
     def draw(self):
         screensize = self.screen.get_rect()
