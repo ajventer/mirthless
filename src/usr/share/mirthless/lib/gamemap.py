@@ -63,8 +63,8 @@ class GameMap(EzdmObject):
     True
     >>> g.initialize()
     """
-    max_x = 19
-    max_y = 19
+    max_x = 20
+    max_y = 20
     def initialize(self, data={}, name='',lightradius=1):
         if not data:
             self.new(name=name, lightradius=lightradius)

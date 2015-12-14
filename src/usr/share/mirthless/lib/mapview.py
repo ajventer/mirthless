@@ -45,8 +45,8 @@ class Mapview(object):
     def loadmap(self, data):
         gamemap = GameMap(data)
         gamemap.initialize()
-        for x in range(0,19):
-            for y in range(0,19):
+        for x in range(0,20):
+            for y in range(0,20):
                 tile = gamemap.tile(x,y)
                 scn_x = 50+(self.tilesize*x)
                 scn_y = 65+(self.tilesize*y)
