@@ -1,6 +1,6 @@
 import pygame
 from pygame.locals import *
-from util import debug, file_list, readyaml, gamedir, file_path
+from util import debug, file_list, gamedir, file_path
 import os
 import sys
 from messagebox import MessageBox

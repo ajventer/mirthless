@@ -1,6 +1,6 @@
 import pygame
 from pygame.locals import *
-from util import debug, file_list, readyaml, gamedir
+from util import debug, file_list, gamedir
 
 class Dialog(pygame.sprite.DirtySprite):
 

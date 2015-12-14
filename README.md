@@ -17,9 +17,10 @@ TODO list for initial release (in no particular order):
 
 3. Rewrite the game interface in pygame replacing the current web based interface. 
 
-  - The editor should also get this treatment but will likely be quite a bit more work and is less urgent
-  
-  - If the editor isn't ported immediately then new format code should be backported to EZDM so that at least the browser-based editor can be used to create content.
+  - Write the editor in pygame
+  	- Map Editor
+  	- NPC and Monster editor
+  	- Quest editor ? 
 
 4. New character generator suitable for a game
 
@@ -37,6 +38,8 @@ TODO list for initial release (in no particular order):
 10. NPC AI - this can improve with time but at the very least NPCs and monsters should be able to fight - unlike in EZDM there won't be a game-master to control their actions
 
 11. Add a platino easter egg somewhere to meet dawnhack attribution requirements.
+
+
 
 I am going to try and get an initial playable alpha release up to the end of the opening chapter done by the end of December, more helpers will reduce that time. But the TODO list is quite long, even though the engine inheritted from EZDM is largely complete this involves quite a bit of work. So please be patient.
 

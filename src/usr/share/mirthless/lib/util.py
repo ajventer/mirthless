@@ -7,6 +7,7 @@ import sys
 import hashlib
 import yaml
 from flatteneddict import FlattenedDict, stripslashes, flatten
+import time
 
 gamedir = 'TESTDATA'
 
@@ -37,11 +38,13 @@ def file_list(directory, needle='*'):
     dirname = os.path.join(gamedir, directory)
     return glob(dirname+'/'+needle)
 
-def file_path(directory, filename):
+def file_path(directory, filename, new=False):
     global gamedir
     gamedir = forcegamedir()
     debug(gamedir)
     filename = os.path.join(gamedir, directory, filename)
+    if new:
+        return filename #Don't check for pre-existing when saving a new file
     if not os.path.exists(filename):
         testpath = os.path.join(gamedir,'testdata', directory, os.path.basename(filename))
         if os.path.exists(testpath):
@@ -50,12 +53,6 @@ def file_path(directory, filename):
             raise IOError(testpath)
     debug ('Loading file: ', filename)
     return filename
-
-def user_hash():
-    user_string = '%s%s' % (bottle.request.environ.get('REMOTE_ADDR'), bottle.request.environ.get('HTTP_USER_AGENT'))
-    user_string = user_string.encode('utf-8')
-    return hashlib.sha224(user_string).hexdigest()
-
 
 def filename_parser(displayname):
     name = displayname
@@ -71,22 +68,18 @@ def debug(*args):
     sys.stderr.write('%s\n' % out)
 
 
-def npc_hash():
+def make_hash():
     """
     >>> hashes = []
     >>> for i in range(1,1000):
-    ...     hashes.append(npc_hash())
+    ...     hashes.append(make_hash())
     ...
     >>> len(hashes) == len(list(set(hashes)))
     True
     """
-    return str(binascii.b2a_hex(os.urandom(64)))
-
-
-def readyaml(directory, filename):
-    path = file_path(directory, filename)
-    debug('Loading %s ' % (path))
-    return yaml.load(open(path).read())
+    user_string = str(int(time.time())) + str(binascii.b2a_hex(os.urandom(64)))
+    user_string = user_string.encode('utf-8')
+    return hashlib.sha224(user_string).hexdigest()    
 
 
 def load_yaml(directory, filename):
@@ -97,8 +90,8 @@ def dump_yaml(data):
     yaml.safe_dump(data, default_flow_style=False, encoding='utf-8')
 
 
-def save_yaml(directory, filename, data):
-    filename = file_path(directory, filename)
+def save_yaml(directory, filename, data, new=False):
+    filename = file_path(directory, filename, new=new)
     strings = dump_yaml(data)
     open(filename,'w').write(strings)
 

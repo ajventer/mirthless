@@ -1,4 +1,4 @@
-from util import npc_hash, rolldice, inrange, price_in_copper, convert_money, save_yaml, load_yaml, debug
+from util import rolldice, inrange, price_in_copper, convert_money, save_yaml, load_yaml, debug
 from item import Item
 from objects import EzdmObject, event
 from gamemap import GameMap
@@ -7,6 +7,7 @@ from random import randrange
 import operator
 from graphics import frontend
 from flatteneddict import FlattenedDict
+from messages import messages
 
 class Character(EzdmObject):
     """
@@ -269,7 +270,7 @@ class Character(EzdmObject):
         >>> end < start
         True
         """
-        frontend.messages.message('%s takes %s damage' % (self.displayname(), damage))
+        messages.message('%s takes %s damage' % (self.displayname(), damage))
         debug("[DEBUG] character.take_damage: damage - %s, player - %s" % (damage, self.displayname()))
         out = ''
         currenthitpoints = self.get('/core/combat/hitpoints', 1)
@@ -284,7 +285,7 @@ class Character(EzdmObject):
             hp -= damage
             self.put('/core/combat/hitpoints', hp)
             out += "<br>%s takes %s damage. %s hitpoints remaining" % (self.displayname(), damage, self.get('/core/combat/hitpoints', 1))
-            frontend.messages.error('')
+            messages.error('')
             return (True, out)
 
     def name(self):
@@ -469,13 +470,13 @@ class Character(EzdmObject):
         current_xp = int(self.get('/core/personal/xp', 0))
         new_xp = current_xp + int(xp)
         self.put('/core/personal/xp', str(new_xp))
-        frontend.messages.message('%s gains %s experience points. XP now: %s' % (self.displayname(), xp, new_xp))
+        messages.message('%s gains %s experience points. XP now: %s' % (self.displayname(), xp, new_xp))
         next_level = self.next_level()
         if new_xp >= next_level and next_level != -1:
-            frontend.messages.warning(self.level_up())
-            frontend.messages.error('Check for and apply manual increases to other stats if needed !')
+            messages.warning(self.level_up())
+            messages.error('Check for and apply manual increases to other stats if needed !')
         else:
-            frontend.messages.message('Next level at %s. %s experience points to go' % (next_level, next_level - new_xp))
+            messages.message('Next level at %s. %s experience points to go' % (next_level, next_level - new_xp))
         return new_xp
 
     def next_level(self):
@@ -503,13 +504,13 @@ class Character(EzdmObject):
 
     def attack_roll(self, target, mod):
         self.next_weapon()
-        frontend.messages.message('%s has THAC0 of: %s' % (self.displayname(), self.thac0))
+        messages.message('%s has THAC0 of: %s' % (self.displayname(), self.thac0))
         target_stats = '%s has a defense modifier of %s and armor class %s' % (target.displayname(), target.def_mod(), target.armor_class())
 
-        frontend.messages.message(target_stats)
+        messages.message(target_stats)
         target_roll = self.thac0 - target.armor_class() - target.def_mod()
 
-        frontend.messages.message('%s needs to roll %s to hit %s' % (self.displayname(), target_roll, target.displayname()))
+        messages.message('%s needs to roll %s to hit %s' % (self.displayname(), target_roll, target.displayname()))
         roll = rolldice(numdice=1, numsides=20, modifier=mod)
         if roll[0] == 1:
                 return (roll[0], "Critical Miss !", roll[1])

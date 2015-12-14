@@ -59,8 +59,8 @@ class Tile(EzdmObject):
 class GameMap(EzdmObject):
     """
     >>> g = GameMap({})
-    >>> g()
-    {}
+    >>> 'hash' in g()
+    True
     >>> g.initialize()
     """
     max_x = 19

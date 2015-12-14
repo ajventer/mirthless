@@ -1,4 +1,4 @@
-from util import debug, dump_yaml
+from util import debug, dump_yaml, make_hash, gamedir
 from flatteneddict import FlattenedDict, stripslashes
 
 def event(obj, key, localvars):
@@ -18,9 +18,17 @@ class EzdmObject(object):
     def __init__(self, objdata):
         self.objdata = objdata
         self.objdata = FlattenedDict(self.objdata)
+        if not self.get_hash():
+            self.set_hash()
 
     def set_hash(self):
-        myhash = npc_hash()
+        """
+        >>> o = EzdmObject({'test': 0})
+        >>> hash = o.set_hash()
+        >>> hash == o.get_hash()
+        True
+        """
+        myhash = make_hash()
         self.put('hash', myhash)
         return myhash
 
@@ -30,7 +38,7 @@ class EzdmObject(object):
     def __call__(self):
         """
         >>> o = EzdmObject({'test': 0})
-        >>> o() == {'test': 0}
+        >>> o()['test'] == 0
         True
         """
         return self.objdata
@@ -45,7 +53,7 @@ class EzdmObject(object):
         >>> j2 = {'foo': 'bar'}
         >>> o = EzdmObject(j1)
         >>> o.update(j2)
-        >>> o() == j2
+        >>> o()['foo'] == 'bar'
         True
 
         """
@@ -85,5 +93,8 @@ class EzdmObject(object):
     def putsubtree(self, key, value):
         return self.objdata.writesubtree(key, value)
 
-    def save(self):
-        pass
+    def filename():
+        return '%s.yaml' % self.get_hash()
+
+    def save_to_file(self, directory):
+        save_yaml(directory, self.filename(), str(self), new=True)
