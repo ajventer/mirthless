@@ -6,7 +6,8 @@ from messages import messages
 
 
 class Maptile(object):
-    def __init__(self, x, y, map_x, map_y, tile, size, eventstack, tilemaps):
+    def __init__(self, x, y, map_x, map_y, tile, size, eventstack, tilemaps, mode):
+        self.mode = mode
         self.tile = tile
         self.image = pygame.Surface((size,size))
         self.map_x, self.map_y = map_x, map_y
@@ -25,12 +26,16 @@ class Maptile(object):
             self.image.fill((0,0,0,0))
 
     def click(self):
+        if self.mode == 'editor':
+            messages.message('Editor click: %sx%s' % (self.map_x, self.map_y))   
+            return 
         messages.message('Tile click: %sx%s' % (self.map_x, self.map_y))
         return self.rect
 
 class Mapview(object):
-    def __init__(self, size, tilesize, eventstack, tilemaps):
+    def __init__(self, size, tilesize, eventstack, tilemaps, mode):
         self.rect = (50,65, size, size)
+        self.mode = mode
         self.image  = pygame.Surface((size, size))
         self.maptiles = []
         self.tilesize = tilesize
@@ -45,7 +50,7 @@ class Mapview(object):
                 tile = gamemap.tile(x,y)
                 scn_x = 50+(self.tilesize*x)
                 scn_y = 65+(self.tilesize*y)
-                maptile = Maptile(scn_x,scn_y, x, y, tile, self.tilesize, self.eventstack, self.tilemaps)
+                maptile = Maptile(scn_x,scn_y, x, y, tile, self.tilesize, self.eventstack, self.tilemaps, self.mode)
                 self.maptiles.append(maptile)
                 self.image.blit(maptile.image,(self.tilesize*x, self.tilesize*y))
 

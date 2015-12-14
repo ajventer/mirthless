@@ -1,6 +1,6 @@
 import pygame
 from pygame.locals import *
-from util import debug, file_list, gamedir
+from util import debug, file_list, gamedir, load_yaml
 import os
 
 
@@ -12,7 +12,7 @@ class ImageCache(dict):
             debug('Loading: ',image)
             key = os.path.basename(image)
             self[key] = pygame.image.load(image).convert_alpha()
-        gui_map = readyaml('images', 'gui_rects.yaml')
+        gui_map = load_yaml('images', 'gui_rects.yaml')
         for key in gui_map:
             rect = pygame.Rect(gui_map[key]['x'], gui_map[key]['y'], gui_map[key]['w'], gui_map[key]['h'])
             try:
