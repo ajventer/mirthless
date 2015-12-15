@@ -79,7 +79,7 @@ def make_hash():
     """
     user_string = str(int(time.time())) + str(binascii.b2a_hex(os.urandom(64)))
     user_string = user_string.encode('utf-8')
-    return hashlib.sha224(user_string).hexdigest()    
+    return str(hashlib.sha224(user_string).hexdigest())
 
 
 def load_yaml(directory, filename):
@@ -93,7 +93,8 @@ def dump_yaml(data):
 def save_yaml(directory, filename, data, new=False):
     filename = file_path(directory, filename, new=new)
     strings = dump_yaml(data)
-    open(filename,'w').write(strings)
+    #open(filename,'w').write(strings)
+    debug(filename)
 
 def price_in_copper(gold, silver, copper):
     s = gold * 10 + silver

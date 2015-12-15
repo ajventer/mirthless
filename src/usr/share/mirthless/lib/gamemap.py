@@ -82,6 +82,9 @@ class GameMap(EzdmObject):
     def load_tile_from_dict(self, x, y, dic):
         self()['tiles'][y][x] = dic
 
+    def load_tile(self, x, y, tile):
+        self.load_tile_from_dict(x, y, dict(tile()))
+
     def copy_tile(self, src_x, src_y, dest_x, dest_y):
         #Copies the tile definition
         #Does not copy items, npcs or monsters !
@@ -141,9 +144,9 @@ class GameMap(EzdmObject):
         name = '%s.yaml' % self.get('name', '').lower().replace(' ', '_')
         return name
 
-    def save(self):
-        #TODO
-        pass
+    # def save(self):
+    #     #TODO
+    #     pass
 
     def reveal(self, x, y, xtraradius=0):
         radius = int(self.get('lightradius', 1)) + xtraradius

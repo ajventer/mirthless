@@ -44,8 +44,7 @@ class EzdmObject(object):
         return self.objdata
 
     def __str__(self):
-
-        return dump_yaml(self())
+        return dump_yaml(dict(self()))
 
     def update(self, objdata):
         """

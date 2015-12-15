@@ -26,7 +26,6 @@ class EventStack():
         delme = []
         for k in self.events:
             for sprite in self.events[k]:
-                debug(sprite)
                 if self.events[k][sprite][1] == hash:
                     delme.append((k,sprite))
         for event in delme:
@@ -49,7 +48,7 @@ class EventStack():
                     return
                 elif sprite in self.events["mouseout"]:
                     self.events["mouseout"][sprite][0]()
-                    del self.events["mouseout"][sprite][0]
+                    del self.events["mouseout"][sprite]
                     return                  
         if event.type == pygame.MOUSEBUTTONUP:
             x, y = event.pos

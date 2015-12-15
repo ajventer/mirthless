@@ -65,7 +65,6 @@ class Button(pygame.sprite.DirtySprite):
     def click(self, pos):
         self.image = self.button_click
         if self.onclick is not None:
-            debug(self.onclick_params)
             self.onclick(*self.onclick_params)
 
     def delete(self):
@@ -117,5 +116,4 @@ class checkboxbtn(Button):
     def click(self, pos):
         self.checked = not self.checked
         if self.onclick is not None:
-            debug(self.onclick_params)
             self.onclick(*self.onclick_params)

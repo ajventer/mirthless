@@ -6,7 +6,7 @@ import sys
 from messagebox import MessageBox
 from imagecache import ImageCache
 from button import Button, render_text, scrn_print, ButtonArrow
-from dialog import Dialog
+from dialog import Dialog, FloatDialog
 from eventstack import EventStack
 from mapview import Mapview
 from messages import messages
@@ -15,21 +15,21 @@ def todo_event():
     messages.warning('Event not yet implemented')
 
 class Frontend(object):
-    game_menu = [
+    def __init__(self,screen=None, imagecache=None, eventstack=None, tilemaps=None, mode='game'):
+        self.game_menu = [
         ("Main Menu", todo_event),
         ("Inventory", todo_event),
         ("Spellbook", todo_event),
         ("About", todo_event),
         ("Quit", sys.exit)
-    ]
-    editor_menu = [
-        ("Main Menu", todo_event),
+        ]
+        self.editor_menu = [
+        ("Main Menu", self.editormain),
         ("Items and spells", todo_event),
         ("NPCs and Monsters", todo_event),
         ("Quests", todo_event),
         ("Quit", sys.exit)
-    ]
-    def __init__(self,screen=None, imagecache=None, eventstack=None, tilemaps=None, mode='game'):
+        ]
         self.mode = mode
         if screen:
             self.sprites = {}
@@ -50,6 +50,10 @@ class Frontend(object):
                 "dialog": None
                 } 
             self.mb = MessageBox(self.messagebox_rect)
+
+    def editormain(self):
+        mainmenu = FloatDialog(pygame.Rect(100,100,100,100), self.imagecache)
+        self.sprites['mainmenu'] = mainmenu
 
     def screenlayout(self):
         #Header:

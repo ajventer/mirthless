@@ -4,6 +4,7 @@ from gamemap import GameMap
 from util import debug
 from messages import messages
 from button import render_text, Button, checkboxbtn
+import yaml
 
                                 
 class Mapview(object):
@@ -49,25 +50,34 @@ class Mapview(object):
                 scn_y = 65+(self.tilesize*y)
                 self.image.blit(self.tileimage(x,y, self.tilesize),(self.tilesize*x, self.tilesize*y))
 
+    def _addtemp(self, name, obj):
+        self.temp.append((obj, name))
+        self.frontend.sprites[name] = obj
+
+    def _rmtemp(self):
+        for t in self.temp:
+            t[0].delete()
+            if t[1] in self.frontend.sprites:
+                del self.frontend.sprites[t[1]]
+
     def tile_editor(self, x, y, surface):
         surface.blit(render_text('Edit tile', color=(255,0,0)),(280,10))
         minx, miny = self.frontend.rightwindow_rect.x + 10, self.frontend.rightwindow_rect.y + 10
         te_canenter = checkboxbtn('Can enter tile ?', self.canenter, (x,y), self.frontend.eventstack,self.frontend.imagecache, pos=(minx + 280,miny + 30))
         te_canenter.checked = self.gamemap.tile(x,y).canenter()
-        self.temp.append((te_canenter, 'te_canenter'))
-        self.frontend.sprites['te_canenter'] = te_canenter
+        self._addtemp('te_canenter', te_canenter)
+        self._addtemp('updatebtn', Button('Update tile', 
+            self.updatetile, (x,y), self.frontend.eventstack,self.frontend.imagecache, pos=(minx + self.frontend.rightwindow_rect.w/2 - 20, self.frontend.rightwindow_rect.h - 30)))
         self.frontend.draw()
 
     def canenter(self, x, y):
-        self.gamemap.tile(x,y).canenter(self.frontend.sprites['te_canenter'].checked)
-        messages.message('Tile %sx%s - canenter = %s' % (x,y,self.gamemap.tile(x,y).canenter()))
+        self.tile.canenter(self.frontend.sprites['te_canenter'].checked)
+
+    def updatetile(self, x, y):
+        self.gamemap.load_tile(x,y,self.tile)
+        debug(self.gamemap())
 
     def click(self, pos):
-        for t in self.temp:
-            debug('Cleaning up %s - %s' % t)
-            t[0].delete()
-            if t[1] in self.frontend.sprites:
-                del self.frontend.sprites[t[1]]
         x, y = pos
         x = x - 50
         y = y - 65
@@ -75,6 +85,7 @@ class Mapview(object):
         map_y = int(y / self.tilesize)
         zoomimage = self.tileimage(map_x, map_y, 256)
         self.frontend.sprites['rightwindow'].image.blit(zoomimage, (15,15))
+        self.tile = self.gamemap.tile(map_x,map_y)
         if self.frontend.mode == 'editor':
             self.tile_editor(map_x,map_y, self.frontend.sprites['rightwindow'].image)
             return 

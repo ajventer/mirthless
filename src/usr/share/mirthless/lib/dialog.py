@@ -41,3 +41,8 @@ class Dialog(pygame.sprite.DirtySprite):
         self.rect = rect
         self.image = self.surface.copy()
 
+class FloatDialog(Dialog):
+    def __init__(self, rect, imagecache):
+        Dialog.__init__(self, rect, imagecache)
+        self._layer=20
+
