@@ -15,6 +15,7 @@ class Mapview(object):
         self.frontend.eventstack.register_event("button1", self, self.click)
         self.image  = pygame.Surface((size, size))
         self.backgrounds = {}
+        self.temp = []
 
 
     def tileimage(self, x, y, scale):
@@ -51,9 +52,9 @@ class Mapview(object):
     def tile_editor(self, x, y, surface):
         surface.blit(render_text('Edit tile', color=(255,0,0)),(280,10))
         minx, miny = self.frontend.rightwindow_rect.x + 10, self.frontend.rightwindow_rect.y + 10
-        debug(minx,'x',miny)
         te_canenter = checkboxbtn('Can enter tile ?', self.canenter, (x,y), self.frontend.eventstack,self.frontend.imagecache, pos=(minx + 280,miny + 30))
         te_canenter.checked = self.gamemap.tile(x,y).canenter()
+        self.temp.append((te_canenter, 'te_canenter'))
         self.frontend.sprites['te_canenter'] = te_canenter
         self.frontend.draw()
 
@@ -62,16 +63,11 @@ class Mapview(object):
         messages.message('Tile %sx%s - canenter = %s' % (x,y,self.gamemap.tile(x,y).canenter()))
 
     def click(self, pos):
-        delme = []
-        #The below is a horrible hack. I won't implement it unless I cannot find a better way
-        #to prevent multiple tile zoom forms layered above each other.
-        
-        # for event in self.frontend.eventstack.events['button1']:
-        #     if isinstance(event, Mapview):
-        #         delme.append(event)
-        # for event in delme:
-        #     del self.frontend.eventstack.events['button1'][event]
-        # debug(self.frontend.eventstack.events['button1'].keys())    
+        for t in self.temp:
+            debug('Cleaning up %s - %s' % t)
+            t[0].delete()
+            if t[1] in self.frontend.sprites:
+                del self.frontend.sprites[t[1]]
         x, y = pos
         x = x - 50
         y = y - 65
