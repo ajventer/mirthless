@@ -89,12 +89,15 @@ class checkboxbtn(Button):
         self.pos = pos
         self.onclick = onclick
         self.onclick_params = onclick_params
-        self.label = render_text (label, size=24, color=(255,255,255))
+        self.label = render_text (label, size=24, color=(0,0,0))
 
         labelrect = self.label.get_rect()        
                 
-        self.checkedimg = pygame.Surface((labelrect.w + 30, 31))
-        self.uncheckedimg = pygame.Surface((labelrect.w + 30, 31))
+        self.checkedimg = pygame.Surface((labelrect.w + 30, 31),pygame.SRCALPHA, 32)
+        self.uncheckedimg = pygame.Surface((labelrect.w + 30, 31),pygame.SRCALPHA, 32)
+        self.checkedimg.convert_alpha()
+        self.uncheckedimg.convert_alpha()
+
 
         self.checkedimg.blit(imagecache['checkbtn_checked'], (0,0))
         self.uncheckedimg.blit(imagecache['checkbtn_unchecked'], (0,0))
