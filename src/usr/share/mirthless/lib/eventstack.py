@@ -19,6 +19,10 @@ class EventStack():
     def register_event(self, event, sprite, method):
         self.events[event][sprite] = method
 
+    def get_events(self, key):
+        #Size-change safe index
+        return [i for i in list(self.events[key].keys())]
+
     def handle_event(self, event):
         deleteme =[]
         if event.type == pygame.QUIT:
@@ -36,14 +40,14 @@ class EventStack():
         if event.type == pygame.MOUSEBUTTONUP:
             x, y = event.pos
             if event.button == 1:      
-                for sprite in self.events["button1"]:
+                for sprite in self.get_events("button1"):
                     if sprite.rect.collidepoint(x,y):
                         self.events["button1"][sprite]((x,y))               
             if event.button == 4:
-                for sprite in self.events["wheelup"]:
+                for sprite in self.get_events("wheelup"):
                     if sprite.rect.collidepoint(x,y):
                         return self.events["wheelup"][sprite]()
             if event.button == 5:
-                for sprite in self.events["wheeldown"]:
+                for sprite in self.get_events("wheeldown"):
                     if sprite.rect.collidepoint(x,y):
                         return self.events["wheeldown"][sprite]()

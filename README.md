@@ -64,7 +64,9 @@ To run the unit tests use:
 
 Credits:
 Game art from: 
+
 1. kenney.nl
+
 2. http://opengameart.org/content/dawnlike-16x16-universal-rogue-like-tileset-v181
 
 The GLYPH text rendering library for pygame is included with the project and used in several parts of the interface.

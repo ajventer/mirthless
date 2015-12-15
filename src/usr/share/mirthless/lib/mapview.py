@@ -3,7 +3,7 @@ from pygame.locals import *
 from gamemap import GameMap
 from util import debug
 from messages import messages
-from button import render_text
+from button import render_text, Button
 
                                 
 class Mapview(object):
@@ -48,16 +48,25 @@ class Mapview(object):
                 scn_y = 65+(self.tilesize*y)
                 self.image.blit(self.tileimage(x,y, self.tilesize),(self.tilesize*x, self.tilesize*y))
 
+    def tile_editor(self, x, y, surface):
+        surface.blit(render_text('Edit tile', color=(255,0,0)),(280,10))
+        button = Button('Click Me', self.clickme, (x,y), self.frontend.eventstack,self.frontend.imagecache, pos=(900,50))
+        self.frontend.sprites['tile_edit'] = button
+        self.frontend.draw()
+
+    def clickme(self, x, y):
+        messages.message('Clicked %sX%s' %(x,y))
+
     def click(self, pos):
         x, y = pos
         x = x - 50
         y = y - 65
         map_x = int(x / self.tilesize)
         map_y = int(y / self.tilesize)
-        zoomimage = self.tileimage(map_x, map_y, 128)
+        zoomimage = self.tileimage(map_x, map_y, 256)
         self.frontend.sprites['rightwindow'].image.blit(zoomimage, (15,15))
         if self.frontend.mode == 'editor':
-            messages.message('Editor click: %sx%s' % (map_x, map_y))
+            self.tile_editor(map_x,map_y, self.frontend.sprites['rightwindow'].image)
             return 
         messages.message('Tile click: %sx%s' % (map_x, map_y))
         return

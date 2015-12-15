@@ -67,12 +67,12 @@ class Frontend(object):
         else:
             menu = self.editor_menu
         for button in menu:
-            self.sprites[button[0]] = Button(button[0], button[1], self.eventstack, self.imagecache, (menu.index(button) * 220,5))
+            self.sprites[button[0]] = Button(button[0], button[1], [], self.eventstack, self.imagecache, (menu.index(button) * 220,5))
       
         #Messagebox
         self.screen.blit(seperator, (0,self.screensize.h -205))
-        mb_up = ButtonArrow(messages.scrollup, self.eventstack, self.imagecache, 'up', pos=(screensize.w - 27,screensize.h-190))
-        mb_down = ButtonArrow(messages.scrolldown, self.eventstack, self.imagecache, 'down', pos=(screensize.w - 27,screensize.h-100))
+        mb_up = ButtonArrow(messages.scrollup, [], self.eventstack, self.imagecache, 'up', pos=(screensize.w - 27,screensize.h-190))
+        mb_down = ButtonArrow(messages.scrolldown, [], self.eventstack, self.imagecache, 'down', pos=(screensize.w - 27,screensize.h-100))
         self.sprites['mb_up'] = mb_up
         self.sprites['mb_dn'] = mb_down
         #Mainwindow
@@ -96,6 +96,7 @@ class Frontend(object):
         g, r = self.mb.image(messages.read().replace('\n','/n'))
         self.screen.blit(g, r)
         for sprite in self.sprites:
+            debug ('Adding sprite ', sprite)
             sprites.add(self.sprites[sprite])
         sprites.clear(self.screen, self.background)
         dirty = sprites.draw(self.screen)

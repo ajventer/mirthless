@@ -18,13 +18,14 @@ def scrn_print(surface, text, x, y, size=32, color=(0,0,0)):
 
 
 class Button(pygame.sprite.DirtySprite):
-    def __init__(self, label, onclick, eventstack,imagecache, pos=(0,0)):
+    def __init__(self, label, onclick, onclick_params, eventstack,imagecache, pos=(0,0)):
         super(pygame.sprite.DirtySprite, self).__init__()
         button_rest = imagecache['button_rest']
         button_hi = imagecache['button_hi']
         button_click = imagecache['button_click']
         self.pos = pos
         self.onclick = onclick
+        self.onclick_params = onclick_params
         self.label = render_text (label, size=24, color=(0,0,0))
 
         labelrect = self.label.get_rect()
@@ -64,11 +65,12 @@ class Button(pygame.sprite.DirtySprite):
         self.image = self.button_click
         self.image.convert()
         if self.onclick is not None:
-            self.onclick()
+            debug(self.onclick_params)
+            self.onclick(*self.onclick_params)
 
 class ButtonArrow(Button):
-    def __init__(self, onclick, eventstack,imagecache, direction, pos=(0,0)):
-        Button.__init__(self, '', onclick, eventstack, imagecache, pos)
+    def __init__(self, onclick, onclick_params, eventstack,imagecache, direction, pos=(0,0)):
+        Button.__init__(self, '', onclick, onclick_params, eventstack, imagecache, pos)
         self.button_rest = imagecache['arrow_%s' %direction]
         self.button_hi = self.button_rest
         self.button_click = self.button_rest
