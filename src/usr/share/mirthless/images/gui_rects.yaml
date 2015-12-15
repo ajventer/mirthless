@@ -69,5 +69,16 @@ arrow_down:
     w: 27
     y: 319
     h: 27
+checkbtn_checked:
+    x: 149
+    y: 54
+    w: 23
+    h: 31
+checkbtn_unchecked:
+    x: 149
+    y: 10
+    w: 23
+    h: 31
+
 
 

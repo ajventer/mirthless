@@ -3,9 +3,9 @@ from pygame.locals import *
 from util import debug, file_list, gamedir
 
 class Dialog(pygame.sprite.DirtySprite):
-
     def __init__(self, rect, imagecache):
         #TODO - create a container type to add things to dialogs and make them work more cleanly
+        self._layer = 1
         super(pygame.sprite.DirtySprite, self).__init__()
         self.pos = (rect.x, rect.y)
         tl = imagecache['frame_topleft']

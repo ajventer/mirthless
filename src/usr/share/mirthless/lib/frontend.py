@@ -91,13 +91,12 @@ class Frontend(object):
 
     def draw(self):
         screensize = self.screen.get_rect()
-        sprites = pygame.sprite.RenderUpdates()
+        sprites = pygame.sprite.LayeredUpdates()
         self.mb.clear(self.screen, self.background)
         g, r = self.mb.image(messages.read().replace('\n','/n'))
         self.screen.blit(g, r)
         for sprite in self.sprites:
-            debug ('Adding sprite ', sprite)
             sprites.add(self.sprites[sprite])
         sprites.clear(self.screen, self.background)
         dirty = sprites.draw(self.screen)
-        pygame.display.update()
+        pygame.display.update(dirty)

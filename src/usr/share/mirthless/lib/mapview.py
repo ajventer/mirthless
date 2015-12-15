@@ -3,7 +3,7 @@ from pygame.locals import *
 from gamemap import GameMap
 from util import debug
 from messages import messages
-from button import render_text, Button
+from button import render_text, Button, checkboxbtn
 
                                 
 class Mapview(object):
@@ -38,11 +38,11 @@ class Mapview(object):
         return tileimage
 
     def loadmap(self, data):
-        gamemap = GameMap(data)
-        gamemap.initialize()
+        self.gamemap = GameMap(data)
+        self.gamemap.initialize()
         for x in range(0,20):
             for y in range(0,20):
-                tile = gamemap.tile(x,y)
+                tile = self.gamemap.tile(x,y)
                 self.backgrounds['%s_%s' % (x,y)] = tile.background()
                 scn_x = 50+(self.tilesize*x)
                 scn_y = 65+(self.tilesize*y)
@@ -50,14 +50,28 @@ class Mapview(object):
 
     def tile_editor(self, x, y, surface):
         surface.blit(render_text('Edit tile', color=(255,0,0)),(280,10))
-        button = Button('Click Me', self.clickme, (x,y), self.frontend.eventstack,self.frontend.imagecache, pos=(900,50))
-        self.frontend.sprites['tile_edit'] = button
+        minx, miny = self.frontend.rightwindow_rect.x + 10, self.frontend.rightwindow_rect.y + 10
+        debug(minx,'x',miny)
+        te_canenter = checkboxbtn('Can enter tile ?', self.canenter, (x,y), self.frontend.eventstack,self.frontend.imagecache, pos=(minx + 280,miny + 30))
+        te_canenter.checked = self.gamemap.tile(x,y).canenter()
+        self.frontend.sprites['te_canenter'] = te_canenter
         self.frontend.draw()
 
-    def clickme(self, x, y):
-        messages.message('Clicked %sX%s' %(x,y))
+    def canenter(self, x, y):
+        self.gamemap.tile(x,y).canenter(self.frontend.sprites['te_canenter'].checked)
+        messages.message('Tile %sx%s - canenter = %s' % (x,y,self.gamemap.tile(x,y).canenter()))
 
     def click(self, pos):
+        delme = []
+        #The below is a horrible hack. I won't implement it unless I cannot find a better way
+        #to prevent multiple tile zoom forms layered above each other.
+        
+        # for event in self.frontend.eventstack.events['button1']:
+        #     if isinstance(event, Mapview):
+        #         delme.append(event)
+        # for event in delme:
+        #     del self.frontend.eventstack.events['button1'][event]
+        # debug(self.frontend.eventstack.events['button1'].keys())    
         x, y = pos
         x = x - 50
         y = y - 65

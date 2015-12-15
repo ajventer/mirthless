@@ -19,6 +19,7 @@ def scrn_print(surface, text, x, y, size=32, color=(0,0,0)):
 
 class Button(pygame.sprite.DirtySprite):
     def __init__(self, label, onclick, onclick_params, eventstack,imagecache, pos=(0,0)):
+        self._layer = 10
         super(pygame.sprite.DirtySprite, self).__init__()
         button_rest = imagecache['button_rest']
         button_hi = imagecache['button_hi']
@@ -53,7 +54,6 @@ class Button(pygame.sprite.DirtySprite):
 
     def mouseover(self):
         self.image = self.button_hi
-        self.image.convert()
         self.eventstack.register_event("mouseout", self, self.mouseout)
 
 
@@ -63,7 +63,6 @@ class Button(pygame.sprite.DirtySprite):
      
     def click(self, pos):
         self.image = self.button_click
-        self.image.convert()
         if self.onclick is not None:
             debug(self.onclick_params)
             self.onclick(*self.onclick_params)
@@ -75,3 +74,41 @@ class ButtonArrow(Button):
         self.button_hi = self.button_rest
         self.button_click = self.button_rest
         self.image = self.button_rest
+
+class checkboxbtn(Button):
+    checked = False
+    def __init__(self, label, onclick, onclick_params, eventstack,imagecache, pos=(0,0)):
+        self._layer = 10
+        super(pygame.sprite.DirtySprite, self).__init__()
+        self.pos = pos
+        self.onclick = onclick
+        self.onclick_params = onclick_params
+        self.label = render_text (label, size=24, color=(255,255,255))
+
+        labelrect = self.label.get_rect()        
+                
+        self.checkedimg = pygame.Surface((labelrect.w + 30, 31))
+        self.uncheckedimg = pygame.Surface((labelrect.w + 30, 31))
+
+        self.checkedimg.blit(imagecache['checkbtn_checked'], (0,0))
+        self.uncheckedimg.blit(imagecache['checkbtn_unchecked'], (0,0))
+
+        self.checkedimg.blit(self.label,(30,3))
+        self.uncheckedimg.blit(self.label,(30,3))
+        rect = self.uncheckedimg.get_rect()
+        self.rect = pygame.Rect(pos[0],pos[1],rect.w, rect.h)
+        self.eventstack = eventstack
+        self.eventstack.register_event("button1", self, self.click)
+
+    @property
+    def image(self):
+        if self.checked:
+            return self.checkedimg
+        else:
+            return self.uncheckedimg
+
+    def click(self, pos):
+        self.checked = not self.checked
+        if self.onclick is not None:
+            debug(self.onclick_params)
+            self.onclick(*self.onclick_params)
