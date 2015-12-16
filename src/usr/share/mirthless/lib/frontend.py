@@ -81,9 +81,8 @@ class Frontend(object):
         self.screen.blit(dialog.image, (self.rightwindow_rect.x, self.rightwindow_rect.y))
         self.sprites['rightwindow'] = dialog
 
-        mapview = Mapview(self)
-        mapview.loadmap({})
-        self.screen.blit(mapview.image, (50,65))
+        self.mapview = Mapview(self)
+        self.mapview.loadmap({})
 
         self.background = self.screen.copy()
         return self.screen, self.background
@@ -91,6 +90,7 @@ class Frontend(object):
 
     def draw(self):
         screensize = self.screen.get_rect()
+        self.screen.blit(self.mapview.image, (50,65))
         sprites = pygame.sprite.LayeredUpdates()
         #self.sprites['mb'].clear(self.screen, self.background)
         #self.sprites['mb'].image

@@ -41,7 +41,7 @@ class Tilemap(object):
     def iterall(self):
         for x, row in enumerate(self.tile_table):
             for y, tile in enumerate(row):
-                yield(tile)
+                yield((x,y))
 
     def size(self):
         return (self.x, self.y)
@@ -69,7 +69,7 @@ class Tilemaps(dict):
     def iterall(self, key):
         tilemap = self[key]
         for image in tilemap.iterall():
-            yield image
+            yield '%s:%s:%s' % (key, image[0], image[1])
 
 
     def tile(self,mapname,x,y):

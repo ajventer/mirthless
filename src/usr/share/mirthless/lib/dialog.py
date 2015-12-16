@@ -1,6 +1,6 @@
 import pygame
 from pygame.locals import *
-from util import debug, file_list, gamedir
+from util import debug, file_list, gamedir, imagepath
 from button import Button, render_text
 from tempsprites import Tempsprites
 from messages import messages
@@ -52,6 +52,7 @@ class FloatDialog(Dialog):
 class TileSelector(FloatDialog, Tempsprites):
     def __init__(self, rect, frontend, onselect, onselect_parms):
         Tempsprites.__init__(self)
+        self.onselect = onselect
         self.selected = None
         self.frontend = frontend
         self._layer=5
@@ -59,9 +60,11 @@ class TileSelector(FloatDialog, Tempsprites):
         self.page = 0
         prevbtn = Button('Prev', self.prev, [], self.frontend.eventstack, self.frontend.imagecache, (rect.x+10,rect.y+rect.h-50), layer=6)
         nextbtn = Button('Next', self.next, [], self.frontend.eventstack, self.frontend.imagecache, (rect.x+rect.w-100,rect.y+rect.h-50), layer=6)
+        self.clickhash = self.frontend.eventstack.register_event("button1", self, self.click)
         self._addtemp('ts_prevbtn', prevbtn)
         self._addtemp('ts_nextbtn', nextbtn)
         self.rect = rect
+        self.mapx, self.mapy = onselect_parms
 
         self.pages = sorted(list(self.frontend.tilemaps.keys()))
         self.update()
@@ -73,20 +76,31 @@ class TileSelector(FloatDialog, Tempsprites):
         x = 10
         y = 10
         filename = self.pages[self.page]
+        self.pagepaths = []
 
         messages.message('Tilemap '+filename)
         self.image.blit(render_text (filename, size=32, color=(0,0,0)),(self.rect.x+self.rect.w/2, self.rect.y+self.rect.h -50))
-        for image in self.frontend.tilemaps.iterall(filename):
+        for imagepath in self.frontend.tilemaps.iterall(filename):
             if x >= self.rect.w - 75:
                 col = 0
                 row += 1
             x =  32 * col + 10
             y =  32 * row + 10
-            image = pygame.transform.smoothscale(image, (32,32))
+            thisrect = pygame.Rect(self.rect.x + x, self.rect.y+ y, 32, 32)
+            self.pagepaths.append((thisrect, imagepath))
+            image = pygame.transform.smoothscale(self.frontend.tilemaps.get_by_path(imagepath), (32,32))
             self.image.blit(image, (x,y))
             col += 1
 
+    def click(self, pos):
+        x, y = pos
+        for path in self.pagepaths:
+            if path[0].collidepoint(x, y):
+                self.onselect(path[1], self.mapx, self.mapy)
+
     def delete(self):
+        self._rmtemp()
+        self.frontend.eventstack.unregister_event(self.clickhash)
         self.kill()
 
     def next(self):
@@ -102,8 +116,7 @@ class TileSelector(FloatDialog, Tempsprites):
             self.page = len(self.pages) -1
         self.update()
 
-    def select(self):
-        return 'Test'
+
 
 
 

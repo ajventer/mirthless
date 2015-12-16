@@ -22,34 +22,38 @@ class Mapview(Tempsprites):
 
 
     def tileimage(self, x, y, scale):
-        tileimage = pygame.Surface((self.tilesize, self.tilesize))
-        backgroundpath = self.backgrounds['%s_%s' % (x,y)]
+        tile = self.gamemap.tile(x,y)
+        tileimage = pygame.Surface((16, 16))
+        backgroundpath = tile.background()
         if backgroundpath:
-            tileimage = self.frontend.tilemaps.get_by_path(backgroundpath)
-        tileimage = pygame.transform.smoothscale(tileimage, (scale, scale))
-        if backgroundpath and tile.revealed():
-            self.image.blit(backgroundimage,(0,0))
+            backgroundimage = self.frontend.tilemaps.get_by_path(backgroundpath)
+        else:
+            backgroundimage = pygame.Surface((scale, scale))
+        if backgroundpath and (tile.revealed() or self.frontend.mode == 'editor'):
+            debug('Blitting visible tile ', backgroundimage)
+            tileimage.blit(backgroundimage,(0,0))
+            tileimage = pygame.transform.smoothscale(tileimage, (scale, scale))
         else:
             if self.frontend.mode == 'editor':
                 if y%2 == 0 and x%2 == 0 or y%2 == 1 and x%2 == 1:
                     r, t = 255, 0
                 else:
                     r, t = 0, 255
-                tileimage.fill((r,r,r,0))
-                tileimage.blit(render_text('%sX%s' %(x,y), size=(self.tilesize/2), color=(t,t,t), font=pygame.font.Font(None,16) ), (1,1))
+                backgroundimage.fill((r,r,r,0))
+                backgroundimage.blit(render_text('%sX%s' %(x,y), size=(self.tilesize/2), color=(t,t,t), font=pygame.font.Font(None,16) ), (1,1))
+                tileimage =backgroundimage
             else:
                 tileimage.fill((0,0,0,0))
         return tileimage
 
     def loadmap(self, data):
         self.gamemap = GameMap(data)
-        self.gamemap.initialize()
+        self.gamemap.initialize(data=data)
         mapname = TextInput(pygame.Rect(50, self.frontend.mapw+70, self.mapw,25), 16, self.frontend.eventstack, prompt=self.gamemap.get('core/displayname','Enter map displayname here'))
         self.frontend.sprites['mapname'] = mapname        
         for x in range(0,20):
             for y in range(0,20):
                 tile = self.gamemap.tile(x,y)
-                self.backgrounds['%s_%s' % (x,y)] = tile.background()
                 scn_x = 50+(self.tilesize*x)
                 scn_y = 65+(self.tilesize*y)
                 self.image.blit(self.tileimage(x,y, self.tilesize),(self.tilesize*x, self.tilesize*y))
@@ -59,7 +63,6 @@ class Mapview(Tempsprites):
         surface.blit(render_text('Edit tile', color=(255,0,0)),(280,10))
         minx, miny = self.frontend.rightwindow_rect.x + 10, self.frontend.rightwindow_rect.y + 10
         maxx, maxy = minx + self.frontend.rightwindow_rect.w - 10, self.frontend.rightwindow_rect.h - 10
-        debug (maxx,'x',maxy)
         te_canenter = checkboxbtn('Can enter tile ?', self.canenter, (x,y), self.frontend.eventstack,self.frontend.imagecache, pos=(minx + 280,miny + 60))
         te_canenter.checked = self.gamemap.tile(x,y).canenter()
         self._addtemp('te_canenter', te_canenter)
@@ -75,16 +78,24 @@ class Mapview(Tempsprites):
         self.frontend.draw()
 
     def setbg(self, bgpath, x, y):
-        debug(bgpath)
+        map_x, map_y = x, y
+        debug('%s - %sx%s' % (bgpath, x, y))
         self.clickhash = self.frontend.eventstack.register_event("button1", self, self.click)
-        self.click(x,y)
+        self.tile = self.gamemap.tile(map_x,map_y)
+        self.tile.put('core/background', bgpath)
+        self.updatetile(x,y) 
+        x = x*self.tilesize+50
+        y = y*self.tilesize+65
+        self.click((x,y))
+
 
     def canenter(self, x, y):
         self.tile.canenter(self.frontend.sprites['te_canenter'].checked)
 
     def updatetile(self, x, y):
         self.gamemap.load_tile(x,y,self.tile)
-        debug(self.gamemap())
+        self.loadmap(self.gamemap())
+        self.frontend.screen.blit(self.image, (50,65))
 
     def click(self, pos):
         self._rmtemp()
@@ -93,7 +104,7 @@ class Mapview(Tempsprites):
         y = y - 65
         map_x = int(x / self.tilesize)
         map_y = int(y / self.tilesize)
-        zoomimage = self.tileimage(map_x, map_y, 256)
+        zoomimage = self.tileimage(map_x, map_y, 128)
         self.frontend.sprites['rightwindow'].image.blit(zoomimage, (15,15))
         self.tile = self.gamemap.tile(map_x,map_y)
         if self.frontend.mode == 'editor':
