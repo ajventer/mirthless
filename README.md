@@ -1,4 +1,5 @@
 # mirthless
+![Screenshot from pre-release version](/screenshots/mirthless_screenshot_4.jpg?raw=true "Designing a map in the mirthless editor")
 A single player RPG in which you are the evil bad guy.
 Mirthless is based on (heavily modified) code from EZDM and intends to create a full fledged single player role playing game with an ADND2E ruleset in which the player gets to play a truly evil character intent on becoming a dark lord.
 
@@ -23,7 +24,7 @@ TODO list for initial release (in no particular order):
 3. Rewrite the game interface in pygame replacing the current web based interface. 
 
   - Write the editor in pygame
-  	- Map Editor
+  	- Map Editor - in progress
   	- NPC and Monster editor
   	- Quest editor ? 
 
