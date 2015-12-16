@@ -3,9 +3,12 @@ from pygame.locals import *
 from util import debug, file_list, gamedir
 from messagebox import MessageBox
 from imagecache import ImageCache
+from util import file_path
 
-def render_text (text, size=32, color=(0,0,0)):
-    font = pygame.font.Font(None, size)
+def render_text (text, size=32, color=(0,0,0), font=None):
+    #font = pygame.font.SysFont('monospace', size)
+    if font is None:
+        font = pygame.font.Font(file_path('fonts','BLKCHCRY.TTF'), 16)
     rendered = font.render(str(text), 1, color)
     return rendered 
 
@@ -28,18 +31,18 @@ class Button(pygame.sprite.DirtySprite):
         self.pos = pos
         self.onclick = onclick
         self.onclick_params = onclick_params
-        self.label = render_text (label, size=24, color=(0,0,0))
+        self.label = render_text (label, size=16, color=(20,250,20))
 
         labelrect = self.label.get_rect()
         
-        self.button_rest = pygame.transform.smoothscale(button_rest, (labelrect.w + 20, labelrect.h + 12))
-        self.button_rest.blit(self.label,(10,6))
+        self.button_rest = pygame.transform.smoothscale(button_rest, (labelrect.w + 50, labelrect.h + 12))
+        self.button_rest.blit(self.label,(25,6))
 
-        self.button_hi = pygame.transform.smoothscale(button_hi, (labelrect.w + 20, labelrect.h + 12))
-        self.button_hi.blit(self.label,(10,6))
+        self.button_hi = pygame.transform.smoothscale(button_hi, (labelrect.w + 50, labelrect.h + 12))
+        self.button_hi.blit(self.label,(25,6))
 
-        self.button_click = pygame.transform.smoothscale(button_click, (labelrect.w + 20, labelrect.h + 12))
-        self.button_click.blit(self.label,(10,6))
+        self.button_click = pygame.transform.smoothscale(button_click, (labelrect.w + 50, labelrect.h + 12))
+        self.button_click.blit(self.label,(25,6))
 
 
         rect = self.button_rest.get_rect()
@@ -89,7 +92,7 @@ class checkboxbtn(Button):
         self.pos = pos
         self.onclick = onclick
         self.onclick_params = onclick_params
-        self.label = render_text (label, size=24, color=(0,0,0))
+        self.label = render_text (label, size=24, color=(255,0,20))
 
         labelrect = self.label.get_rect()        
                 

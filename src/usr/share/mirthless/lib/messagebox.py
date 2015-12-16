@@ -7,6 +7,7 @@ from pygame import image
 from pygame import mouse
 from pygame import transform
 from pygame.locals import *
+from util import file_path
 # DEFAULT_CURSOR = mouse.get_cursor()
 
 # #the hand cursor
@@ -33,7 +34,7 @@ from pygame.locals import *
 DEFAULT = {
     'bkg'       : (11, 11, 11),
     'color'     : (201, 192, 187),
-    'font'      : Font(None, 16),
+    'font'      : Font(file_path('fonts','BLKCHCRY.TTF'), 16),
     'spacing'   : 0, #FONT.get_linesize(),
     }
 

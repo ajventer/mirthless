@@ -5,7 +5,6 @@ from util import debug
 from messages import messages
 from button import render_text, Button, checkboxbtn
 import yaml
-
                                 
 class Mapview(object):
     def __init__(self, frontend):
@@ -34,7 +33,7 @@ class Mapview(object):
                 else:
                     r, t = 0, 255
                 tileimage.fill((r,r,r,0))
-                tileimage.blit(render_text('%sX%s' %(x,y), size=(self.tilesize/2), color=(t,t,t)), (1,1))
+                tileimage.blit(render_text('%sX%s' %(x,y), size=(self.tilesize/2), color=(t,t,t), font=pygame.font.Font(None,16) ), (1,1))
             else:
                 tileimage.fill((0,0,0,0))
         return tileimage

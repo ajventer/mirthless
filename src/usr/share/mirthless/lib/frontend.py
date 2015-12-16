@@ -25,8 +25,8 @@ class Frontend(object):
         ]
         self.editor_menu = [
         ("Main Menu", self.editormain),
-        ("Items and spells", todo_event),
-        ("NPCs and Monsters", todo_event),
+        ("Items/spells", todo_event),
+        ("NPCs", todo_event),
         ("Quests", todo_event),
         ("Quit", sys.exit)
         ]

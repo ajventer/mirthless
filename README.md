@@ -74,3 +74,6 @@ http://www.pygame.org/project-Glyph-1002-2794.html
 
 Wallpaper:
 http://opengameart.org/content/landscape
+
+Blackchancery font from: 
+http://www.1001fonts.com/blackchancery-font.html

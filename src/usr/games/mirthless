@@ -6,6 +6,7 @@ import sys
 import pygame
 from pygame.locals import *
 
+
 #The following slightly convoluted import block allows the game to run from the source tree for development
 #When you do so, the local source paths take precedence over the installed paths.
 #TODO: Add a windows check and alter default paths to work on that platform.
@@ -46,6 +47,7 @@ if __name__ == "__main__":
             quit = eventstack.handle_event(event)
         frontend.draw()
         pygame.display.flip()
+
 
 
 
