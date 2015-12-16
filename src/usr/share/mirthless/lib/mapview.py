@@ -33,6 +33,8 @@ class Mapview(Tempsprites):
             debug('Blitting visible tile ', backgroundimage)
             tileimage.blit(backgroundimage,(0,0))
             tileimage = pygame.transform.smoothscale(tileimage, (scale, scale))
+            if self.frontend.mode == 'editor':
+                tileimage.blit(render_text('%sX%s' %(x,y), size=(self.tilesize/2), color=(0,0,0), font=pygame.font.Font(None,16) ), (self.tilesize/2,self.tilesize/2))
         else:
             if self.frontend.mode == 'editor':
                 if y%2 == 0 and x%2 == 0 or y%2 == 1 and x%2 == 1:
