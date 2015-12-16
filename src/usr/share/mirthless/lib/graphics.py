@@ -55,6 +55,7 @@ class Tilemap(object):
 #Holds all the tilemaps in a collection
 class Tilemaps(dict):
     def initialize(self):
+        self.lastpage = 0
         keyfilter = list(imagecache.gui_map.keys())
         keyfilter.append('RPG_GUI_v1.png')
         keyfilter.append('wood background.png')
@@ -67,6 +68,7 @@ class Tilemaps(dict):
 
     #Get all tiles in a specific map sequentially
     def iterall(self, key):
+        self.lastpage = sorted(list(self.keys())).index(key)
         tilemap = self[key]
         for image in tilemap.iterall():
             yield '%s:%s:%s' % (key, image[0], image[1])

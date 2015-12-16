@@ -57,7 +57,7 @@ class TileSelector(FloatDialog, Tempsprites):
         self.frontend = frontend
         self._layer=5
         FloatDialog.__init__(self, rect, self.frontend.imagecache)
-        self.page = 0
+        self.page = self.frontend.tilemaps.lastpage
         prevbtn = Button('Prev', self.prev, [], self.frontend.eventstack, self.frontend.imagecache, (rect.x+10,rect.y+rect.h-50), layer=6)
         nextbtn = Button('Next', self.next, [], self.frontend.eventstack, self.frontend.imagecache, (rect.x+rect.w-100,rect.y+rect.h-50), layer=6)
         self.clickhash = self.frontend.eventstack.register_event("button1", self, self.click)
