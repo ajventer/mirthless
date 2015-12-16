@@ -134,15 +134,17 @@ class TextInput(pygame.sprite.DirtySprite):
         self.fontsize = fontsize
         self.eventstack = eventstack
         self.registered_events.append(self.eventstack.register_event("keydown", self, self.kb))
+        self.registered_events.append(self.eventstack.register_event("button1", self, self.click))
         self.cur = False
         self.cpos = len(self.text)
         self.counter = 0
         self.capslock = False
+        self.has_focus = False
 
     @property
     def image(self):
         self.counter += 1
-        if self.counter == 1 or self.counter%10 == 0:
+        if (self.counter == 1 or self.counter%10 == 0) and self.has_focus:
             self.cur = not self.cur
         cur = self.cur and '-' or '_'
         out = list(self.text)
@@ -157,6 +159,8 @@ class TextInput(pygame.sprite.DirtySprite):
 
     def kb(self, event):
         #This method almost certainly could be made a lot better
+        if not self.has_focus:
+            return
         if event.key == K_BACKSPACE:
             if len(self.text) > 0:
                 try:
@@ -175,6 +179,8 @@ class TextInput(pygame.sprite.DirtySprite):
                     self.cpos = len(self.text)
         elif event.key == K_CAPSLOCK:
             self.capslock = not self.capslock
+        elif event.key == K_RETURN:
+            self.has_focus = False
         elif event.key == K_SPACE:
             self.text += ' '
         elif event.key == K_LEFT:
@@ -192,4 +198,7 @@ class TextInput(pygame.sprite.DirtySprite):
         for h in self.registered_events:
             self.eventstack.unregister_event(h)
         self.kill()
+
+    def click(self, pos):
+        self.has_focus = True
 
