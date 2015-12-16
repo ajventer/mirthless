@@ -14,7 +14,8 @@ class EventStack():
             "button3": {},
             "button1up": {},
             "wheelup": {},
-            "wheeldown": {}
+            "wheeldown": {},
+            "keydown": {},
         }
 
     def register_event(self, event, sprite, method):
@@ -38,6 +39,11 @@ class EventStack():
 
     def handle_event(self, event):
         deleteme =[]
+        if event.type == KEYDOWN:
+            x,y = pygame.mouse.get_pos()
+            for sprite in self.events["keydown"]:
+                if sprite.rect.collidepoint(x,y):
+                    self.events["keydown"][sprite][0](event)
         if event.type == pygame.QUIT:
             return True
         if event.type == MOUSEMOTION:

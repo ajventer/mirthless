@@ -3,7 +3,7 @@ from pygame.locals import *
 from gamemap import GameMap
 from util import debug
 from messages import messages
-from button import render_text, Button, checkboxbtn
+from button import render_text, Button, checkboxbtn, TextInput
 import yaml
                                 
 class Mapview(object):
@@ -67,6 +67,7 @@ class Mapview(object):
         self._addtemp('te_canenter', te_canenter)
         self._addtemp('updatebtn', Button('Update tile', 
             self.updatetile, (x,y), self.frontend.eventstack,self.frontend.imagecache, pos=(minx + self.frontend.rightwindow_rect.w/2 - 20, self.frontend.rightwindow_rect.h - 30)))
+        self._addtemp('textentry', TextInput(pygame.Rect(minx+10, miny+500, 300,25), 16, self.frontend.eventstack, prompt='TYPE HERE'))        
         self.frontend.draw()
 
     def canenter(self, x, y):

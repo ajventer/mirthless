@@ -8,7 +8,7 @@ from util import file_path
 def render_text (text, size=32, color=(0,0,0), font=None):
     #font = pygame.font.SysFont('monospace', size)
     if font is None:
-        font = pygame.font.Font(file_path('fonts','BLKCHCRY.TTF'), 16)
+        font = pygame.font.Font(file_path('fonts','BLKCHCRY.TTF'), size)
     rendered = font.render(str(text), 1, color)
     return rendered 
 
@@ -123,3 +123,73 @@ class checkboxbtn(Button):
         self.checked = not self.checked
         if self.onclick is not None:
             self.onclick(*self.onclick_params)
+
+class TextInput(pygame.sprite.DirtySprite):
+    def __init__(self, rect, fontsize, eventstack, prompt=''):
+        self.text = prompt
+        self._layer = 10
+        self.registered_events = []
+        super(pygame.sprite.DirtySprite, self).__init__()
+        self.rect = rect
+        self.fontsize = fontsize
+        self.eventstack = eventstack
+        self.registered_events.append(self.eventstack.register_event("keydown", self, self.kb))
+        self.cur = False
+        self.cpos = len(self.text)
+        self.counter = 0
+        self.capslock = False
+
+    @property
+    def image(self):
+        self.counter += 1
+        if self.counter == 1 or self.counter%10 == 0:
+            self.cur = not self.cur
+        cur = self.cur and '-' or '_'
+        out = list(self.text)
+        if self.cpos >= len(out):
+            out.append(cur)
+        else:
+            out.insert(self.cpos,cur)
+        surface = pygame.Surface((self.rect.w, self.rect.h))
+        surface.fill((255,255,255))
+        surface.blit(render_text (''.join(out), color=(0,0,0), font=pygame.font.SysFont('monospace',self.fontsize)), (3,3))
+        return surface
+
+    def kb(self, event):
+        #This method almost certainly could be made a lot better
+        if event.key == K_BACKSPACE:
+            if len(self.text) > 0:
+                try:
+                    out = list(self.text)
+                    del out[self.cpos -1]
+                    self.text = ''.join(out)
+                except:
+                    self.cpos = len(self.text)
+        elif event.key == K_DELETE:
+            if len(self.text) > 0 and self.cpos < len(self.text):
+                try:
+                    out = list(self.text)
+                    del out[self.cpos]
+                    self.text = ''.join(out)
+                except:
+                    self.cpos = len(self.text)
+        elif event.key == K_CAPSLOCK:
+            self.capslock = not self.capslock
+        elif event.key == K_SPACE:
+            self.text += ' '
+        elif event.key == K_LEFT:
+            if self.cpos > 0: self.cpos -= 1
+        elif event.key == K_RIGHT:
+            if self.cpos < len(self.text): self.cpos += 1            
+        else:
+            if not self.capslock:
+                self.text += event.unicode
+            else:
+                self.text += event.unicode.upper()
+            self.cpos += 1
+
+    def delete(self):
+        for h in self.registered_events:
+            self.eventstack.unregister_event(h)
+        self.kill()
+

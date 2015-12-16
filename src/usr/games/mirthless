@@ -41,6 +41,7 @@ if __name__ == "__main__":
     screen, screenlayout, frontend = initpygame(settings, 'Mirthless RPG')
     quit = False 
     clock = pygame.time.Clock()
+    pygame.key.set_repeat(200, 100)
     while not quit:     
         clock.tick(60)  
         for event in pygame.event.get():
