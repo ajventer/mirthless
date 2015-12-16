@@ -189,9 +189,15 @@ class TextInput(pygame.sprite.DirtySprite):
             if self.cpos < len(self.text): self.cpos += 1            
         else:
             if not self.capslock:
-                self.text += event.unicode
+                new = event.unicode
             else:
-                self.text += event.unicode.upper()
+                new = event.unicode.upper()
+            out = list(self.text)
+            try:
+                out.insert(self.cpos, new)
+            except:
+                out.append(new)
+            self.text = ''.join(out)
             self.cpos += 1
 
     def delete(self):
