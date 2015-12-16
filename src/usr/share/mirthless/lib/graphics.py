@@ -59,6 +59,7 @@ class Tilemaps(dict):
         keyfilter.append('RPG_GUI_v1.png')
         keyfilter.append('wood background.png')
         keyfilter.append('paper background.png')
+        keyfilter.append('landscape.png')
         for key in imagecache:
             if not key in keyfilter:
                 self[key] = Tilemap(key)
@@ -66,7 +67,10 @@ class Tilemaps(dict):
 
     #Get all tiles in a specific map sequentially
     def iterall(self, key):
-        return self[key].iterall
+        tilemap = self[key]
+        for image in tilemap.iterall():
+            yield image
+
 
     def tile(self,mapname,x,y):
         return self[mapname].tile(x,y)

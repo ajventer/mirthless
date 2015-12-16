@@ -38,12 +38,12 @@ class Frontend(object):
             self.screen = screen
             self.screensize = self.screen.get_rect()
             self.tilemaps = tilemaps
-            dialogx = (self.screensize.w /2)+50
             self.mapw = int(self.screensize.w /2)-180
+            dialogx = self.mapw+100
             self.maprect = pygame.Rect(50,65, self.mapw, self.mapw)
             self.mapscale = int(self.mapw /20)
             debug ("Mapwidth: ", self.mapw, "Tile size", self.mapscale)
-            self.rightwindow_rect = pygame.Rect(dialogx, 65, self.screensize.w - 100 -dialogx, self.screensize.h - 300)
+            self.rightwindow_rect = pygame.Rect(dialogx, 65, self.screensize.w - 50 -dialogx, self.screensize.h - 300)
             self.messagebox_rect = pygame.Rect(0,self.screensize.h - 190,self.screensize.w, self.screensize.h)
             self.layout = {
                 "header": [],

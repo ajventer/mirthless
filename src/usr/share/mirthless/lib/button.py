@@ -21,8 +21,8 @@ def scrn_print(surface, text, x, y, size=32, color=(0,0,0)):
 
 
 class Button(pygame.sprite.DirtySprite):
-    def __init__(self, label, onclick, onclick_params, eventstack,imagecache, pos=(0,0)):
-        self._layer = 10
+    def __init__(self, label, onclick, onclick_params, eventstack,imagecache, pos=(0,0), layer=2):
+        self._layer = layer
         self.registered_events = []
         super(pygame.sprite.DirtySprite, self).__init__()
         button_rest = imagecache['button_rest']
