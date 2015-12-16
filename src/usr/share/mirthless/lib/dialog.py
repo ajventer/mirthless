@@ -1,7 +1,7 @@
 import pygame
 from pygame.locals import *
 from util import debug, file_list, gamedir
-from button import Button
+from button import Button, render_text
 from tempsprites import Tempsprites
 from messages import messages
 
@@ -59,10 +59,10 @@ class TileSelector(FloatDialog, Tempsprites):
         self.page = 0
         prevbtn = Button('Prev', self.prev, [], self.frontend.eventstack, self.frontend.imagecache, (rect.x+10,rect.y+rect.h-50), layer=6)
         nextbtn = Button('Next', self.next, [], self.frontend.eventstack, self.frontend.imagecache, (rect.x+rect.w-100,rect.y+rect.h-50), layer=6)
-        selectbtn = Button('Select', self.select, [], self.frontend.eventstack, self.frontend.imagecache, (rect.x+rect.w/2,rect.y+rect.h-50), layer=6)
         self._addtemp('ts_prevbtn', prevbtn)
         self._addtemp('ts_nextbtn', nextbtn)
-        self._addtemp('ts_selectbtn', selectbtn)
+        self.rect = rect
+
         self.pages = sorted(list(self.frontend.tilemaps.keys()))
         self.update()
 
@@ -73,7 +73,9 @@ class TileSelector(FloatDialog, Tempsprites):
         x = 10
         y = 10
         filename = self.pages[self.page]
+
         messages.message('Tilemap '+filename)
+        self.image.blit(render_text (filename, size=32, color=(0,0,0)),(self.rect.x+self.rect.w/2, self.rect.y+self.rect.h -50))
         for image in self.frontend.tilemaps.iterall(filename):
             if x >= self.rect.w - 75:
                 col = 0

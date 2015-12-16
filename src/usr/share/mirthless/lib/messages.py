@@ -6,36 +6,32 @@ class Messages(object):
     messages=[]
     messageindex = 0
     def __init__(self, screen=None, eventstack=None):
+        self.buffer = 6
         if screen:
             screensize = screen.get_rect()
             self.rect = pygame.Rect(0,screensize.h - 190,screensize.w, screensize.h)
-        if eventstack:
-            debug('Registering wheel handlers')
-            eventstack.register_event("wheelup", self, self.scrollup) 
-            eventstack.register_event("wheeldown", self, self.scrolldown)
 
     def scrollup(self):
-        debug(self.messageindex)
-        if self.messageindex > 5:
+        if self.messageindex > self.buffer:
             self.messageindex -= 1
         else:
             self.messageindex = 0
 
     def scrolldown(self):
-        if self.messageindex < len(self.messages) -6:
+        if self.messageindex < len(self.messages) - self.buffer:
             self.messageindex += 1
         else:
-            self.messageindex = len(self.messages) -6
+            self.messageindex = len(self.messages) - self.buffer
 
     def read(self):
         if not self.messages:
             return ''
         result =''
-        if len(self.messages) < 5:
+        if len(self.messages) < self.buffer:
             for line in self.messages:
                 result += '\n'+line.strip()
             return result
-        end = min([self.messageindex + 5, len(self.messages) -1])
+        end = min([self.messageindex + self.buffer, len(self.messages) -1])
         for I in range(self.messageindex, end):
             result += '\n'+self.messages[I].strip()
         return result

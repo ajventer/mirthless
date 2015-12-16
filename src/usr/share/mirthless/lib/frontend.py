@@ -49,7 +49,7 @@ class Frontend(object):
                 "header": [],
                 "dialog": None
                 } 
-            self.mb = MessageBox(self.messagebox_rect)
+            self.sprites['mb'] = MessageBox(self.messagebox_rect, messages, self)
 
     def editormain(self):
         mainmenu = FloatDialog(pygame.Rect(100,100,100,100), self.imagecache)
@@ -75,10 +75,6 @@ class Frontend(object):
       
         #Messagebox
         self.screen.blit(seperator, (0,self.screensize.h -205))
-        mb_up = ButtonArrow(messages.scrollup, [], self.eventstack, self.imagecache, 'up', pos=(screensize.w - 27,screensize.h-190))
-        mb_down = ButtonArrow(messages.scrolldown, [], self.eventstack, self.imagecache, 'down', pos=(screensize.w - 27,screensize.h-100))
-        self.sprites['mb_up'] = mb_up
-        self.sprites['mb_dn'] = mb_down
         #Mainwindow
         #20+10+640+10+20
         dialog = Dialog(self.rightwindow_rect, self.imagecache)
@@ -96,9 +92,9 @@ class Frontend(object):
     def draw(self):
         screensize = self.screen.get_rect()
         sprites = pygame.sprite.LayeredUpdates()
-        self.mb.clear(self.screen, self.background)
-        g, r = self.mb.image(messages.read().replace('\n','/n'))
-        self.screen.blit(g, r)
+        #self.sprites['mb'].clear(self.screen, self.background)
+        #self.sprites['mb'].image
+        #self.screen.blit(g, r)
         for sprite in self.sprites:
             sprites.add(self.sprites[sprite])
         sprites.clear(self.screen, self.background)

@@ -9,8 +9,7 @@ def render_text (text, size=32, color=(0,0,0), font=None):
     #font = pygame.font.SysFont('monospace', size)
     if font is None:
         font = pygame.font.Font(file_path('fonts','BLKCHCRY.TTF'), size)
-    rendered = font.render(str(text), 1, color)
-    return rendered 
+    return font.render(str(text), 1, color)
 
 def scrn_print(surface, text, x, y, size=32, color=(0,0,0)):
     rendered_text = render_text(text, size=size, color=color)

@@ -6,6 +6,7 @@ from pygame.font import Font
 from pygame import image
 from pygame import mouse
 from pygame import transform
+from pygame import sprite
 from pygame.locals import *
 from util import file_path
 # DEFAULT_CURSOR = mouse.get_cursor()
@@ -38,16 +39,28 @@ DEFAULT = {
     'spacing'   : 0, #FONT.get_linesize(),
     }
 
-class MessageBox():
-    def __init__(self, CLIP):
+class MessageBox(sprite.DirtySprite):
+    def __init__(self, CLIP, messages, frontend):
+        self.layer=0
+        super(sprite.DirtySprite, self).__init__()
         self.glyph = Glyph(CLIP, ncols=2, **DEFAULT)
+        self.frontend = frontend
+        self.messages = messages
+        self.frontend.eventstack.register_event("wheelup", self, messages.scrollup) 
+        self.frontend.eventstack.register_event("wheeldown", self, messages.scrolldown)        
 
-    def image(self, text):
+    @property   
+    def image(self):
+        self.clear(self.frontend.screen, self.frontend.background)
         glyph = self.glyph
         glyph_rect = glyph.rect
-        glyph.input(text, justify = 'justified')
+        glyph.input(self.messages.read().replace('\n','/n'), justify = 'justified')
         glyph.update()
-        return glyph.image, glyph_rect
+        return glyph.image
+
+    @property
+    def rect(self):
+        return self.glyph.rect
 
     def clear(self, screen, background):
     	self.glyph.clear(screen, background)
