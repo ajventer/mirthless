@@ -16,6 +16,7 @@ class Mapview(object):
         self.image  = pygame.Surface((size, size))
         self.backgrounds = {}
         self.temp = []
+        self.mapw = self.frontend.mapw
 
 
     def tileimage(self, x, y, scale):
@@ -41,6 +42,8 @@ class Mapview(object):
     def loadmap(self, data):
         self.gamemap = GameMap(data)
         self.gamemap.initialize()
+        mapname = TextInput(pygame.Rect(50, self.frontend.mapw+70, self.mapw,25), 16, self.frontend.eventstack, prompt=self.gamemap.get('core/displayname','Enter map displayname here'))
+        self.frontend.sprites['mapname'] = mapname        
         for x in range(0,20):
             for y in range(0,20):
                 tile = self.gamemap.tile(x,y)
@@ -66,8 +69,7 @@ class Mapview(object):
         te_canenter.checked = self.gamemap.tile(x,y).canenter()
         self._addtemp('te_canenter', te_canenter)
         self._addtemp('updatebtn', Button('Update tile', 
-            self.updatetile, (x,y), self.frontend.eventstack,self.frontend.imagecache, pos=(minx + self.frontend.rightwindow_rect.w/2 - 20, self.frontend.rightwindow_rect.h - 30)))
-        self._addtemp('textentry', TextInput(pygame.Rect(minx+10, miny+500, 300,25), 16, self.frontend.eventstack, prompt='TYPE HERE'))        
+            self.updatetile, (x,y), self.frontend.eventstack,self.frontend.imagecache, pos=(minx + self.frontend.rightwindow_rect.w/2 - 20, self.frontend.rightwindow_rect.h - 30)))      
         self.frontend.draw()
 
     def canenter(self, x, y):
