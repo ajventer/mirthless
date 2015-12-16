@@ -2,7 +2,7 @@ from glyph import Editor, Glyph, Macros
 from pygame import display
 from pygame import draw
 from pygame import event
-from pygame.font import Font
+from pygame.font import Font, SysFont
 from pygame import image
 from pygame import mouse
 from pygame import transform
@@ -35,7 +35,7 @@ from util import file_path
 DEFAULT = {
     'bkg'       : (11, 11, 11),
     'color'     : (201, 192, 187),
-    'font'      : Font(file_path('fonts','BLKCHCRY.TTF'), 16),
+    'font'      : SysFont('monospace', 16), #Font(file_path('fonts','BLKCHCRY.TTF'), 16),
     'spacing'   : 0, #FONT.get_linesize(),
     }
 

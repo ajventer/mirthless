@@ -125,6 +125,7 @@ class checkboxbtn(Button):
 
 class TextInput(pygame.sprite.DirtySprite):
     def __init__(self, rect, fontsize, eventstack, prompt=''):
+        self.prompt = prompt
         self.text = prompt
         self._layer = 10
         self.registered_events = []
@@ -139,6 +140,12 @@ class TextInput(pygame.sprite.DirtySprite):
         self.counter = 0
         self.capslock = False
         self.has_focus = False
+
+    def get_text(self):
+        if self.text == self.prompt:
+            return ''
+        else:
+            return self.text
 
     @property
     def image(self):
@@ -206,4 +213,6 @@ class TextInput(pygame.sprite.DirtySprite):
 
     def click(self, pos):
         self.has_focus = True
+        if self.text == self.prompt:
+            self.text = ''
 

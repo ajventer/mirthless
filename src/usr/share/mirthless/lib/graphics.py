@@ -49,8 +49,13 @@ class Tilemap(object):
     def table(self):
         return self.tile_table
 
-    def tile(self, x, y):
-        return self.tile_table[x][y]
+    def tile(self, x, y, rot=0):
+        if rot == 0:
+            return self.tile_table[x][y]
+        else:
+            img = self.tile_table[x][y].copy()
+            img = pygame.transform.rotate(img, float(rot))
+            return img        
 
 #Holds all the tilemaps in a collection
 class Tilemaps(dict):
@@ -74,12 +79,12 @@ class Tilemaps(dict):
             yield '%s:%s:%s' % (key, image[0], image[1])
 
 
-    def tile(self,mapname,x,y):
-        return self[mapname].tile(x,y)
+    def tile(self,mapname,x,y, rot=0):
+        return self[mapname].tile(x,y, rot)
 
     def get_by_path(self, path):
         backgroundpath = imagepath(path)
-        return self.tile(backgroundpath[0], backgroundpath[1], backgroundpath[2])
+        return self.tile(backgroundpath[0], backgroundpath[1], backgroundpath[2], backgroundpath[3])
 
 tilemaps = Tilemaps()
 

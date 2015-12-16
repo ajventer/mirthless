@@ -28,10 +28,6 @@ class Tile(EzdmObject):
             return self.get('conditional/canenter', False)
         self.put('conditional/canenter', new)
 
-    def save(self):
-        #TODO
-        pass
-
     def add(self, name, objtype):
         if isinstance(name, str) and not name.endswith('.yaml'):
             name = '%s.yaml' % name
@@ -143,10 +139,6 @@ class GameMap(EzdmObject):
     def name(self):
         name = '%s.yaml' % self.get('name', '').lower().replace(' ', '_')
         return name
-
-    # def save(self):
-    #     #TODO
-    #     pass
 
     def reveal(self, x, y, xtraradius=0):
         radius = int(self.get('lightradius', 1)) + xtraradius

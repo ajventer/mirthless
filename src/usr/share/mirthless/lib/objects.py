@@ -1,4 +1,4 @@
-from util import debug, dump_yaml, make_hash, gamedir
+from util import debug, dump_yaml, make_hash, gamedir, save_yaml
 from flatteneddict import FlattenedDict, stripslashes
 
 def event(obj, key, localvars):
@@ -92,8 +92,10 @@ class EzdmObject(object):
     def putsubtree(self, key, value):
         return self.objdata.writesubtree(key, value)
 
-    def filename():
+    def filename(self):
         return '%s.yaml' % self.get_hash()
 
     def save_to_file(self, directory):
-        save_yaml(directory, self.filename(), str(self), new=True)
+        filename = save_yaml(directory, self.filename(), dict(self()), new=True)
+        return filename
+        

@@ -24,7 +24,7 @@ class Frontend(object):
         ("Quit", sys.exit)
         ]
         self.editor_menu = [
-        ("Main Menu", self.editormain),
+        ("Maps", self.editormain),
         ("Items/spells", todo_event),
         ("NPCs", todo_event),
         ("Quests", todo_event),

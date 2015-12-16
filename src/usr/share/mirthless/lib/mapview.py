@@ -7,6 +7,8 @@ from button import render_text, Button, checkboxbtn, TextInput
 from tempsprites import Tempsprites
 from dialog import TileSelector
 import yaml
+import os
+from util import imagepath
                                 
 class Mapview(Tempsprites):
     def __init__(self, frontend):
@@ -19,6 +21,7 @@ class Mapview(Tempsprites):
         self.backgrounds = {}
         self.mapw = self.frontend.mapw
         Tempsprites.__init__(self)
+        self.firstload = True
 
 
     def tileimage(self, x, y, scale):
@@ -51,15 +54,16 @@ class Mapview(Tempsprites):
     def loadmap(self, data):
         self.gamemap = GameMap(data)
         self.gamemap.initialize(data=data)
-        mapname = TextInput(pygame.Rect(50, self.frontend.mapw+70, self.mapw /2,25), 16, self.frontend.eventstack, prompt=self.gamemap.get('core/name','Enter map displayname here'))
-        mapload = Button('Load', self.load, [], self.frontend.eventstack,self.frontend.imagecache, pos=(self.mapw/2 + 50,self.frontend.mapw+67))
-        mapsave = Button('Save', self.save, [], self.frontend.eventstack,self.frontend.imagecache, pos=(self.mapw/2 + 150,self.frontend.mapw+67))
-        self._addtemp('mapname', mapname)
-        self._addtemp('mapload', mapload)
-        self._addtemp('mapsave', mapsave)
+        if self.frontend.mode == 'editor' and self.firstload:
+            self.firstload = False
+            self.mapname = TextInput(pygame.Rect(50, self.frontend.mapw+70, self.mapw /2,25), 16, self.frontend.eventstack, prompt=self.gamemap.get('core/name','Enter map displayname here'))
+            mapload = Button('Load', self.load, [], self.frontend.eventstack,self.frontend.imagecache, pos=(self.mapw/2 + 50,self.frontend.mapw+67))
+            mapsave = Button('Save', self.save, [], self.frontend.eventstack,self.frontend.imagecache, pos=(self.mapw/2 + 150,self.frontend.mapw+67))
+            self.frontend.sprites['mapname'] = self.mapname
+            self.frontend.sprites['mapload'] = mapload
+            self.frontend.sprites['mapsave'] = mapsave
         for x in range(0,20):
             for y in range(0,20):
-                tile = self.gamemap.tile(x,y)
                 scn_x = 50+(self.tilesize*x)
                 scn_y = 65+(self.tilesize*y)
                 self.image.blit(self.tileimage(x,y, self.tilesize),(self.tilesize*x, self.tilesize*y))
@@ -68,7 +72,9 @@ class Mapview(Tempsprites):
         pass
 
     def save(self):
-        pass
+        self.gamemap.put('name', self.mapname.get_text())
+        filename = self.gamemap.save_to_file('maps')
+        messages.error('Saved to: %s' % os.path.basename(filename))
 
     def tile_editor(self, x, y, surface):
         surface.blit(render_text('Edit tile', color=(255,0,0)),(280,10))
@@ -78,12 +84,13 @@ class Mapview(Tempsprites):
         te_revealed = checkboxbtn('Tile has been revealed ?', self.revealed, (x,y), self.frontend.eventstack,self.frontend.imagecache, pos=(minx + 280,miny + 90))
         te_canenter.checked = self.gamemap.tile(x,y).canenter()
         te_revealed.checked = self.gamemap.tile(x,y).revealed()
+        if self.tile.background():
+            self._addtemp('te_rotate', Button('Rotate background', 
+                self.rotate, (x,y), self.frontend.eventstack,self.frontend.imagecache, pos=(minx + 280, miny + 120)))             
         self._addtemp('te_canenter', te_canenter)
         self._addtemp('te_revealed', te_revealed)
         self._addtemp('te_set_background', Button('Set Background', 
             self.selectbg, (x,y), self.frontend.eventstack,self.frontend.imagecache, pos=(minx + 280, miny + 30)))              
-        self._addtemp('updatebtn', Button('Update tile', 
-            self.updatetile, (x,y), self.frontend.eventstack,self.frontend.imagecache, pos=(minx + (maxx - minx)/2, miny + maxy - 50)))      
         self.frontend.draw()
 
     def selectbg(self, x, y):
@@ -102,12 +109,26 @@ class Mapview(Tempsprites):
         y = y*self.tilesize+65
         self.click((x,y))
 
+    def rotate(self, x,y):
+        bgpath = imagepath(self.tile.background())
+        rot = int(bgpath[3])
+        if rot == 270:
+            rot = 0
+        else:
+            rot += 90
+        bgpath = [bgpath[0], bgpath[1], bgpath[2], str(rot)]
+        bgpath = ':'.join([str(I) for I in bgpath])
+        debug(bgpath)
+        self.setbg(bgpath, x, y)
+
 
     def canenter(self, x, y):
         self.tile.canenter(self.frontend.sprites['te_canenter'].checked)
+        self.updatetile(x, y)
 
     def revealed(self, x, y):
-        self.tile.put('/core/revealed', self.frontend.sprites['te_canenter'].checked)        
+        self.tile.put('/core/revealed', self.frontend.sprites['te_canenter'].checked)
+        self.updatetile(x, y)
 
     def updatetile(self, x, y):
         self.gamemap.load_tile(x,y,self.tile)

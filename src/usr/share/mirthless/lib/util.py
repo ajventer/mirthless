@@ -13,7 +13,11 @@ gamedir = 'TESTDATA'
 
 def imagepath(s):
     parts=s.split(':')
-    return (parts[0], int(parts[1]), int(parts[2]))
+    if len(parts) == 4:
+        rot = parts[3]
+    else:
+        rot = 0
+    return (parts[0], int(parts[1]), int(parts[2]), rot)
 
 def forcegamedir():
     """
@@ -87,14 +91,14 @@ def load_yaml(directory, filename):
     return FlattenedDict(yaml.load(open(filename).read()))
 
 def dump_yaml(data):
-    yaml.safe_dump(data, default_flow_style=False, encoding='utf-8')
+    return yaml.safe_dump(data, default_flow_style=False, encoding='utf-8')
 
 
 def save_yaml(directory, filename, data, new=False):
     filename = file_path(directory, filename, new=new)
     strings = dump_yaml(data)
-    #open(filename,'w').write(strings)
-    debug(filename)
+    open(filename,'w').write(strings)
+    return filename
 
 def price_in_copper(gold, silver, copper):
     s = gold * 10 + silver
