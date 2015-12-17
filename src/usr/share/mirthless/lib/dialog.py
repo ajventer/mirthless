@@ -1,10 +1,11 @@
 import pygame
 from pygame.locals import *
-from util import debug, file_list, gamedir, imagepath, load_yaml
-from button import Button, render_text
+from util import debug, file_list, gamedir, imagepath, load_yaml, dump_yaml
+from button import Button, render_text, TextInput, ButtonArrow, checkboxbtn
 from tempsprites import Tempsprites
 from messages import messages
 from gamemap import GameMap
+import yaml
 
 class Dialog(pygame.sprite.DirtySprite):
     def __init__(self, rect, imagecache):
@@ -46,9 +47,86 @@ class Dialog(pygame.sprite.DirtySprite):
         self.image = self.surface.copy()
 
 class FloatDialog(Dialog):
+    resolutions=[
+        (1024,768),
+        (1280,768),
+        (1280,800),
+        (1280,1024),
+        (1400,1050),
+        (1920,1080),
+        (1920,1200),
+        (1360,768)
+        ]
     def __init__(self, rect, imagecache):
         self._layer=5
         Dialog.__init__(self, rect, imagecache)
+
+class SettingsDialog(FloatDialog, Tempsprites):
+    def __init__(self, rect, frontend):
+        FloatDialog.__init__(self, rect, frontend.imagecache)
+        Tempsprites.__init__(self)
+        self.frontend = frontend
+        self.settingsdata = yaml.load(open(self.frontend.settingsfile).read())
+        self.resolution = (self.settingsdata['res_x'],self.settingsdata['res_y'])
+        try:
+            self.respage = self.resolutions.index(self.resolution)
+        except ValueError:
+            self.respage = 0
+        self.layout()
+
+    def layout(self):
+        self.image.blit(render_text ('Game directory:', size=24, color=(255,0,0)),(10,10))
+        gd = TextInput(pygame.Rect(self.rect.x + 220, self.rect.y + 10, self.rect.w-250, 30), 18, self.frontend.eventstack, prompt=self.settingsdata['gamedir'], clearprompt=False)
+        self._addtemp('gamedirinput', gd)
+        self.image.blit(render_text ('Resolution:', size=24, color=(255,0,0)),(10,60))
+        res_left = ButtonArrow(self.resbtn, ['left'], self.frontend.eventstack,self.frontend.imagecache, 'left', pos=(self.rect.x+120,self.rect.y+60), layer=6)
+        res_right = ButtonArrow(self.resbtn, ['right'], self.frontend.eventstack,self.frontend.imagecache, 'right', pos=(self.rect.x+300,self.rect.y+60), layer=6)
+        self._addtemp('settings_res_left', res_left)
+        self._addtemp('settings_res_right', res_right)
+        self.image.blit(render_text ('%s X %s' %self.resolution, size=24, color=(255,0,0)),(170,60))
+        self.fullscreenbtn = checkboxbtn('Full screen', self.fullscreen, [], self.frontend.eventstack,self.frontend.imagecache, pos=(self.rect.x + 10,self.rect.y +100))
+        self.fullscreenbtn.checked = self.settingsdata['fullscreen']        
+        self._addtemp('fullscreen', self.fullscreenbtn)
+        self.hardwarebtn = checkboxbtn('Hardware rendering(requires fullscreen)', self.hardware, [], self.frontend.eventstack,self.frontend.imagecache, pos=(self.rect.x + 10,self.rect.y +130))
+        self.hardwarebtn.checked = self.settingsdata['hardware_buffer']
+        self._addtemp('hardware rendering', self.hardwarebtn)
+        self.image.blit(render_text ('Note: changes only take effect when you restart', size=24, color=(255,0,0)),(10,200))
+        save_btn = Button('Save changes', self.save, [], self.frontend.eventstack,self.frontend.imagecache, pos=(self.rect.x + 200,self.rect.y + 250), layer=6)
+        self._addtemp('savesettings', save_btn)
+
+    def save(self):
+        strings = dump_yaml(self.settingsdata)
+        open(self.frontend.settingsfile,'w').write(strings)
+        messages.error('Settings saved. You should restart the game when convenient.')
+        self._rmtemp()
+        del self.frontend.sprites['settingsmenu']
+        self.kill()
+
+    def fullscreen(self):
+        self.settingsdata['fullscreen'] = self.fullscreenbtn.checked
+
+    def hardware(self):
+        self.settingsdata['hardware_buffer'] = self.hardwarebtn.checked
+        if self.settingsdata['hardware_buffer']:
+            self.settingsdata['fullscreen'] = True
+            self.fullscreenbtn.checked = True
+
+    def resbtn(self, direction):
+        if direction == 'left':
+            if self.respage > 0:
+                self.respage -= 1
+            else:
+                self.respage = len(self.resolutions) -1
+        if direction == 'right':
+            if self.respage < len(self.resolutions) -1:
+                self.respage += 1
+            else:
+                self.respage = 0    
+        self.resolution = self.resolutions[self.respage]
+        self.image.blit(self.surface.subsurface(170,60,300,50),(170,60))
+        self.image.blit(render_text ('%s X %s' %self.resolution, size=24, color=(255,0,0)),(170,60))
+        self.settingsdata['res_x'], self.settingsdata['res_y'] = self.resolution[0], self.resolution[1]     
+
 
 class TileSelector(FloatDialog, Tempsprites):
     def __init__(self, rect, frontend, onselect, onselect_parms):

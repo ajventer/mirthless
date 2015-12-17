@@ -98,7 +98,7 @@ def get_screen(resx, resy, hardware, fullscreen):
     return  pygame.display.set_mode((resx, resy), flags)
 
 
-def initpygame(settings, caption):
+def initpygame(settings, caption, settingsfile):
     pygame.init()
     screen = get_screen(settings['res_x'], settings['res_y'], settings['hardware_buffer'], settings['fullscreen'])
     mode = 'game'
@@ -108,7 +108,7 @@ def initpygame(settings, caption):
     global imagecache
     imagecache = ImageCache()
     global frontend
-    frontend = Frontend(mode=mode)
+    frontend = Frontend(mode=mode, settingsfile=settingsfile)
     global tilemaps
     tilemaps = Tilemaps()
     global messages
@@ -117,7 +117,7 @@ def initpygame(settings, caption):
     wallpaper = pygame.transform.smoothscale(wallpaper, (settings["res_x"], settings["res_y"]))
     screen.blit(wallpaper,(0,0))    
     pygame.display.set_caption(caption)  
-    frontend = Frontend(screen,imagecache,eventstack, tilemaps, mode=mode)
+    frontend = Frontend(screen,imagecache,eventstack, tilemaps, mode=mode, settingsfile=settingsfile)
     messages = Messages(screen, eventstack)
     messages.error('Welcome to Mirthless')    
     tilemaps.initialize()

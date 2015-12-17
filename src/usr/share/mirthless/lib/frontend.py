@@ -6,7 +6,7 @@ import sys
 from messagebox import MessageBox
 from imagecache import ImageCache
 from button import Button, render_text, scrn_print, ButtonArrow
-from dialog import Dialog, FloatDialog
+from dialog import Dialog, FloatDialog, SettingsDialog
 from eventstack import EventStack
 from mapview import Mapview
 from messages import messages
@@ -15,22 +15,24 @@ def todo_event():
     messages.warning('Event not yet implemented')
 
 class Frontend(object):
-    def __init__(self,screen=None, imagecache=None, eventstack=None, tilemaps=None, mode='game'):
+    def __init__(self,screen=None, imagecache=None, eventstack=None, tilemaps=None, mode='game', settingsfile='/etc/mirthless/mirthless.cfg'):
         self.game_menu = [
-        ("Main Menu", todo_event),
+        ("Quit", sys.exit),
         ("Inventory", todo_event),
         ("Spellbook", todo_event),
+        ("Settings", self.settings),
         ("About", todo_event),
-        ("Quit", sys.exit)
         ]
         self.editor_menu = [
+        ("Quit", sys.exit),
         ("Maps", self.editormain),
         ("Items/spells", todo_event),
         ("NPCs", todo_event),
         ("Quests", todo_event),
-        ("Quit", sys.exit)
+        ("Settings", self.settings),
         ]
         self.mode = mode
+        self.settingsfile = settingsfile
         if screen:
             self.sprites = {}
             self.imagecache = imagecache
@@ -51,6 +53,11 @@ class Frontend(object):
                 } 
             self.sprites['mb'] = MessageBox(self.messagebox_rect, messages, self)
 
+    def settings(self):
+        settings = SettingsDialog(pygame.Rect(self.screensize.w/2 - 300,self.screensize.h/2 -200,600,400), self)
+        self.eventstack.unregister_event(self.mapview.clickhash)
+        self.sprites['settingsmenu'] = settings 
+
     def editormain(self):
         mainmenu = FloatDialog(pygame.Rect(100,100,100,100), self.imagecache)
         self.sprites['mainmenu'] = mainmenu
@@ -70,8 +77,9 @@ class Frontend(object):
             menu = self.game_menu
         else:
             menu = self.editor_menu
+        buttonplacement = self.screensize.w / len(menu)
         for button in menu:
-            self.sprites[button[0]] = Button(button[0], button[1], [], self.eventstack, self.imagecache, (menu.index(button) * 220,5))
+            self.sprites[button[0]] = Button(button[0], button[1], [], self.eventstack, self.imagecache, (menu.index(button) * buttonplacement,5))
       
         #Messagebox
         self.screen.blit(seperator, (0,self.screensize.h -205))

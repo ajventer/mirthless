@@ -5,6 +5,8 @@ class Tempsprites(object):
     def __init__(self):
         self.temp = []
 
+
+
     def _addtemp(self, name, obj):
         self.temp.append((obj, name))
         self.frontend.sprites[name] = obj

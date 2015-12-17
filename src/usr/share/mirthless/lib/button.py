@@ -75,8 +75,9 @@ class Button(pygame.sprite.DirtySprite):
         self.kill()
 
 class ButtonArrow(Button):
-    def __init__(self, onclick, onclick_params, eventstack,imagecache, direction, pos=(0,0)):
-        Button.__init__(self, '', onclick, onclick_params, eventstack, imagecache, pos)
+    def __init__(self, onclick, onclick_params, eventstack,imagecache, direction, pos=(0,0), layer=10):
+        self._layer = layer
+        Button.__init__(self, '', onclick, onclick_params, eventstack, imagecache, pos, layer)
         self.button_rest = imagecache['arrow_%s' %direction]
         self.button_hi = self.button_rest
         self.button_click = self.button_rest
@@ -124,8 +125,9 @@ class checkboxbtn(Button):
             self.onclick(*self.onclick_params)
 
 class TextInput(pygame.sprite.DirtySprite):
-    def __init__(self, rect, fontsize, eventstack, prompt=''):
+    def __init__(self, rect, fontsize, eventstack, prompt='', clearprompt=True):
         self.prompt = prompt
+        self.clearprompt = clearprompt
         self.text = prompt
         self._layer = 10
         self.registered_events = []
@@ -213,6 +215,6 @@ class TextInput(pygame.sprite.DirtySprite):
 
     def click(self, pos):
         self.has_focus = True
-        if self.text == self.prompt:
+        if self.clearprompt and self.text == self.prompt:
             self.text = ''
 

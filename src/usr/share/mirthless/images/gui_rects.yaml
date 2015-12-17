@@ -79,6 +79,16 @@ checkbtn_unchecked:
     y: 10
     w: 23
     h: 31
+arrow_left:
+    x: 556
+    y: 15
+    w: 32
+    h: 30
+arrow_right:
+    x: 599
+    y: 15
+    w: 32
+    h: 30
 
 
 
