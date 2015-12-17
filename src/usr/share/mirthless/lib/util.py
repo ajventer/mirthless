@@ -8,19 +8,37 @@ import hashlib
 import yaml
 from flatteneddict import FlattenedDict, stripslashes, flatten
 import time
-import tempfile
+from  tempfile import NamedTemporaryFile
 
 gamedir = 'TESTDATA'
 
-def editsnippet(text):
+default_text="""#This is a python snippet
+#It will be executed when the event occurs.
+#You can use the following predefined objects to interact with the game
+#item: The item that generated this event. item.lightradius += 1
+#player: the player. player.put('core/combat/hitpoints', int(player.get('core/combat/hitpoints'))+1)
+#target: the monster being targetted (only available for events that have a target). target.take_damage(4)
+#messages: Send a message, warning or error. message.error('You have been cursed !!!')
+#You can safely delete these comments if you want to, or just put your event handling code below.
+#When you're done, save the file and close the text editor to return to Mirthless.
+"""
+
+def editsnippet(data):
     editor = os.getenv('EDITOR')
-    if 'win' in sys.platform and editor == '':
+    if 'win' in sys.platform and not editor:
         editor = 'notepad.exe'
-    temp = tempfile.namedtemporaryfile(delete=False)
-    open(tempfile,'w').write(text)
-    os.system('%s %s' % (editor, tempfile))
-    newtext = open(tempfile, 'r').read()
-    os.unlink(tempfile)
+    elif not editor:
+        if os.path.exists('/usr/bin/gedit'):
+            editor = '/usr/bin/gedit'
+        elif os.path.exists('/usr/bin/kate'):
+            editor = '/usr/bin/kate'
+    temp = NamedTemporaryFile(delete=False, suffix='.py')
+    temp.write(data)
+    temp.close()
+    debug(editor, temp.name)
+    os.system('%s %s' % (editor, temp.name))
+    newtext = open(temp.name, 'r').read()
+    os.unlink(temp.name)
     return newtext
 
 def imagepath(s):
@@ -103,7 +121,7 @@ def load_yaml(directory, filename):
     return FlattenedDict(yaml.load(open(filename).read()))
 
 def dump_yaml(data):
-    return yaml.safe_dump(data, default_flow_style=False, encoding='utf-8')
+    return yaml.safe_dump(data, default_flow_style=False, encoding='utf-8', width=1000)
 
 
 def save_yaml(directory, filename, data, new=False):

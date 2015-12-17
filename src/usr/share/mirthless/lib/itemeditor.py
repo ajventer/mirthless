@@ -1,12 +1,13 @@
 import pygame
 from pygame.locals import *
 from item import Item
-from util import debug
+from util import debug, editsnippet,default_text
 from dialog import FloatDialog
 from tempsprites import Tempsprites
 from button import render_text, Button, TextInput, Dropdown, checkboxbtn
 from animatedsprite import AnimatedSprite
 from messages import messages
+import os
 
 class ItemEditor(FloatDialog, Tempsprites):
     def __init__(self, frontend):
@@ -18,7 +19,7 @@ class ItemEditor(FloatDialog, Tempsprites):
         self.baselayout()
         self.editlayout()
         self.conditionals = []
-        self.conrestore = self.image.copy()
+        self.conrestore = self.image.subsurface(10, 245,300,300).copy()
 
     def baselayout(self):
         scale = self.frontend.mapscale
@@ -46,6 +47,7 @@ class ItemEditor(FloatDialog, Tempsprites):
         "armor": self.armorfields,
         "weapon": self.weaponfields,
         "spell": self.spellfields,
+        "container": self.containerfields,
         "other": None
         }
         self.image.blit(render_text ('Name:', size=24, color=(255,0,0)),(10,70))
@@ -82,6 +84,7 @@ class ItemEditor(FloatDialog, Tempsprites):
         self._addtemp(key,obj)
 
     def set_type(self, choice):
+        self.image.blit(self.conrestore,(10, 245))
         for sprite in self.conditionals:
             sprite[1].delete()
             if sprite[0] in self.frontend.sprites:
@@ -90,42 +93,97 @@ class ItemEditor(FloatDialog, Tempsprites):
         if confields != None:
             confields()
 
-    def armorfields(self):
-        slots = ["head","chest","legs","feet","wrists","hands","finger","neck"]
-        materials = ["shield","cloth","leather","mail","plate"]
-        self.image.blit(render_text ('Slot:', size=24, color=(255,0,0)),(10,250))
-        self.slot = Dropdown(self.frontend.eventstack,
-            self.frontend.imagecache,
-            18,
-            pygame.Rect(self.rect.x + 100, self.rect.y + 250, 200, 30),
-            slots,
-            layer=7,
-            choice=self.item.get('conditional/slot',''),
-            )
-        self.add_con('itemslot', self.slot)
-        self.image.blit(render_text ('Material', size=24, color=(255,0,0)),(10,290))
-        self.material = Dropdown(self.frontend.eventstack,
-            self.frontend.imagecache,
-            18,
-            pygame.Rect(self.rect.x + 100, self.rect.y + 290, 200, 30),
-            materials,
-            layer=7,
-            choice=self.item.get('conditional/slot',''),
-            )
-        self.add_con('itermmaterial', self.material)
-        self.image.blit(render_text ('Armor Class', size=24, color=(255,0,0)),(10,330))
-        self.ac = TextInput(pygame.Rect(self.rect.x + 200, self.rect.y + 330, 50, 30), 18, self.frontend.eventstack, prompt=str(self.item.get('conditional/ac',0)), clearprompt=False, layer=6)
-        self.add_con('armorclass', self.ac)
+    def armorfields(self, save=False):
+        if save:
+            self.item.put('conditional/slot', self.slot.choice)
+            self.item.put('conditional/material', self.material.choice)
+            self.item.put('conditional/ac', int(self.ac.text))
+        else:
+            slots = ["head","chest","legs","feet","wrists","hands","finger","neck"]
+            materials = ["shield","cloth","leather","mail","plate"]
+            self.image.blit(render_text ('Slot:', size=24, color=(255,0,0)),(10,250))
+            self.slot = Dropdown(self.frontend.eventstack,
+                self.frontend.imagecache,
+                18,
+                pygame.Rect(self.rect.x + 100, self.rect.y + 250, 200, 30),
+                slots,
+                layer=7,
+                choice=self.item.get('conditional/slot',''),
+                )
+            self.add_con('itemslot', self.slot)
+            self.image.blit(render_text ('Material', size=24, color=(255,0,0)),(10,290))
+            self.material = Dropdown(self.frontend.eventstack,
+                self.frontend.imagecache,
+                18,
+                pygame.Rect(self.rect.x + 100, self.rect.y + 290, 200, 30),
+                materials,
+                layer=7,
+                choice=self.item.get('conditional/slot',''),
+                )
+            self.add_con('itermmaterial', self.material)
+            self.image.blit(render_text ('Armor Class', size=24, color=(255,0,0)),(10,330))
+            self.ac = TextInput(pygame.Rect(self.rect.x + 200, self.rect.y + 330, 50, 30), 18, self.frontend.eventstack, prompt=str(self.item.get('conditional/ac',0)), clearprompt=False, layer=6)
+            self.add_con('armorclass', self.ac)
 
+    def weaponfields(self, save=False):
+        if save:
+            self.item.put('conditional/slot', self.slot.choice)
+            self.item.put('conditional/dmg', int(self.dmg.text))
+            self.item.put('conditional/range', self.range.choice)
+            self.item.put('conditional/weapontypes', self.weapontype.choice)
+        else:
+            slots = ["lefthand","righthand","twohand"]
+            weapontypes = ['melee', 'magic', 'misile']
+            ranges = ['short', 'medium', 'long']
+            self.image.blit(render_text ('Slot:', size=24, color=(255,0,0)),(10,250))
+            self.slot = Dropdown(self.frontend.eventstack,
+                self.frontend.imagecache,
+                18,
+                pygame.Rect(self.rect.x + 100, self.rect.y + 250, 200, 30),
+                slots,
+                layer=7,
+                choice=self.item.get('conditional/slot',''),
+                )
+            self.add_con('itemslot', self.slot)
+            self.image.blit(render_text ('Max damage:', size=24, color=(255,0,0)),(10,290))
+            self.dmg = TextInput(pygame.Rect(self.rect.x + 100, self.rect.y + 290, 50, 30), 18, self.frontend.eventstack, prompt=str(self.item.get('conditional/dmg',4)), clearprompt=False, layer=6)
+            self.add_con('weapon_damage', self.dmg)
+            self.image.blit(render_text ('Range:', size=24, color=(255,0,0)),(10,330))
+            self.range = Dropdown(self.frontend.eventstack,
+                self.frontend.imagecache,
+                18,
+                pygame.Rect(self.rect.x + 100, self.rect.y + 330, 200, 30),
+                ranges,
+                layer=7,
+                choice=self.item.get('conditional/range',''),
+                )
+            self.add_con('itemrange', self.range)
+            self.image.blit(render_text ('Weapon type:', size=24, color=(255,0,0)),(10,370))
+            self.weapontype = Dropdown(self.frontend.eventstack,
+                self.frontend.imagecache,
+                18,
+                pygame.Rect(self.rect.x + 200, self.rect.y + 370, 200, 30),
+                weapontypes,
+                layer=7,
+                choice=self.item.get('conditional/weapon_type',''),
+                )
+            self.add_con('weapontype', self.weapontype)
+            onstrike = Button('OnStrike Event', self.make_event, ['onstrike'], self.frontend.eventstack,self.frontend.imagecache, pos=(self.rect.x + 100,self.rect.y +410), layer=6)
+            self.add_con('onstrike_Event', onstrike)
 
-
-    def weaponfields(self):
-        self.image.blit(render_text ('Slot', size=24, color=(255,0,0)),(10,200))
+    def make_event(self, key):
+        self.save()
+        keyname = 'events/%s' % key
+        data = self.item.get(keyname, default_text)
+        data = editsnippet(data)
+        self.item.put(keyname,data)
+        self.save()
 
     def spellfields(self):
         pass
 
-
+    def containerfields(self):
+        pass
 
     def identified(self):
         self.item.put('core/identified', self.item_identified.checked)
@@ -141,6 +199,15 @@ class ItemEditor(FloatDialog, Tempsprites):
             self.item.put('core/price/gold', int(self.goldprice.text))
             self.item.put('core/price/silver', int(self.silverprice.text))
             self.item.put('core/price/copper', int(self.copperprice.text))
+            confields = self.itemtypes[self.itemtype.choice]
+            confields(save=True)
+            if self.itemtype.choice == 'spell':
+                dirname = 'spells'
+            else:
+                dirname = 'items'
+            filename =  self.item.save_to_file(dirname)
+            messages.error('Saved to %s' % os.path.basename(filename))
+
         else:
             messages.error('ERROR: Not enough information')
         debug(self.item())

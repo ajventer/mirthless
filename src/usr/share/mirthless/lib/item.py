@@ -12,6 +12,9 @@ class Item(EzdmObject):
 
     def displayname(self):
         name = self.get('/core/name', '')
+        tohit = int(self.get('conditional/tohit', 0))
+        if tohit:
+            name = name+' +'+str(tohit)
         if not self.identified():
             name = name.split('of')[0]
         return name
