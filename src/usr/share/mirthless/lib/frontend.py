@@ -58,16 +58,20 @@ class Frontend(object):
     def itemeditor(self):
         if not 'npc' in self.sprites:
             npc = ItemEditor(self)
+            self.eventstack.unregister_event(self.mapview.clickhash)
             self.sprites['npc'] = npc
         else:
+            self.mapview.registerclickevent()
             self.sprites['npc'].delete()
         self.draw()        
 
     def settings(self):
         if not 'settingsmenu' in self.sprites:
             settings = SettingsDialog(pygame.Rect(self.screensize.w/2 - 300,self.screensize.h/2 -200,600,400), self)
+            self.eventstack.unregister_event(self.mapview.clickhash)
             self.sprites['settingsmenu'] = settings 
         else:
+            self.mapview.registerclickevent()
             self.sprites['settingsmenu'].delete()
         self.draw()
 

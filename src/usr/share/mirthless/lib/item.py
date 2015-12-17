@@ -11,7 +11,7 @@ class Item(EzdmObject):
         self.animations = self.get('animations', {})
 
     def displayname(self):
-        name = self.get('/core/name', '') or self.get('/name', '')
+        name = self.get('/core/name', '')
         if not self.identified():
             name = name.split('of')[0]
         return name
@@ -21,18 +21,18 @@ class Item(EzdmObject):
         pass
 
     def slot(self):
-        return self.get('/conditional/slot', '')
+        return self.get('conditional/slot', '')
 
     def identified(self):
-        return self.get('/core/identified', '')
+        return self.get('core/identified', False)
 
     def identify(self):
-        self.put('/core/identified', True)
+        self.put('core/identified', True)
 
     def price_tuple(self):
-        gold = self.get('/core/price/gold', 0)
-        silver = self.get('/core/price/silver', 0)
-        copper = self.get('/core/price/copper', 0)
+        gold = self.get('core/price/gold', 0)
+        silver = self.get('core/price/silver', 0)
+        copper = self.get('core/price/copper', 0)
         try:
             gold = int(gold)
         except ValueError:
