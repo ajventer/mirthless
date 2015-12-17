@@ -25,7 +25,6 @@ class Frontend(object):
         ]
         self.editor_menu = [
         ("Quit", sys.exit),
-        ("Maps", self.editormain),
         ("Items/spells", todo_event),
         ("NPCs", todo_event),
         ("Quests", todo_event),
@@ -57,10 +56,6 @@ class Frontend(object):
         settings = SettingsDialog(pygame.Rect(self.screensize.w/2 - 300,self.screensize.h/2 -200,600,400), self)
         self.eventstack.unregister_event(self.mapview.clickhash)
         self.sprites['settingsmenu'] = settings 
-
-    def editormain(self):
-        mainmenu = FloatDialog(pygame.Rect(100,100,100,100), self.imagecache)
-        self.sprites['mainmenu'] = mainmenu
 
     def screenlayout(self):
         #Header:
