@@ -2,9 +2,13 @@ from util import save_yaml, debug
 from objects import EzdmObject, event
 import copy
 from messages import messages
+from animatedsprite import AnimatedSprite
 
 
 class Item(EzdmObject):
+    def __init__(self, data):
+        EzdmObject.__init__(self, data)
+        self.animations = self.get('animations', {})
 
     def displayname(self):
         name = self.get('/core/name', '') or self.get('/name', '')
@@ -16,38 +20,11 @@ class Item(EzdmObject):
         #TODO
         pass
 
-    def name(self):
-        name = '%s.yaml' % self.get('/core/name', '')
-        return name.lower().replace(' ', '_').replace("'", "")
-
     def slot(self):
         return self.get('/conditional/slot', '')
 
     def identified(self):
         return self.get('/core/identified', '')
-
-    def render(self):
-        """
-        >>> item = Item({})
-        >>> item.render()
-        {...}
-        """
-        if self.identified():
-            out = copy.deepcopy(self())
-            debug("Self charges", self().get('/core/charges', ''))
-            if 'events' in out:
-                del(out['events'])
-            if 'core' in out:
-                if 'charges' in out['core']:
-                    if int(out['core']['charges']) == -1:
-                        out['core']['charges'] = 'Unlimited'
-        else:
-            out = {}
-            out['core'] = {}
-            out['core']['icon'] = self.get('/core/icon', '')
-            out['core']['name'] = self.displayname()
-            out['core']['identified'] = self.get('/core/identified', False)
-        return out
 
     def identify(self):
         self.put('/core/identified', True)
@@ -71,7 +48,7 @@ class Item(EzdmObject):
         return (gold, silver, copper)
 
     def itemtype(self):
-        return self.get('core/type')
+        return self.get('core/type', '')
 
     def armortype(self):
         return self.get('/conditional/material', 'plate')
@@ -164,8 +141,8 @@ class Item(EzdmObject):
             return
 
     def ondrop(self, player):
-        event(self, "/events/ondrop", {'item': self, 'player': player, 'messages': messages})
+        event(self, "events/ondrop", {'item': self, 'player': player, 'messages': messages})
         player.autosave()
 
     def interrupt(self):
-        self.put('/core/in_use', False)
+        self.put('core/in_use', False)

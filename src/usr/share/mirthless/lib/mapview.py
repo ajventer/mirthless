@@ -12,6 +12,7 @@ from util import imagepath
                                 
 class Mapview(Tempsprites):
     def __init__(self, frontend):
+        self._layer = 0
         self.frontend = frontend
         size = self.frontend.mapw
         self.tilesize = self.frontend.mapscale
@@ -74,7 +75,6 @@ class Mapview(Tempsprites):
                 self.image.blit(self.tileimage(x,y, self.tilesize),(self.tilesize*x, self.tilesize*y))
 
     def load(self):
-        self.frontend.eventstack.unregister_event(self.clickhash)
         self._addtemp('te_mapselector',MapSelector(self.rect, self.frontend, self.loadmap))
         self.frontend.draw() 
 
@@ -101,14 +101,12 @@ class Mapview(Tempsprites):
         self.frontend.draw()
 
     def selectbg(self, x, y):
-        self.frontend.eventstack.unregister_event(self.clickhash)
         self._addtemp('te_tileselector',TileSelector(self.rect, self.frontend, self.setbg, (x,y)))
         self.frontend.draw()
 
     def setbg(self, bgpath, x, y):
         map_x, map_y = x, y
         debug('%s - %sx%s' % (bgpath, x, y))
-        self.registerclickevent()
         self.tile = self.gamemap.tile(map_x,map_y)
         self.tile.put('core/background', bgpath)
         self.updatetile(x,y) 

@@ -35,25 +35,29 @@ class EventStack():
 
     def get_events(self, key):
         #Size-change safe index
-        return [i for i in list(self.events[key].keys())]
+        eventlist = [i for i in list(self.events[key].keys())]
+        eventlist.sort(key=lambda x: x._layer, reverse=True)
+        return eventlist
 
     def handle_event(self, event):
+        handlers = []
         deleteme =[]
         if event.type == KEYDOWN:
             x,y = pygame.mouse.get_pos()
-            for sprite in self.events["keydown"]:
+            for sprite in self.get_events("keydown"):
                 if sprite.rect.collidepoint(x,y):
                     self.events["keydown"][sprite][0](event)
+                    return
         if event.type == pygame.QUIT:
             return True
         if event.type == MOUSEMOTION:
             x,y = event.pos
-            for sprite in self.events["mouseover"]:
+            for sprite in self.get_events("mouseover"):
                 if sprite.rect.collidepoint(x,y):
-                    self.events["mouseover"][sprite][0]()
+                    self.events["mouseover"][sprite][0]((x,y))
                     return
                 elif sprite in self.events["mouseout"]:
-                    self.events["mouseout"][sprite][0]()
+                    self.events["mouseout"][sprite][0]((x,y))
                     del self.events["mouseout"][sprite]
                     return                  
         if event.type == pygame.MOUSEBUTTONUP:
@@ -61,12 +65,14 @@ class EventStack():
             if event.button == 1:      
                 for sprite in self.get_events("button1"):
                     if sprite.rect.collidepoint(x,y):
-                        self.events["button1"][sprite][0]((x,y))               
+                        self.events["button1"][sprite][0]((x,y))
+                        return
             if event.button == 4:
                 for sprite in self.get_events("wheelup"):
                     if sprite.rect.collidepoint(x,y):
-                        return self.events["wheelup"][sprite][0]()
+                        self.events["wheelup"][sprite][0]()
             if event.button == 5:
                 for sprite in self.get_events("wheeldown"):
                     if sprite.rect.collidepoint(x,y):
-                        return self.events["wheeldown"][sprite][0]()
+                        self.events["wheeldown"][sprite][0]()
+                        return

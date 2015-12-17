@@ -10,6 +10,7 @@ from dialog import Dialog, FloatDialog, SettingsDialog
 from eventstack import EventStack
 from mapview import Mapview
 from messages import messages
+from itemeditor import ItemEditor
 
 def todo_event():
     messages.warning('Event not yet implemented')
@@ -25,7 +26,7 @@ class Frontend(object):
         ]
         self.editor_menu = [
         ("Quit", sys.exit),
-        ("Items/spells", todo_event),
+        ("Items/spells", self.itemeditor),
         ("NPCs", todo_event),
         ("Quests", todo_event),
         ("Settings", self.settings),
@@ -54,13 +55,19 @@ class Frontend(object):
             self.mapview = Mapview(self)
             self.mapview.loadmap({})
 
+    def itemeditor(self):
+        if not 'npc' in self.sprites:
+            npc = ItemEditor(self)
+            self.sprites['npc'] = npc
+        else:
+            self.sprites['npc'].delete()
+        self.draw()        
+
     def settings(self):
         if not 'settingsmenu' in self.sprites:
             settings = SettingsDialog(pygame.Rect(self.screensize.w/2 - 300,self.screensize.h/2 -200,600,400), self)
-            self.eventstack.unregister_event(self.mapview.clickhash)
             self.sprites['settingsmenu'] = settings 
         else:
-            self.mapview.registerclickevent()
             self.sprites['settingsmenu'].delete()
         self.draw()
 
@@ -83,10 +90,7 @@ class Frontend(object):
         for button in menu:
             self.sprites[button[0]] = Button(button[0], button[1], [], self.eventstack, self.imagecache, (menu.index(button) * buttonplacement,5))
       
-        #Messagebox
         self.screen.blit(seperator, (0,self.screensize.h -205))
-        #Mainwindow
-        #20+10+640+10+20
         dialog = Dialog(self.rightwindow_rect, self.imagecache)
         self.screen.blit(dialog.image, (self.rightwindow_rect.x, self.rightwindow_rect.y))
         self.sprites['rightwindow'] = dialog
@@ -99,11 +103,9 @@ class Frontend(object):
         screensize = self.screen.get_rect()
         self.screen.blit(self.mapview.image, (50,65))
         sprites = pygame.sprite.LayeredUpdates()
-        #self.sprites['mb'].clear(self.screen, self.background)
-        #self.sprites['mb'].image
-        #self.screen.blit(g, r)
         for sprite in self.sprites:
             sprites.add(self.sprites[sprite])
         sprites.clear(self.screen, self.background)
+        sprites.update()
         dirty = sprites.draw(self.screen)
         pygame.display.update(dirty)

@@ -53,14 +53,14 @@ class Button(pygame.sprite.DirtySprite):
         self.registered_events.append(self.eventstack.register_event("mouseover", self, self.mouseover))
         self.registered_events.append(self.eventstack.register_event("button1", self, self.click))
 
-        self.mouseout()
+        self.mouseout(None)
 
-    def mouseover(self):
+    def mouseover(self, pos):
         self.image = self.button_hi
         self.eventstack.register_event("mouseout", self, self.mouseout)
 
 
-    def mouseout(self):
+    def mouseout(self, pos):
         self.image = self.button_rest
         self.image.convert()
      
@@ -129,7 +129,7 @@ class TextInput(pygame.sprite.DirtySprite):
         self.prompt = prompt
         self.clearprompt = clearprompt
         self.text = prompt
-        self._layer = 10
+        self._layer = 1
         self.registered_events = []
         super(pygame.sprite.DirtySprite, self).__init__()
         self.rect = rect
@@ -217,4 +217,87 @@ class TextInput(pygame.sprite.DirtySprite):
         self.has_focus = True
         if self.clearprompt and self.text == self.prompt:
             self.text = ''
+
+class Dropdown(pygame.sprite.DirtySprite):
+    def __init__(self, eventstack, imagecache, fontsize, rect, choices,layer=7, choice='',onselect=None):
+        self._layer = layer
+        super(pygame.sprite.DirtySprite, self).__init__()
+        self.onselect = onselect
+        self.choicerects = {}
+        self.eventstack = eventstack
+        self.fontsize = fontsize
+        self.imagecache = imagecache
+        self.uprect = pygame.Rect(rect.x, rect.y, rect.w, rect.h)
+        self.downrect = pygame.Rect(rect.x, rect.y, rect.w, rect.h * (len(choices) + 1))
+        self.rect = self.uprect
+        self.choices = choices
+        self.choice = choice
+        self.font=pygame.font.SysFont('monospace',self.fontsize)
+        self.upsurface = pygame.Surface((self.uprect.w, self.uprect.h))
+        self.dnsurface = pygame.Surface((self.downrect.w, self.downrect.h))
+        self.upsurface.fill((255,255,255))
+        self.upsurface.blit(imagecache['arrow_down'],(rect.w - 30, 0))
+        counter = 1
+        self.image = self.upsurface
+        self.registered_events = []
+        self.registered_events.append(self.eventstack.register_event("button1", self, self.click))
+        self.registered_events.append(self.eventstack.register_event("mouseover", self, self.mouseover))
+        self.mouseover('force')
+        self.down = False
+        self.upsurface.blit(render_text (self.choice, font=self.font, color=(0,0,0)),(0,0))
+
+    def itemsurface(self, choice, highlight=False):
+        surface = pygame.Surface((self.uprect.w, self.uprect.h))
+        if highlight:
+            surface.fill((170,178,255))
+        else:
+            surface.fill((170,178,181))
+        surface.blit(render_text (choice, font=self.font, color=(0,0,0)),(0,0))
+        return surface
+
+    def delete(self):
+        for h in self.registered_events:
+            self.eventstack.unregister_event(h)
+        self.kill()
+
+    def mouseover(self, pos):
+        x,y = 0,0
+        if not isinstance(pos, str):
+            x, y = pos
+        counter = 1
+        if isinstance(pos, str) or (self.down and y > self.uprect.y + self.uprect.h):
+            for c in self.choices:
+                choicerect = pygame.Rect(self.uprect.x,self.uprect.y + self.uprect.h*counter, self.downrect.w, self.uprect.h)
+                if choicerect.collidepoint(x,y):
+                    choicesurface = self.itemsurface(c, True)
+                else:
+                    choicesurface = self.itemsurface(c)
+                self.dnsurface.blit(choicesurface,(0,self.uprect.h*counter))
+                self.choicerects[c] = choicerect
+                counter += 1
+
+
+    def click(self, pos):
+        x, y = pos
+        if self.down and y > self.uprect.y + self.uprect.h:
+            for k,v in self.choicerects.items():
+                if v.collidepoint(x,y):
+                    self.choice = k
+                    self.upsurface.fill((255,255,255))
+                    self.upsurface.blit(render_text (k, font=self.font, color=(0,0,0)),(0,0))
+                    self.upsurface.blit(self.imagecache['arrow_down'],(self.uprect.w - 30, 0))
+                    if self.onselect is not None:
+                        self.onselect(self.choice)
+                    break
+        self.down = not self.down
+
+    def update(self):
+        self.dnsurface.blit(self.upsurface,(0,0))
+        if self.down:
+            self.image = self.dnsurface
+            self.rect = self.downrect
+        else:
+            self.image = self.upsurface
+            self.rect = self.uprect
+
 

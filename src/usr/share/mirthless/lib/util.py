@@ -8,8 +8,20 @@ import hashlib
 import yaml
 from flatteneddict import FlattenedDict, stripslashes, flatten
 import time
+import tempfile
 
 gamedir = 'TESTDATA'
+
+def editsnippet(text):
+    editor = os.getenv('EDITOR')
+    if 'win' in sys.platform and editor == '':
+        editor = 'notepad.exe'
+    temp = tempfile.namedtemporaryfile(delete=False)
+    open(tempfile,'w').write(text)
+    os.system('%s %s' % (editor, tempfile))
+    newtext = open(tempfile, 'r').read()
+    os.unlink(tempfile)
+    return newtext
 
 def imagepath(s):
     parts=s.split(':')

@@ -81,7 +81,8 @@ class SettingsDialog(FloatDialog, Tempsprites):
 
     def layout(self):
         self.image.blit(render_text ('Game directory:', size=24, color=(255,0,0)),(10,10))
-        gd = TextInput(pygame.Rect(self.rect.x + 220, self.rect.y + 10, self.rect.w-250, 30), 18, self.frontend.eventstack, prompt=self.settingsdata['gamedir'], clearprompt=False)
+        self.gd = TextInput(pygame.Rect(self.rect.x + 220, self.rect.y + 10, self.rect.w-250, 30), 18, self.frontend.eventstack, prompt=self.settingsdata['gamedir'], clearprompt=False)
+        self.gd._layer = 6
         self._addtemp('gamedirinput', gd)
         self.image.blit(render_text ('Resolution:', size=24, color=(255,0,0)),(10,60))
         res_left = ButtonArrow(self.resbtn, ['left'], self.frontend.eventstack,self.frontend.imagecache, 'left', pos=(self.rect.x+120,self.rect.y+60), layer=6)
@@ -100,6 +101,7 @@ class SettingsDialog(FloatDialog, Tempsprites):
         self._addtemp('savesettings', save_btn)
 
     def save(self):
+        self.settingsdata['gamedir'] = self.gd.text
         strings = dump_yaml(self.settingsdata)
         open(self.frontend.settingsfile,'w').write(strings)
         messages.error('Settings saved. You should restart the game when convenient.')

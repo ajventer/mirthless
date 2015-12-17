@@ -8,6 +8,7 @@ import operator
 from graphics import frontend
 from flatteneddict import FlattenedDict
 from messages import messages
+from animatedsprite import AnimatedSprite
 
 class Character(EzdmObject):
     """
@@ -17,17 +18,8 @@ class Character(EzdmObject):
     """
     weapon = 0
 
-    # def __init__(self, data):
-    #     """
-    #     >>> objdata = load_yaml('characters', 'bardic_rogue.yaml')
-    #     >>> char = Character(objdata)
-    #     >>> char.objdata == objdata
-    #     True
-
-    #     """
-    #     super(EzdmObject, self).__init__()
-    #     self.objdata = data
-    #     self.reset_weapon()
+    def __init__(self, data):
+        EzdmObject.__init__(self, data)
 
     def roll_hit_dice(self):
         """
@@ -603,8 +595,8 @@ class Character(EzdmObject):
         (True, '[ ] has equiped Halberd')
         >>> char.weapons
         [<item.Item object at ...>]
-        >>> char.weapons[0].name()
-        'halberd.yaml'
+        >>> char.weapons[0].displayname()
+        'Halberd'
         >>> len(char.weapons)
         1
         >>> char.acquire_item(mhand)
@@ -624,8 +616,8 @@ class Character(EzdmObject):
         >>> char.acquire_item(twohand)
         >>> char.equip_item(0)
         (True, '[ ] has equiped Halberd')
-        >>> char.weapons[0].name()
-        'halberd.yaml'
+        >>> char.weapons[0].displayname()
+        'Halberd'
         >>> len(char.weapons)
         1
         """
@@ -686,15 +678,15 @@ class Character(EzdmObject):
         >>> char.equip_item(twohand)
         (True, '[ ] has equiped Halberd')
         >>> char.unequip_item('lefthand')
-        >>> char.weapons[0].name()
-        'fist.yaml'
+        >>> char.weapons[0].displayname()
+        'Fist'
         """
         slot = slot.strip()
         current = self.getsubtree('core/inventory/equiped/%s' % slot)
         debug(current)
         if current:
             current = Item(current)
-            if current.name() != 'fist.yaml':
+            if current.displayname() != 'Fist':
                 self.acquire_item(current)
             if current.get('/conditional/slot', '') == 'twohand':
                 debug('Unequipping a twohanded weapon')
@@ -746,10 +738,9 @@ class Character(EzdmObject):
         for i in pack:
             try:
                 item = Item(i)
-                if item.name() != '.objdata':
-                    gold, silver, copper = self.sell_price(*item.price_tuple())
-                    moneystr = 'Gold %s, Silver %s, Copper %s' % (int(gold), int(silver), int(copper))
-                    out.append((pack.index(i), item.displayname(), moneystr))
+                gold, silver, copper = self.sell_price(*item.price_tuple())
+                moneystr = 'Gold %s, Silver %s, Copper %s' % (int(gold), int(silver), int(copper))
+                out.append((pack.index(i), item.displayname(), moneystr))
             except Exception as e:
                 raise Exception('Error loading %s - %s' % (self.displayname(), e))
         return out
@@ -800,10 +791,10 @@ class Character(EzdmObject):
     def buy_item(self, item, page=None):
         if self.spend_money(*item.price_tuple()):
             self.acquire_item(item)
-            page.message('You bought a %s' % item.name())
+            page.message('You bought a %s' % item.displayname())
             return True
         else:
-            page.error('You cannot afford to buy %s' % item.name())
+            page.error('You cannot afford to buy %s' % item.displayname())
             return False
 
     def gain_money(self, gold=0, silver=0, copper=0):
@@ -838,13 +829,13 @@ class Character(EzdmObject):
     def weapons(self):
         """
         >>> char = Character({})
-        >>> char.weapons[0].name()
-        'fist.yaml'
+        >>> char.weapons[0].displayname()
+        'Fist'
         >>> char.acquire_item(Item(load_yaml('items','halberd.yaml')))
         >>> char.equip_item(0)
         (True, '[ ] has equiped Halberd')
-        >>> char.weapons[0].name()
-        'halberd.yaml'
+        >>> char.weapons[0].displayname()
+        'Halberd'
         >>> len(char.weapons)
         1
         """
