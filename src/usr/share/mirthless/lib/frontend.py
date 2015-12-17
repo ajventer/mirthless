@@ -51,11 +51,18 @@ class Frontend(object):
                 "dialog": None
                 } 
             self.sprites['mb'] = MessageBox(self.messagebox_rect, messages, self)
+            self.mapview = Mapview(self)
+            self.mapview.loadmap({})
 
     def settings(self):
-        settings = SettingsDialog(pygame.Rect(self.screensize.w/2 - 300,self.screensize.h/2 -200,600,400), self)
-        self.eventstack.unregister_event(self.mapview.clickhash)
-        self.sprites['settingsmenu'] = settings 
+        if not 'settingsmenu' in self.sprites:
+            settings = SettingsDialog(pygame.Rect(self.screensize.w/2 - 300,self.screensize.h/2 -200,600,400), self)
+            self.eventstack.unregister_event(self.mapview.clickhash)
+            self.sprites['settingsmenu'] = settings 
+        else:
+            self.mapview.registerclickevent()
+            self.sprites['settingsmenu'].delete()
+        self.draw()
 
     def screenlayout(self):
         #Header:
@@ -83,9 +90,6 @@ class Frontend(object):
         dialog = Dialog(self.rightwindow_rect, self.imagecache)
         self.screen.blit(dialog.image, (self.rightwindow_rect.x, self.rightwindow_rect.y))
         self.sprites['rightwindow'] = dialog
-
-        self.mapview = Mapview(self)
-        self.mapview.loadmap({})
 
         self.background = self.screen.copy()
         return self.screen, self.background

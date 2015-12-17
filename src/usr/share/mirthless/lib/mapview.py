@@ -50,8 +50,11 @@ class Mapview(Tempsprites):
                 tileimage.fill((0,0,0,0))
         return tileimage
 
-    def loadmap(self, data, reload=False):
+    def registerclickevent(self):
         self.clickhash = self.frontend.eventstack.register_event("button1", self, self.click)
+
+    def loadmap(self, data, reload=False):
+        self.registerclickevent()
         if reload:
             self._rmtemp()
         self.gamemap = GameMap(data)
@@ -105,7 +108,7 @@ class Mapview(Tempsprites):
     def setbg(self, bgpath, x, y):
         map_x, map_y = x, y
         debug('%s - %sx%s' % (bgpath, x, y))
-        self.clickhash = self.frontend.eventstack.register_event("button1", self, self.click)
+        self.registerclickevent()
         self.tile = self.gamemap.tile(map_x,map_y)
         self.tile.put('core/background', bgpath)
         self.updatetile(x,y) 

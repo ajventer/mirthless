@@ -10,7 +10,6 @@ import yaml
 class Dialog(pygame.sprite.DirtySprite):
     def __init__(self, rect, imagecache):
         #TODO - create a container type to add things to dialogs and make them work more cleanly
-        self._layer = 1
         super(pygame.sprite.DirtySprite, self).__init__()
         self.pos = (rect.x, rect.y)
         tl = imagecache['frame_topleft']
@@ -46,7 +45,8 @@ class Dialog(pygame.sprite.DirtySprite):
         self.rect = rect
         self.image = self.surface.copy()
 
-class FloatDialog(Dialog):
+
+class FloatDialog(Dialog, Tempsprites):
     resolutions=[
         (1024,768),
         (1280,768),
@@ -57,15 +57,20 @@ class FloatDialog(Dialog):
         (1920,1200),
         (1360,768)
         ]
-    def __init__(self, rect, imagecache):
+    def __init__(self, rect, frontend):
+        self.frontend = frontend
         self._layer=5
-        Dialog.__init__(self, rect, imagecache)
+        Dialog.__init__(self, rect, self.frontend.imagecache)
+        self.background = self.frontend.screen.subsurface(self.rect).copy()
+        Tempsprites.__init__(self)
+
+    def restorebg(self):
+        self.frontend.screen.blit(self.background, self.rect)
 
 class SettingsDialog(FloatDialog, Tempsprites):
     def __init__(self, rect, frontend):
-        FloatDialog.__init__(self, rect, frontend.imagecache)
-        Tempsprites.__init__(self)
-        self.frontend = frontend
+        self._layer = 6
+        FloatDialog.__init__(self, rect, frontend)
         self.settingsdata = yaml.load(open(self.frontend.settingsfile).read())
         self.resolution = (self.settingsdata['res_x'],self.settingsdata['res_y'])
         try:
@@ -98,9 +103,13 @@ class SettingsDialog(FloatDialog, Tempsprites):
         strings = dump_yaml(self.settingsdata)
         open(self.frontend.settingsfile,'w').write(strings)
         messages.error('Settings saved. You should restart the game when convenient.')
+        self.delete()
+
+    def delete(self):
         self._rmtemp()
         del self.frontend.sprites['settingsmenu']
         self.kill()
+        self.restorebg()
 
     def fullscreen(self):
         self.settingsdata['fullscreen'] = self.fullscreenbtn.checked
@@ -128,14 +137,13 @@ class SettingsDialog(FloatDialog, Tempsprites):
         self.settingsdata['res_x'], self.settingsdata['res_y'] = self.resolution[0], self.resolution[1]     
 
 
-class TileSelector(FloatDialog, Tempsprites):
+class TileSelector(FloatDialog):
     def __init__(self, rect, frontend, onselect, onselect_parms):
-        Tempsprites.__init__(self)
         self.onselect = onselect
         self.selected = None
         self.frontend = frontend
         self._layer=5
-        FloatDialog.__init__(self, rect, self.frontend.imagecache)
+        FloatDialog.__init__(self, rect, self.frontend)
         self.page = self.frontend.tilemaps.lastpage
         prevbtn = Button('Prev', self.prev, [], self.frontend.eventstack, self.frontend.imagecache, (rect.x+10,rect.y+rect.h-50), layer=6)
         nextbtn = Button('Next', self.next, [], self.frontend.eventstack, self.frontend.imagecache, (rect.x+rect.w-100,rect.y+rect.h-50), layer=6)
@@ -181,6 +189,7 @@ class TileSelector(FloatDialog, Tempsprites):
         self._rmtemp()
         self.frontend.eventstack.unregister_event(self.clickhash)
         self.kill()
+        self.restorebg()
 
     def next(self):
         self.page += 1
@@ -197,12 +206,11 @@ class TileSelector(FloatDialog, Tempsprites):
 
 class MapSelector(TileSelector):
     def __init__(self, rect, frontend, onselect):
-        Tempsprites.__init__(self)
         self.onselect = onselect
         self.frontend = frontend
         self.rect = rect
         self._layer=5
-        FloatDialog.__init__(self, rect, self.frontend.imagecache)
+        FloatDialog.__init__(self, rect, self.frontend)
         prevbtn = Button('Prev', self.prev, [], self.frontend.eventstack, self.frontend.imagecache, (rect.x+10,rect.y+rect.h-50), layer=6)
         nextbtn = Button('Next', self.next, [], self.frontend.eventstack, self.frontend.imagecache, (rect.x+rect.w-100,rect.y+rect.h-50), layer=6)
         self.clickhash = self.frontend.eventstack.register_event("button1", self, self.click)
