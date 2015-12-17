@@ -5,7 +5,7 @@ from util import debug
 from messages import messages
 from button import render_text, Button, checkboxbtn, TextInput
 from tempsprites import Tempsprites
-from dialog import TileSelector
+from dialog import TileSelector, MapSelector
 import yaml
 import os
 from util import imagepath
@@ -16,7 +16,6 @@ class Mapview(Tempsprites):
         size = self.frontend.mapw
         self.tilesize = self.frontend.mapscale
         self.rect = pygame.Rect(50,65, self.frontend.mapw, self.frontend.mapw)
-        self.clickhash = self.frontend.eventstack.register_event("button1", self, self.click)
         self.image  = pygame.Surface((size, size))
         self.backgrounds = {}
         self.mapw = self.frontend.mapw
@@ -51,12 +50,15 @@ class Mapview(Tempsprites):
                 tileimage.fill((0,0,0,0))
         return tileimage
 
-    def loadmap(self, data):
+    def loadmap(self, data, reload=False):
+        self.clickhash = self.frontend.eventstack.register_event("button1", self, self.click)
+        if reload:
+            self._rmtemp()
         self.gamemap = GameMap(data)
         self.gamemap.initialize(data=data)
         if self.frontend.mode == 'editor' and self.firstload:
             self.firstload = False
-            self.mapname = TextInput(pygame.Rect(50, self.frontend.mapw+70, self.mapw /2,25), 16, self.frontend.eventstack, prompt=self.gamemap.get('core/name','Enter map displayname here'))
+            self.mapname = TextInput(pygame.Rect(50, self.frontend.mapw+70, self.mapw /2,25), 16, self.frontend.eventstack, prompt=self.gamemap.get('name','Enter map displayname here'))
             mapload = Button('Load', self.load, [], self.frontend.eventstack,self.frontend.imagecache, pos=(self.mapw/2 + 50,self.frontend.mapw+67))
             mapsave = Button('Save', self.save, [], self.frontend.eventstack,self.frontend.imagecache, pos=(self.mapw/2 + 150,self.frontend.mapw+67))
             self.frontend.sprites['mapname'] = self.mapname
@@ -69,7 +71,9 @@ class Mapview(Tempsprites):
                 self.image.blit(self.tileimage(x,y, self.tilesize),(self.tilesize*x, self.tilesize*y))
 
     def load(self):
-        pass
+        self.frontend.eventstack.unregister_event(self.clickhash)
+        self._addtemp('te_mapselector',MapSelector(self.rect, self.frontend, self.loadmap))
+        self.frontend.draw() 
 
     def save(self):
         self.gamemap.put('name', self.mapname.get_text())

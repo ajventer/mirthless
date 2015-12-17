@@ -63,7 +63,7 @@ class GameMap(EzdmObject):
     max_y = 20
     def initialize(self, data={}, name='',lightradius=1):
         if not data:
-            self.new(name=name, lightradius=lightradius)
+            self.new()
 
         if not 'lightradius' in self():
             self()['lightradius'] = lightradius
@@ -71,8 +71,7 @@ class GameMap(EzdmObject):
             for x in range(0, self.max_x):
                 tile = self.tile(x, y)
 
-    def new(self, name='', lightradius=1):
-        self.put('name', name)
+    def new(self):
         self()['tiles'] = [[{}] * self.max_x for _ in range(self.max_y)]
 
     def load_tile_from_dict(self, x, y, dic):
@@ -137,8 +136,7 @@ class GameMap(EzdmObject):
             return list(set(out))
 
     def name(self):
-        name = '%s.yaml' % self.get('name', '').lower().replace(' ', '_')
-        return name
+        return self.get('name', '')
 
     def reveal(self, x, y, xtraradius=0):
         radius = int(self.get('lightradius', 1)) + xtraradius
