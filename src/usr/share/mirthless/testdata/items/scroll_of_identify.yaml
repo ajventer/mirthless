@@ -1,20 +1,20 @@
-core/charges: 1
-core/current_rounds_performed: 0
-core/description: This scroll is inscribed with powerful magic that can identify the
+charges: 1
+current_rounds_performed: 0
+description: This scroll is inscribed with powerful magic that can identify the
   hidden properties of unknown items. It will always identify the first unknown item
   in your pack.
-core/icon: icons/scrolloflove.png
-core/identified: true
-core/in_use: false
-core/lightradius: 0
-core/name: Scroll of Identify
-core/price/copper: 0
-core/price/gold: 50
-core/price/silver: 0
-core/rounds_per_charge: 0
-core/size: small
-core/type: other
-core/weight: 1
+icon: icons/scrolloflove.png
+identified: true
+in_use: false
+lightradius: 0
+name: Scroll of Identify
+price/copper: 0
+price/gold: 50
+price/silver: 0
+rounds_per_charge: 0
+size: small
+type: other
+weight: 1
 events/ondrop: messages.warning('%s has dropped %s' % (player.displayname(), item.displayname()))
 events/onequip: ''
 events/onfinish: ''

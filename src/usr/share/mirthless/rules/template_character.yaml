@@ -1,69 +1,69 @@
 
-conditional/__1core.class.parent=rogue/abilities/climb walls: 60
-conditional/__1core.class.parent=rogue/abilities/detect noise: 15
-conditional/__1core.class.parent=rogue/abilities/find-remove traps: 5
-conditional/__1core.class.parent=rogue/abilities/hide in shadows: 5
-conditional/__1core.class.parent=rogue/abilities/move silently: 10
-conditional/__1core.class.parent=rogue/abilities/open locks: 10
-conditional/__1core.class.parent=rogue/abilities/pick pockets: 15
-conditional/__1core.class.parattributesent=rogue/abilities/read languages: 0
-conditional/__1core.class.parent=rogue/armor_types: 3
-conditional/__1core.class.parent=rogue/shields: false
-conditional/__2core.class.class=bard/__Yshields: true
-conditional/__2core.class.class=bard/abilities/climb walls: 50
-conditional/__2core.class.class=bard/abilities/detect noise: 20
-conditional/__2core.class.class=bard/abilities/pick pockets: 10
-conditional/__2core.class.class=bard/abilities/read languages: 5
-conditional/core.class.class=paladin/abilities/Turn undead (level 3+): 100
-conditional/core.class.class=paladin/abilities/cure disease(weekly): 100
-conditional/core.class.class=paladin/abilities/lay on hands (daily): 100
-conditional/core.class.class=paladin/abilities/sense evil intent(must end turn): 100
-conditional/core.class.parent=priest/__Yshields: false
-conditional/core.class.parent=priest/armor_types: 1
-conditional/core.class.parent=warrior/armor_types: 4
-conditional/core.class.parent=warrior/shields: true
-conditional/core.class.parent=wizard/armor_types: 1
-conditional/core.class.parent=wizard/shields: false
-core/events/__Toninspect: ''
-core/events/__Toninteract: ''
-core/loot/always_drops: []
-core/loot/copper: 99
-core/loot/gold: 99
-core/loot/silver: 99
-core/disposition: __[friendly, neutral, aggressive]
-core/__Yinventory/equiped/chest: {}
-core/__Yinventory/equiped/feet: {}
-core/__Yinventory/equiped/gloves: {}
-core/__Yinventory/equiped/head: {}
-core/__Yinventory/equiped/leftfinger: {}
-core/__Yinventory/equiped/lefthand: {}
-core/__Yinventory/equiped/legs: {}
-core/__Yinventory/equiped/neck: {}
-core/__Yinventory/equiped/rightfinger: {}
-core/__Yinventory/equiped/righthand: {}
-core/__Yinventory/equiped/wrists: {}
-core/__Yinventory/money/copper: 0
-core/__Yinventory/money/gold: 0
-core/__Yinventory/money/silver: 0
-core/__Yinventory/pack: []
-core/__Yinventory/spells: []
-core/__Yinventory/spells_memorized: []
-core/attributes/cha: 0
-core/attributes/con: 0
-core/attributes/dex: 0
-core/attributes/int: 0
-core/attributes/str: 0
-core/attributes/wis: 0
-core/class/class: __[fighter,bard,ranger,thief,druid,mage,illusionist,cleric,paladin]
-core/class/parent: __[warrior,wizard,rogue,priest]
-core/combat/hitpoints: 0
-core/combat/level-hitdice: 1
-core/combat/max_hp: 0
-core/icon: ''
-core/lightradius: 0
-core/personal/alignment/law: __[chaotic,neutral,lawful]
-core/personal/alignment/social: __[evil,good,neutral]
-core/personal/name/__Ufirst: ''
-core/personal/name/__Ulast: ''
-core/personal/race: __[human,elf,dwarf,half-elf,halfling,monster,creature,gnome]
-core/personal/sex: __[male,female]
+conditional/__1class.parent=rogue/abilities/climb walls: 60
+conditional/__1class.parent=rogue/abilities/detect noise: 15
+conditional/__1class.parent=rogue/abilities/find-remove traps: 5
+conditional/__1class.parent=rogue/abilities/hide in shadows: 5
+conditional/__1class.parent=rogue/abilities/move silently: 10
+conditional/__1class.parent=rogue/abilities/open locks: 10
+conditional/__1class.parent=rogue/abilities/pick pockets: 15
+conditional/__1class.parattributesent=rogue/abilities/read languages: 0
+conditional/__1class.parent=rogue/armor_types: 3
+conditional/__1class.parent=rogue/shields: false
+conditional/__2class.class=bard/__Yshields: true
+conditional/__2class.class=bard/abilities/climb walls: 50
+conditional/__2class.class=bard/abilities/detect noise: 20
+conditional/__2class.class=bard/abilities/pick pockets: 10
+conditional/__2class.class=bard/abilities/read languages: 5
+conditional/class.class=paladin/abilities/Turn undead (level 3+): 100
+conditional/class.class=paladin/abilities/cure disease(weekly): 100
+conditional/class.class=paladin/abilities/lay on hands (daily): 100
+conditional/class.class=paladin/abilities/sense evil intent(must end turn): 100
+conditional/class.parent=priest/__Yshields: false
+conditional/class.parent=priest/armor_types: 1
+conditional/class.parent=warrior/armor_types: 4
+conditional/class.parent=warrior/shields: true
+conditional/class.parent=wizard/armor_types: 1
+conditional/class.parent=wizard/shields: false
+events/__Toninspect: ''
+events/__Toninteract: ''
+loot/always_drops: []
+loot/copper: 99
+loot/gold: 99
+loot/silver: 99
+disposition: __[friendly, neutral, aggressive]
+__Yinventory/equiped/chest: {}
+__Yinventory/equiped/feet: {}
+__Yinventory/equiped/gloves: {}
+__Yinventory/equiped/head: {}
+__Yinventory/equiped/leftfinger: {}
+__Yinventory/equiped/lefthand: {}
+__Yinventory/equiped/legs: {}
+__Yinventory/equiped/neck: {}
+__Yinventory/equiped/rightfinger: {}
+__Yinventory/equiped/righthand: {}
+__Yinventory/equiped/wrists: {}
+__Yinventory/money/copper: 0
+__Yinventory/money/gold: 0
+__Yinventory/money/silver: 0
+__Yinventory/pack: []
+__Yinventory/spells: []
+__Yinventory/spells_memorized: []
+attributes/cha: 0
+attributes/con: 0
+attributes/dex: 0
+attributes/int: 0
+attributes/str: 0
+attributes/wis: 0
+class/class: __[fighter,bard,ranger,thief,druid,mage,illusionist,cleric,paladin]
+class/parent: __[warrior,wizard,rogue,priest]
+combat/hitpoints: 0
+combat/level-hitdice: 1
+combat/max_hp: 0
+icon: ''
+lightradius: 0
+personal/alignment/law: __[chaotic,neutral,lawful]
+personal/alignment/social: __[evil,good,neutral]
+personal/name/__Ufirst: ''
+personal/name/__Ulast: ''
+personal/race: __[human,elf,dwarf,half-elf,halfling,monster,creature,gnome]
+personal/sex: __[male,female]

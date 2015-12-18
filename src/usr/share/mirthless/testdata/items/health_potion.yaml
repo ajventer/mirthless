@@ -1,17 +1,17 @@
-core/charges: 1
-core/current_rounds_performed: 0
-core/description: Heals the target character for 1d6 hitpoints
-core/icon: icons/health_potion.png
-core/identified: true
-core/in_use: false
-core/name: Health Potion
-core/price/copper: 0
-core/price/gold: 10
-core/price/silver: 0
-core/rounds_per_charge: 1
-core/size: small
-core/type: other
-core/weight: 0
+charges: 1
+current_rounds_performed: 0
+description: Heals the target character for 1d6 hitpoints
+icon: icons/health_potion.png
+identified: true
+in_use: false
+name: Health Potion
+price/copper: 0
+price/gold: 10
+price/silver: 0
+rounds_per_charge: 1
+size: small
+type: other
+weight: 0
 events/ondrop: ''
 events/onequip: ''
 events/onfinish: ''

@@ -11,8 +11,8 @@ class Item(EzdmObject):
         self.animations = self.get('animations', {})
 
     def displayname(self):
-        name = self.get('/core/name', '')
-        tohit = int(self.get('conditional/tohit', 0))
+        name = self.get('/name', '')
+        tohit = int(self.get('tohit', 0))
         if tohit:
             name = name+' +'+str(tohit)
         if not self.identified():
@@ -24,18 +24,18 @@ class Item(EzdmObject):
         pass
 
     def slot(self):
-        return self.get('conditional/slot', '')
+        return self.get('slot', '')
 
     def identified(self):
-        return self.get('core/identified', False)
+        return self.get('identified', False)
 
     def identify(self):
-        self.put('core/identified', True)
+        self.put('identified', True)
 
     def price_tuple(self):
-        gold = self.get('core/price/gold', 0)
-        silver = self.get('core/price/silver', 0)
-        copper = self.get('core/price/copper', 0)
+        gold = self.get('price/gold', 0)
+        silver = self.get('price/silver', 0)
+        copper = self.get('price/copper', 0)
         try:
             gold = int(gold)
         except ValueError:
@@ -51,10 +51,10 @@ class Item(EzdmObject):
         return (gold, silver, copper)
 
     def itemtype(self):
-        return self.get('core/type', '')
+        return self.get('type', '')
 
     def armortype(self):
-        return self.get('/conditional/material', 'plate')
+        return self.get('material', 'plate')
 
     def onpickup(self, player):
         event(self, "/events/onpickup", {'item': self, 'player': player, 'messages': messages})
@@ -67,12 +67,12 @@ class Item(EzdmObject):
         event(self, "/events/onunequip", {'item': self, 'player': player, 'messages': messages})
 
     def onstrike(self, player, target):
-        event(self, "/conditional/events/onstrike", {'item': self, 'player': player, 'target': target, 'messages': messages})
+        event(self, "events/onstrike", {'item': self, 'player': player, 'target': target, 'messages': messages})
         debug("Item.onstrike save: %s" % target.autosave())
 
     def onuse(self, player, target):
         debug("[DEBUG] Item.onuse: player %s, target %s" % (player.displayname(), target.displayname()))
-        charges = self.get('/core/charges', 0)
+        charges = self.get('/charges', 0)
         if charges == 0:
             return
         if self.itemtype() == 'spell':
@@ -80,10 +80,10 @@ class Item(EzdmObject):
             messages.message(success[1])
             if not success[0]:
                 return
-        self.put('/core/in_use', True)
+        self.put('/in_use', True)
         #TODO - expect the next line to break in use. Needs to be redone once the 
         #new game class is finished
-        self.put('/core/target', target)
+        self.put('/target', target)
         event(self, "/events/onuse", {'item': self, 'player': player, 'target': target, 'messages': messages})
         try:
             target = messages.characterlist[target.index]
@@ -93,19 +93,19 @@ class Item(EzdmObject):
         messages.error("Item.onuse save: %s" % target.autosave())
 
     def onround(self, player):
-        targetindex = self.get('/core/target', 0)
+        targetindex = self.get('/target', 0)
         try:
             target = messages.characterlist[targetindex]
         except:
             return
         debug("[DEBUG] Item.onround: self: %s, player: %s, target: %s" % (self.displayname(), player.displayname(), target))
-        if self.get('/core/in_use', False):
-            rounds = self.get('/core/rounds_per_charge', 0)
-            current_rounds_performed = self.get('/core/current_rounds_performed', 0)
+        if self.get('/in_use', False):
+            rounds = self.get('/rounds_per_charge', 0)
+            current_rounds_performed = self.get('/current_rounds_performed', 0)
             debug("[DEBUG] item.onround: current_rounds_performed: %s, round: %s" % (current_rounds_performed, rounds))
             if current_rounds_performed < rounds:
                 current_rounds_performed += 1
-            self.put('/core/current_rounds_performed', current_rounds_performed)
+            self.put('/current_rounds_performed', current_rounds_performed)
             if current_rounds_performed < rounds:
                 debug("[DEBUG] item.onround: run onround event")
                 event(self, "/events/onround", {'item': self, 'player': player, 'target': target, 'messages': messages})
@@ -120,21 +120,21 @@ class Item(EzdmObject):
 
     def onfinish(self, player):
         debug("[DEBUG] item.onfinish player %s" % player.displayname())
-        targetindex = self.get('/core/target', 0)
+        targetindex = self.get('/target', 0)
         debug("[DEBUG] item.onfinish target %s" % targetindex)
         try:
             target = messages.characterlist[targetindex]
         except:
             return
         debug("[DEBUG] item.onfinish target %s" % target.displayname())
-        self.put('/core/in_use', False)
-        self.put('/core/target', None)
-        charges = self.get('/core/charges', 0)
+        self.put('/in_use', False)
+        self.put('/target', None)
+        charges = self.get('/charges', 0)
         debug("[DEBUG] item.onfinish charges %s" % charges)
         if charges > 0:
             charges -= 1
-            self.put('/core/charges', charges)
-        self.put('/core/current_rounds_performed', 0)
+            self.put('/charges', charges)
+        self.put('/current_rounds_performed', 0)
         debug("[DEBUG] item.onfinish before event")
         event(self, "/events/onfinish", {'item': self, 'player': player, 'target': target, 'messages': messages})
         try:
@@ -148,4 +148,4 @@ class Item(EzdmObject):
         player.autosave()
 
     def interrupt(self):
-        self.put('core/in_use', False)
+        self.put('in_use', False)

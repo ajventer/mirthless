@@ -25,17 +25,17 @@ class Character(EzdmObject):
         """
         >>> objdata = load_yaml('characters', 'bardic_rogue.yaml')
         >>> char = Character(objdata)
-        >>> hitdice = int(char()['core/combat/level-hitdice'])
+        >>> hitdice = int(char()['combat/level-hitdice'])
         >>> max = int(hitdice * 8)
         >>> char.roll_hit_dice()
-        >>> char.get('/core/combat/hitpoints', 0) <= max
+        >>> char.get('combat/hitpoints', 0) <= max
         True
-        >>> char.get('/core/combat/max_hp', 0) == max
+        >>> char.get('combat/max_hp', 0) == max
         True
         """
-        numdice = int(self.get('/core/combat/level-hitdice', '1'))
-        self.put('core/combat/hitpoints', rolldice(numdice=numdice, numsides=8)[0])
-        self.put('core/combat/max_hp', numdice * 8)
+        numdice = int(self.get('combat/level-hitdice', '1'))
+        self.put('combat/hitpoints', rolldice(numdice=numdice, numsides=8)[0])
+        self.put('combat/max_hp', numdice * 8)
 
     def handle_death(self):
         loc = self.location()
@@ -57,13 +57,13 @@ class Character(EzdmObject):
             gamemap.removefromtile(loc['x'], loc['y'], todel, chartype)
         debug(chartype)
         if chartype == 'npcs':
-            max_gold = self.get('/conditional/loot/gold', 0)
-            max_silver = self.get('/conditional/loot/silver', 0)
-            max_copper = self.get('/conditional/loot/copper', 0)
-            loot_items = self.get('/conditional/loot/items_possible', [])
-            max_items = self.get('/conditional/loot/max_items', 1)
+            max_gold = self.get('loot/gold', 0)
+            max_silver = self.get('loot/silver', 0)
+            max_copper = self.get('loot/copper', 0)
+            loot_items = self.get('loot/items_possible', [])
+            max_items = self.get('loot/max_items', 1)
             debug('Max Items:', max_items)
-            always_drops = self.get('/conditional/loot/always_drops', [])
+            always_drops = self.get('loot/always_drops', [])
             gold = rolldice(1, max_gold, 0)[0]
             silver = rolldice(1, max_silver, 0)[0]
             copper = rolldice(1, max_copper, 0)[0]
@@ -110,25 +110,25 @@ class Character(EzdmObject):
         >>> char.location()['map'] == 'simple_room.json'
         True
         """
-        return self.getsubtree('/core/location')
+        return self.getsubtree('location')
 
     @property
     def lightradius(self):
-        base_radius = self.get('/core/lightradius', 0)
+        base_radius = self.get('lightradius', 0)
         for item in self.inventory_generator(['equiped']):
-            base_radius += int(item[1].get('/core/lightradius', 0))
+            base_radius += int(item[1].get('lightradius', 0))
         for item in self.inventory_generator(['pack']):
-            if item[1].get('/core/in_use', False):
-                base_radius += int(item[1].get('/core/lightradius', 0))
+            if item[1].get('in_use', False):
+                base_radius += int(item[1].get('lightradius', 0))
         return base_radius
 
     def memorized_spells(self):
         result = {}
-        spells = self.get('/core/inventory/spells', [])
-        for idx in self.get('/core/inventory/spells_memorized', []):
+        spells = self.get('inventory/spells', [])
+        for idx in self.get('inventory/spells_memorized', []):
             item = Item(spells[idx])
             print(item())
-            level = item.get('/conditional/spell_level', 1)
+            level = item.get('spell_level', 1)
             print (level)
             if level not in result:
                 result[level] = []
@@ -152,9 +152,9 @@ class Character(EzdmObject):
             gamemap = GameMap(load_yaml('maps', current['map']))
             gamemap.removefromtile(current['x'], current['y'], self.name(), ctype)
             debug("Saving", gamemap.save())
-        self.put('/core/location/x', x)
-        self.put('/core/location/y', y)
-        self.put('/core/location/map', mapname)
+        self.put('location/x', x)
+        self.put('location/y', y)
+        self.put('location/map', mapname)
         self.save()
         gamemap = GameMap(load_yaml('maps', mapname))
         gamemap.addtotile(x, y, self.name(), 'players')
@@ -168,16 +168,16 @@ class Character(EzdmObject):
 
     def inventory_generator(self, sections=['pack', 'equiped', 'spells']):
         for section in sections:
-            items = self.get('core/inventory/%s' % section, [])
+            items = self.get('inventory/%s' % section, [])
             idx = -1
             if isinstance(items, list):
                 for item in items:
                     idx += 1
                     yield (section, Item(item), idx)
             else:
-                items = self.getsubtree('core/inventory/%s' % section)
+                items = self.getsubtree('inventory/%s' % section)
                 for slots in FlattenedDict(items).subkeys():
-                    itemdata =  self.get('core/inventory/equiped/%s' %slot)
+                    itemdata =  self.get('inventory/equiped/%s' %slot)
                     yield(section, Item(item),slot)
 
     @property
@@ -186,7 +186,7 @@ class Character(EzdmObject):
         Covered by test for interrupt cast
         """
         for item in self.inventory_generator():
-            if item[1].get('/core/in_use', False):
+            if item[1].get('in_use', False):
                 return True
         return False
 
@@ -203,13 +203,13 @@ class Character(EzdmObject):
         >>> char.character_type()
         'npc'
         """
-        return self.get('/core/type', 'player')
+        return self.get('type', 'player')
 
     def oninteract(self, target, page):
-        event(self, '/conditional/events/oninteract', {'character': self, 'page': page, 'target': target})
+        event(self, 'events/oninteract', {'character': self, 'page': page, 'target': target})
 
     def xp_worth(self):
-        xpkey = self.get('core/combat/level-hitdice', 1)
+        xpkey = self.get('combat/level-hitdice', 1)
         debug(xpkey)
         xpvalues = load_yaml('adnd2e', 'creature_xp.objdata')
         debug(xpvalues)
@@ -230,53 +230,53 @@ class Character(EzdmObject):
     def heal(self, amount):
         """
         >>> char = Character(load_yaml('characters', 'bardic_rogue.yaml'))
-        >>> start = char.get('/core/combat/hitpoints', 1)
-        >>> max = char.get('/core/combat/max_hp', 1)
+        >>> start = char.get('combat/hitpoints', 1)
+        >>> max = char.get('combat/max_hp', 1)
         >>> if max - start < 1:
         ...    expected = max
         ... else:
         ...    expected = start + 1
         ...
         >>> x = char.heal(1)
-        >>> char.get('/core/combat/hitpoints', 1) == expected
+        >>> char.get('combat/hitpoints', 1) == expected
         True
         >>> x == expected
         True
         """
-        hp = int(self.get('/core/combat/hitpoints', 1))
+        hp = int(self.get('combat/hitpoints', 1))
         hp += amount
-        if hp > int(self.get('/core/combat/max_hp', 1)):
-            self.put('/core/combat/hitpoints', int(self.get('/core/combat/max_hp', 1)))
+        if hp > int(self.get('combat/max_hp', 1)):
+            self.put('combat/hitpoints', int(self.get('combat/max_hp', 1)))
         else:
-            self.put('/core/combat/hitpoints', hp)
-        return self.get('/core/combat/hitpoints', 1)
+            self.put('combat/hitpoints', hp)
+        return self.get('combat/hitpoints', 1)
 
     def take_damage(self, damage):
         """
         >>> char = Character(load_yaml('characters', 'bardic_rogue.yaml'))
         >>> start = 30
-        >>> char.put('/core/combat/hitpoints', start)
+        >>> char.put('combat/hitpoints', start)
         >>> char.take_damage(1)
         (...)
-        >>> end = char.get('/core/combat/hitpoints', 1)
+        >>> end = char.get('combat/hitpoints', 1)
         >>> end < start
         True
         """
         messages.message('%s takes %s damage' % (self.displayname(), damage))
         debug("[DEBUG] character.take_damage: damage - %s, player - %s" % (damage, self.displayname()))
         out = ''
-        currenthitpoints = self.get('/core/combat/hitpoints', 1)
+        currenthitpoints = self.get('combat/hitpoints', 1)
         if damage >= currenthitpoints:
             debug("[DEBUG] character.take_damage, damage MORE than hitpoints: %s, %s" % (damage, currenthitpoints))
-            self.put('/core/combat/hitpoints', 0)
+            self.put('combat/hitpoints', 0)
             self.handle_death()
             return (False, '%s has died !' % self.displayname())
         else:
             debug("[DEBUG] character take damage, LESS than hitpoints: damage=%s, player=%s, hitpoints=%s" % (damage, self.displayname(), currenthitpoints))
             hp = int(currenthitpoints)
             hp -= damage
-            self.put('/core/combat/hitpoints', hp)
-            out += "<br>%s takes %s damage. %s hitpoints remaining" % (self.displayname(), damage, self.get('/core/combat/hitpoints', 1))
+            self.put('combat/hitpoints', hp)
+            out += "<br>%s takes %s damage. %s hitpoints remaining" % (self.displayname(), damage, self.get('combat/hitpoints', 1))
             messages.error('')
             return (True, out)
 
@@ -286,7 +286,7 @@ class Character(EzdmObject):
         >>> char.name()
         'bardic_rogue.yaml'
         """
-        name = '%s_%s.yaml' % (self.get('/core/personal/name/first', ''), self.get('/core/personal/name/last', ''))
+        name = '%s_%s.yaml' % (self.get('personal/name/first', ''), self.get('personal/name/last', ''))
         return name.lower().replace(' ', '_').replace("'", "")
 
     def save(self):
@@ -306,13 +306,13 @@ class Character(EzdmObject):
         True
         """
         ability_mods = load_yaml('rules', 'ability_scores.yaml')
-        strength = self.get('/core/attributes/str', 1)
+        strength = self.get('attributes/str', 1)
         base = int(FlattenedDict(ability_mods).get('/str/%s/hit' % strength, 0))
         bonus = 0
         for weapon in self.weapons:
             debug(weapon())
             try:
-                w = int(weapon()['conditional/to_hit'])
+                w = int(weapon()['to_hit'])
             except ValueError:
                 w = 0
             bonus += w
@@ -326,7 +326,7 @@ class Character(EzdmObject):
         True
         """
         ability_mods = FlattenedDict(load_yaml('rules', 'ability_scores.yaml'))
-        con = self.get('core/attributes/con', 1)
+        con = self.get('attributes/con', 1)
         return int(ability_mods['con/%s/ppd' % con])
 
     def dmg_mod(self):
@@ -336,7 +336,7 @@ class Character(EzdmObject):
         True
         """
         ability_mods = FlattenedDict(load_yaml('rules', 'ability_scores.yaml'))
-        strength = self.get('core/attributes/str', 0)
+        strength = self.get('attributes/str', 0)
         return int(ability_mods.get('/str/%s/dmg' % strength, 0))
 
     def def_mod(self):
@@ -346,7 +346,7 @@ class Character(EzdmObject):
         True
         """
         ability_mods = load_yaml('rules', 'ability_scores.yaml')
-        dex = self.get('/core/attributes/dex', 0)
+        dex = self.get('attributes/dex', 0)
         return int(FlattenedDict(ability_mods).get('/dex/%s/defense' % dex, 0))
 
     @property
@@ -356,10 +356,10 @@ class Character(EzdmObject):
         >>> isinstance(char.saving_throws, dict)
         True
         """
-        key = self.get('/core/class/parent', '')
+        key = self.get('class/parent', '')
         sts = FlattenedDict(load_yaml("rules", "saving_throws.yaml"))
         sts = FlattenedDict(sts.readsubtree(key))
-        hitdice = self.get('/core/combat/level-hitdice', 0)
+        hitdice = self.get('combat/level-hitdice', 0)
         for key2 in sts.subkeys():
             if inrange(hitdice, key2):
                 st = sts.readsubtree(key2)
@@ -369,8 +369,8 @@ class Character(EzdmObject):
     def saving_throw(self, against):
         saving = load_yaml('rules', 'saving_throws.yaml') or {}
         prettyname = saving['names'][against]
-        race = self.get('/core/personal/race', '')
-        con = int(self.get('/core/attributes/con', 0))
+        race = self.get('personal/race', '')
+        con = int(self.get('attributes/con', 0))
         mod = 0
         if race in list(saving.keys()):
             for key in list(saving[race].keys()):
@@ -408,28 +408,28 @@ class Character(EzdmObject):
     def level_up(self):
         """
         >>> char = Character(load_yaml('characters', 'bardic_rogue.yaml'))
-        >>> level = char.get('/core/combat/level-hitdice', 1)
-        >>> hp = char.get('/core/combat/hitpoints', 1)
-        >>> max = char.get('/core/combat/max_hp', 1)
+        >>> level = char.get('combat/level-hitdice', 1)
+        >>> hp = char.get('combat/hitpoints', 1)
+        >>> max = char.get('combat/max_hp', 1)
         >>> debug(char.level_up())
-        >>> char.get('/core/combat/hitpoints', 1) > hp
+        >>> char.get('combat/hitpoints', 1) > hp
         True
-        >>> char.get('/core/combat/max_hp', 1) > max
+        >>> char.get('combat/max_hp', 1) > max
         True
-        >>> char.get('/core/combat/level-hitdice', 1) == level + 1
+        >>> char.get('combat/level-hitdice', 1) == level + 1
         True
         """
-        level = int(self.get('/core/combat/level-hitdice', 1))
+        level = int(self.get('combat/level-hitdice', 1))
         level += 1
         out = '%s has reached level %s !' % (self.displayname(), level)
-        self.put('/core/combat/level-hitdice', level)
+        self.put('combat/level-hitdice', level)
         ability_scores = load_yaml('rules', 'ability_scores.yaml')
-        con = self.get('/core/attributes/con', 1)
+        con = self.get('attributes/con', 1)
         out += '<br>Character constitution: %s' % con
         con_bonus = int(FlattenedDict(ability_scores).get('/con/%s/hit' % con,0))
         out += '<br>Constitution Bonus: %s' % con_bonus
         xp_levels = FlattenedDict(load_yaml('rules', 'xp_levels.yaml'))
-        pclass = self.get('/core/class/parent', '')
+        pclass = self.get('class/parent', '')
         xp_levels = xp_levels.readall(pclass)
         hitdice = str(xp_levels.get('%s/%s/hit_dice' % (pclass, level), 1))
         debug("Read hitdice as ", hitdice)
@@ -440,28 +440,28 @@ class Character(EzdmObject):
         more_hp, roll = rolldice(numdice=int(hitdice), numsides=dice, modifier=con_bonus)
         out += '<br>%s' % roll
         more_hp += int(bonus)
-        current_max = int(self.get('/core/combat/max_hp', 1))
+        current_max = int(self.get('combat/max_hp', 1))
         new_max = current_max + more_hp
         out += '<br>Maximum hitpoints increased by %s. Maximum hitpoints now: %s' % (more_hp, new_max)
-        self.put('core/combat/max_hp', new_max)
+        self.put('combat/max_hp', new_max)
         new_hp = new_max
         out += '<br>Character hitpoints now %s' % new_hp
-        self.put('/core/combat/hitpoints', new_hp)
+        self.put('combat/hitpoints', new_hp)
         self.__init__(self())
         return out
 
     def give_xp(self, xp):
         """
         >>> char = Character(load_yaml('characters', 'bardic_rogue.yaml'))
-        >>> level = char.get('/core/combat/level-hitdice', 1)
+        >>> level = char.get('combat/level-hitdice', 1)
         >>> nl = char.next_level()
         >>> debug(char.give_xp(nl + 10))
-        >>> char.get('/core/combat/level-hitdice', 1) == level + 1
+        >>> char.get('combat/level-hitdice', 1) == level + 1
         True
         """
-        current_xp = int(self.get('/core/personal/xp', 0))
+        current_xp = int(self.get('personal/xp', 0))
         new_xp = current_xp + int(xp)
-        self.put('/core/personal/xp', str(new_xp))
+        self.put('personal/xp', str(new_xp))
         messages.message('%s gains %s experience points. XP now: %s' % (self.displayname(), xp, new_xp))
         next_level = self.next_level()
         if new_xp >= next_level and next_level != -1:
@@ -472,12 +472,12 @@ class Character(EzdmObject):
         return new_xp
 
     def next_level(self):
-        parentclass = self.get('core/class/parent', '')
-        childclass = self.get('core/class/class', '')
+        parentclass = self.get('class/parent', '')
+        childclass = self.get('class/class', '')
         if childclass == 'paladin':
             childclass = 'ranger'
         debug('Checking next level for %s' % self.displayname())
-        nl = int(self.get('core/combat/level-hitdice', 1)) + 1
+        nl = int(self.get('combat/level-hitdice', 1)) + 1
         if nl > 20:
             return -1
         xp_levels = FlattenedDict(load_yaml('rules', 'xp_levels.yaml')).readall('/%s/%s' % (parentclass, str(nl)))
@@ -516,7 +516,7 @@ class Character(EzdmObject):
 
     def spell_success(self):
         ability_scores = load_yaml('rules', 'ability_scores.yaml')
-        wis = str(self.get('/core/attributes/wis', 0))
+        wis = str(self.get('attributes/wis', 0))
         failrate = int(ability_scores["wis/%s/spell_failure" %(wis)].split('%')[0])
         out = "Spell failure rate: %s percent" % failrate
         roll = rolldice(numdice=1, numsides=100)
@@ -529,17 +529,17 @@ class Character(EzdmObject):
             return(False, out)
 
     def learn_spell(self, spellitem):
-        spells = self.get('/core/inventory/spells', [])
+        spells = self.get('inventory/spells', [])
         if isinstance(spells, str):
             try:
                 spells = simpleobjdata.loads(spells)
             except:
                 spells = []
         if not isinstance(spells, list):
-            self.put('/core/inventory/spells', [])
-        spelltype = spellitem.get('/conditional/spell_type', 'wizard spells')
-        parentclass = self.get('/core/class/parent', '')
-        childclass = self.get('/core/class/class', '')
+            self.put('inventory/spells', [])
+        spelltype = spellitem.get('spell_type', 'wizard spells')
+        parentclass = self.get('class/parent', '')
+        childclass = self.get('class/class', '')
         canlearn = load_yaml('rules', 'various.yaml')["spell progression"]
         found = False
         for key in canlearn:
@@ -552,7 +552,7 @@ class Character(EzdmObject):
         oneline = list(canlearn[key].keys())[0]
         if spelltype not in canlearn[key][oneline]:
             return "%s cannot learn %s, failed to learn spell %s" % (self.displayname(), spelltype, spellitem.displayname())
-        intelect = str(self.get('/core/attributes/int', 1))
+        intelect = str(self.get('attributes/int', 1))
         chance = FlattenedDict(load_yaml('rules', 'ability_scores.yaml'))
         chance = chance['/int/%s/spell_learn' % intelect]
         out = "<strong>%s has a %s chance to learn a new spell</strong>" % (self.displayname(), chance)
@@ -567,21 +567,21 @@ class Character(EzdmObject):
         return "%s<br><strong>%s has learned %s</strong>" % (out, self.displayname(), spellitem.displayname())
 
     def unlearn_spell(self, index):
-        del(self()['core/inventory/spells'][index])
+        del(self()['inventory/spells'][index])
 
     def acquire_item(self, item):
         """
         >>> char = Character({})
         >>> item = Item(load_yaml('items', 'health_potion.yaml'))
         >>> char.acquire_item(item)
-        >>> Item(char()['core/inventory/pack'][0]).displayname() == 'Health Potion'
+        >>> Item(char()['inventory/pack'][0]).displayname() == 'Health Potion'
         True
         """
         if self.character_type() == 'player':
             item.onpickup(self)
-        li = self.objdata.get('core/inventory/pack',[])
+        li = self.objdata.get('inventory/pack',[])
         li.insert(0, item())
-        self.put('core/inventory/pack',li)
+        self.put('inventory/pack',li)
 
 
     def equip_item(self, itemname):
@@ -622,22 +622,22 @@ class Character(EzdmObject):
         1
         """
         slots = []
-        canwear = self.get('/conditional/armor_types', 0)
+        canwear = self.get('armor_types', 0)
         armor_types = load_yaml('rules', 'armor_types.yaml')
-        shields = self.get('/conditional/shields', False)
+        shields = self.get('shields', False)
 
         if isinstance(itemname, int):
             try:
-                item = Item(self.get('core/inventory/pack', [])[itemname])
+                item = Item(self.get('inventory/pack', [])[itemname])
             except IndexError:
-                raise IndexError('%s - %s' % (itemname, self.get('core/inventory/pack')))
+                raise IndexError('%s - %s' % (itemname, self.get('inventory/pack')))
         elif isinstance(itemname, str):
-            for item in [Item(i) for i in self.get('/core/inventory/pack', [])]:
+            for item in [Item(i) for i in self.get('inventory/pack', [])]:
                 debug (itemname, item.displayname())
                 if item.displayname() == itemname:
                     break
         elif isinstance(itemname, Item):
-            for item in [Item(i) for i in self.get('/core/inventory/pack', [])]:
+            for item in [Item(i) for i in self.get('inventory/pack', [])]:
                 debug (itemname.displayname(), item.displayname())
                 if item.displayname() == itemname.displayname():
                     break
@@ -654,8 +654,8 @@ class Character(EzdmObject):
             if item.slot() == 'twohand':
                 slots = ['lefthand', 'righthand']
             elif item.slot() == 'finger':
-                left = self.getsubtree('/core/inventory/equiped/leftfinger')
-                right = self.getsubtree('/core/inventory/equiped/rightfinger')
+                left = self.getsubtree('inventory/equiped/leftfinger')
+                right = self.getsubtree('inventory/equiped/rightfinger')
                 if not left:
                     slots = ['leftfinger']
                 if not right:
@@ -666,7 +666,7 @@ class Character(EzdmObject):
                 slots = [item.slot()]
             for slot in slots:
                 self.unequip_item(slot)
-                self.putsubtree('/core/inventory/equiped/%s' % slot.strip(), item())
+                self.putsubtree('inventory/equiped/%s' % slot.strip(), item())
             self.drop_item(item.displayname())
         return (True, "%s has equiped %s" % (self.displayname(), item.displayname()))
 
@@ -682,35 +682,35 @@ class Character(EzdmObject):
         'Fist'
         """
         slot = slot.strip()
-        current = self.getsubtree('core/inventory/equiped/%s' % slot)
+        current = self.getsubtree('inventory/equiped/%s' % slot)
         debug(current)
         if current:
             current = Item(current)
             if current.displayname() != 'Fist':
                 self.acquire_item(current)
-            if current.get('/conditional/slot', '') == 'twohand':
+            if current.get('slot', '') == 'twohand':
                 debug('Unequipping a twohanded weapon')
                 for slot in ['lefthand', 'righthand']:
                     debug('unequiping from %s' % slot)
-                    self().deltree('/core/inventory/equiped/%s' % slot)
+                    self().deltree('inventory/equiped/%s' % slot)
             else:
-                self.put('/core/inventory/equiped/%s' % slot, {})
+                self.put('inventory/equiped/%s' % slot, {})
             if self.character_type() == 'player':
                 current.onunequip(self)
 
     def sell_price(self, gold, copper, silver):
             price = price_in_copper(gold, silver, copper)
 
-            cha = int(self.get('/core/attributes/cha', 1))
+            cha = int(self.get('attributes/cha', 1))
             price = (price / 2) + ((price / 100) * cha)
             money = convert_money(price)
             return (int(money['gold']), int(money['silver']), int(money['copper']))
 
     def sell_item(self, itemname, buyer='shop', gold=0, silver=0, copper=0):
         if isinstance(itemname, int):
-            tosell = Item(self.get('/core/inventory/pack', [])[itemname])
+            tosell = Item(self.get('inventory/pack', [])[itemname])
         else:
-            for item in self.get('/core/inventory/pack', []):
+            for item in self.get('inventory/pack', []):
                 if item.displayname() == itemname:
                     tosell = Item(item)
                     break
@@ -734,7 +734,7 @@ class Character(EzdmObject):
         [(0, 'Health Potion', 'Gold 4, Silver 10, Copper 10')]
         """
         out = []
-        pack = self.get('/core/inventory/pack', [])
+        pack = self.get('inventory/pack', [])
         for i in pack:
             try:
                 item = Item(i)
@@ -750,32 +750,32 @@ class Character(EzdmObject):
         >>> char = Character({})
         >>> char.acquire_item(Item(load_yaml('items','health_potion.yaml')))
         >>> char.drop_item('Health Potion')
-        >>> len(char.get('/core/inventory/pack', []))
+        >>> len(char.get('inventory/pack', []))
         0
         >>> char.acquire_item(Item(load_yaml('items','health_potion.yaml')))
         >>> char.drop_item(0)
-        >>> len(char.get('/core/inventory/pack', []))
+        >>> len(char.get('inventory/pack', []))
         0
         """
         todrop = None
         if isinstance(itemname, str):
-            for item in self.get('/core/inventory/%s' % section, []):
+            for item in self.get('inventory/%s' % section, []):
                 item = Item(item)
                 if item.displayname() == itemname:
-                    todrop = self.get('/core/inventory/%s' % section, []).index(item())
+                    todrop = self.get('inventory/%s' % section, []).index(item())
         else:
             todrop = itemname
         if todrop is None:
             return
-        item = Item(self.objdata['core/inventory/pack'][todrop])
+        item = Item(self.objdata['inventory/pack'][todrop])
         if self.character_type() == 'player':
             item.ondrop(player=self)
-        del(self.objdata['core/inventory/pack'][todrop])
+        del(self.objdata['inventory/pack'][todrop])
 
     def money_tuple(self):
-        gold = self.get('/core/inventory/money/gold', 0)
-        silver = self.get('/core/inventory/money/silver', 0)
-        copper = self.get('/core/inventory/money/copper', 0)
+        gold = self.get('inventory/money/gold', 0)
+        silver = self.get('inventory/money/silver', 0)
+        copper = self.get('inventory/money/copper', 0)
         return (int(gold), int(silver), int(copper))
 
     def spend_money(self, gold=0, silver=0, copper=0):
@@ -785,7 +785,7 @@ class Character(EzdmObject):
         if remains < 0:
             return False
         else:
-            self.put('/core/inventory/money', convert_money(remains))
+            self.put('inventory/money', convert_money(remains))
             return True
 
     def buy_item(self, item, page=None):
@@ -801,19 +801,19 @@ class Character(EzdmObject):
         total_gained = price_in_copper(gold, silver, copper)
         my_total = price_in_copper(*self.money_tuple())
         my_total += total_gained
-        self.put('/core/inventory/money', convert_money(my_total))
+        self.put('inventory/money', convert_money(my_total))
 
     def armor_class(self):
         ac = 10.0
         for item in self.inventory_generator(['equiped']):
-            ac -= float(item[1].get('/conditional/ac', 0.0))
+            ac -= float(item[1].get('ac', 0.0))
         return ac
 
     def equiped_by_type(self, itemtype):
         arm = []
-        equiped = self.getsubtree('/core/inventory/equiped')
+        equiped = self.getsubtree('inventory/equiped')
         for slot in FlattenedDict(equiped).subkeys():
-            itemdata = self.getsubtree('/core/inventory/equiped/%s' % slot)
+            itemdata = self.getsubtree('inventory/equiped/%s' % slot)
             if not itemdata:
                 continue
             item = Item(itemdata)
@@ -847,7 +847,7 @@ class Character(EzdmObject):
             self.acquire_item(fist)
             self.equip_item(0)
             equipedweapons = self.equiped_by_type('weapon')
-        if equipedweapons and equipedweapons[0].get('/conditional/slot', "") == 'twohand':
+        if equipedweapons and equipedweapons[0].get('slot', "") == 'twohand':
             return equipedweapons[1:]
         return equipedweapons
 
@@ -857,26 +857,26 @@ class Character(EzdmObject):
     def num_attacks(self):
         atr_objdata = FlattenedDict(load_yaml('rules', 'various.yaml'))
         atr = atr_objdata['various/attacks_per_round']
-        parentclass = self.get('/core/class/parent', '')
+        parentclass = self.get('class/parent', '')
         if parentclass not in atr:
             myatr = 1
         else:
             for key in list(atr[parentclass].keys()):
-                if inrange(self.get('/core/combat/level-hitdice', 1), key):
+                if inrange(self.get('combat/level-hitdice', 1), key):
                     myatr = int(atr[parentclass][key])
         return self.num_weapons() * int(myatr)
 
     def current_xp(self):
-        return int(self.get('/core/personal/xp', 0))
+        return int(self.get('personal/xp', 0))
 
     def abilities(self):
-        subclass = self.get('/core/class/class', '')
-        parentclass = self.get('/core/class/parent', '')
-        level = self.get('/core/combat/level-hitdice', '')
+        subclass = self.get('class/class', '')
+        parentclass = self.get('class/parent', '')
+        level = self.get('combat/level-hitdice', '')
         various = load_yaml('rules', 'various.yaml')
         abilities = various['abilities']
-        conditionals = self.get('/conditional/abilities', {})
-        race = self.get('/core/personal/race', self())
+        conditionals = self.get('abilities', {})
+        race = self.get('personal/race', self())
         for ability in abilities:
             base = 0
             if ability in conditionals:
@@ -915,18 +915,18 @@ class Character(EzdmObject):
         return conditionals
 
     def displayname(self):
-        out = "[%s %s]" % (self.get('/core/personal/name/first', ''), self.get('/core/personal/name/last', ''))
+        out = "[%s %s]" % (self.get('personal/name/first', ''), self.get('personal/name/last', ''))
         return out
 
     @property
     def thac0(self):
-        if self.get('/core/personal/race', '') == "creature":
+        if self.get('personal/race', '') == "creature":
             key = "creature"
         else:
-            key = self.get('/core/class/parent', '')
+            key = self.get('class/parent', '')
         thac0s = load_yaml("rules", "thac0.yaml")[key]
         for key2 in list(thac0s.keys()):
-            if inrange(self.get('/core/combat/level-hitdice', 1), key2):
+            if inrange(self.get('combat/level-hitdice', 1), key2):
                 return int(thac0s[key2])
 
     # def render(self):
@@ -946,12 +946,12 @@ class Character(EzdmObject):
     #         if 'saving_throws' in out['core']['combat']:
     #             del out['core']['combat']['saving_throws']
     #         prettynames = load_yaml('rules', 'saving_throws.yaml')
-    #         writekey('/conditional/abilities', self.abilities(), out)
+    #         writekey('abilities', self.abilities(), out)
     #         if not self.character_type() == 'player':
     #             out['XP Worth'] = self.xp_worth()
     #         for k, v in list(self.saving_throws.items()):
     #             prettyname = readkey('/names/%s' % k, prettynames, k)
-    #             writekey('/core/combat/saving_throws/%s ' % prettyname, v, out)
+    #             writekey('combat/saving_throws/%s ' % prettyname, v, out)
     #         self.reset_weapon()
     #         out['core']['combat']['armor_class'] = self.armor_class()
     #         out['core']['combat']['thac0'] = self.thac0
@@ -961,13 +961,13 @@ class Character(EzdmObject):
 
     #         if 'index' in out:
     #             del (out['index'])
-    #         xp = self.get('/core/personal/xp', 0)
+    #         xp = self.get('personal/xp', 0)
     #         nl = self.next_level()
     #         out['core']['personal']['xp'] = '%s/%s (%s to go)' % (xp, nl, nl - xp)
     #         armor_types = load_yaml('rules', 'armor_types.yaml')
     #         armor_types = sorted(iter(armor_types.items()), key=operator.itemgetter(1))
     #         out['core']['combat']['Armor allowed'] = []
     #         for atype in armor_types:
-    #             if atype[1] <= self.get('/conditional/armor_types', 0):
+    #             if atype[1] <= self.get('armor_types', 0):
     #                 out['core']['combat']['Armor allowed'].append(atype[0])
     #     return out

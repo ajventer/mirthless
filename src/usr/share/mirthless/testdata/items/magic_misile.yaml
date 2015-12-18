@@ -1,22 +1,22 @@
-conditional/spell_level: 1
-conditional/spell_school: Conjuration
-conditional/spell_type: wizard spells
-core/charges: -1
-core/current_rounds_performed: 0
-core/description: Fires a bolt of arcane energy at the target, if it hits it does
+spell_level: 1
+spell_school: Conjuration
+spell_type: wizard spells
+charges: -1
+current_rounds_performed: 0
+description: Fires a bolt of arcane energy at the target, if it hits it does
   1d6 damage.
-core/icon: icons/magic_misile.png
-core/identified: ''
-core/in_use: false
-core/lightradius: 0
-core/name: Magic Misile
-core/price/copper: 25
-core/price/gold: 200
-core/price/silver: 50
-core/rounds_per_charge: 2
-core/size: small
-core/type: spell
-core/weight: 0
+icon: icons/magic_misile.png
+identified: ''
+in_use: false
+lightradius: 0
+name: Magic Misile
+price/copper: 25
+price/gold: 200
+price/silver: 50
+rounds_per_charge: 2
+size: small
+type: spell
+weight: 0
 events/ondrop: ''
 events/onequip: ''
 events/onfinish: "messages.warning('%s has finished casting Magic Misile at %s'  %\

@@ -1,100 +1,100 @@
-conditional/abilities/climb walls: 50
-conditional/abilities/detect noise: 20
-conditional/abilities/find-remove traps: 5
-conditional/abilities/move silently: 10
-conditional/abilities/open locks: 10
-conditional/abilities/pick pockets: 10
-conditional/abilities/read languages: 5
-conditional/armor_types: 3
-core/attributes/cha: 17
-core/attributes/con: 11
-core/attributes/dex: 12
-core/attributes/int: 14
-core/attributes/str: 9
-core/attributes/wis: 8
-core/class/class: bard
-core/class/parent: rogue
-core/combat/hitpoints: 17
-core/combat/level-hitdice: 4
-core/combat/max_hp: 16
-core/combat/saving_throws/breath: 16
-core/combat/saving_throws/pp: 12
-core/combat/saving_throws/ppd: 13
-core/combat/saving_throws/rod: 14
-core/combat/saving_throws/spell: 15
-core/combat/thac0: 18
-core/icon: avatars/48x48_Faces_4th_Sheet_Update_CharlesGabriel_OGA_0-1-3.png
-core/inventory/equiped/chest: 
-core/inventory/equiped/feet: 
-core/inventory/equiped/gloves: 
-core/inventory/equiped/head: 
-core/inventory/equiped/leftfinger: 
-core/inventory/equiped/lefthand/conditional/damage_type: stab
-core/inventory/equiped/lefthand/conditional/dmg: 4
-core/inventory/equiped/lefthand/conditional/range: ''
-core/inventory/equiped/lefthand/conditional/save_against: none
-core/inventory/equiped/lefthand/conditional/slot: lefthand
-core/inventory/equiped/lefthand/conditional/to_hit: 0
-core/inventory/equiped/lefthand/conditional/weapon_type: melee
-core/inventory/equiped/lefthand/core/charges: 0
-core/inventory/equiped/lefthand/core/current_rounds_performed: 0
-core/inventory/equiped/lefthand/core/description: A small dagger balanced for use
+abilities/climb walls: 50
+abilities/detect noise: 20
+abilities/find-remove traps: 5
+abilities/move silently: 10
+abilities/open locks: 10
+abilities/pick pockets: 10
+abilities/read languages: 5
+armor_types: 3
+attributes/cha: 17
+attributes/con: 11
+attributes/dex: 12
+attributes/int: 14
+attributes/str: 9
+attributes/wis: 8
+class/class: bard
+class/parent: rogue
+combat/hitpoints: 17
+combat/level-hitdice: 4
+combat/max_hp: 16
+combat/saving_throws/breath: 16
+combat/saving_throws/pp: 12
+combat/saving_throws/ppd: 13
+combat/saving_throws/rod: 14
+combat/saving_throws/spell: 15
+combat/thac0: 18
+icon: avatars/48x48_Faces_4th_Sheet_Update_CharlesGabriel_OGA_0-1-3.png
+inventory/equiped/chest: 
+inventory/equiped/feet: 
+inventory/equiped/gloves: 
+inventory/equiped/head: 
+inventory/equiped/leftfinger: 
+inventory/equiped/lefthand/damage_type: stab
+inventory/equiped/lefthand/dmg: 4
+inventory/equiped/lefthand/range: ''
+inventory/equiped/lefthand/save_against: none
+inventory/equiped/lefthand/slot: lefthand
+inventory/equiped/lefthand/to_hit: 0
+inventory/equiped/lefthand/weapon_type: melee
+inventory/equiped/lefthand/charges: 0
+inventory/equiped/lefthand/current_rounds_performed: 0
+inventory/equiped/lefthand/description: A small dagger balanced for use
   in the offhand.
-core/inventory/equiped/lefthand/core/icon: icons/dagger.png
-core/inventory/equiped/lefthand/core/identified: true
-core/inventory/equiped/lefthand/core/in_use: false
-core/inventory/equiped/lefthand/core/name: Offhand_Dagger
-core/inventory/equiped/lefthand/core/price/copper: ''
-core/inventory/equiped/lefthand/core/price/gold: 2
-core/inventory/equiped/lefthand/core/price/silver: ''
-core/inventory/equiped/lefthand/core/rounds_per_charge: 0
-core/inventory/equiped/lefthand/core/size: small
-core/inventory/equiped/lefthand/core/type: weapon
-core/inventory/equiped/lefthand/core/weight: ''
-core/inventory/equiped/lefthand/events/ondrop: campaign.warning('%s has dropped %s'
+inventory/equiped/lefthand/icon: icons/dagger.png
+inventory/equiped/lefthand/identified: true
+inventory/equiped/lefthand/in_use: false
+inventory/equiped/lefthand/name: Offhand_Dagger
+inventory/equiped/lefthand/price/copper: ''
+inventory/equiped/lefthand/price/gold: 2
+inventory/equiped/lefthand/price/silver: ''
+inventory/equiped/lefthand/rounds_per_charge: 0
+inventory/equiped/lefthand/size: small
+inventory/equiped/lefthand/type: weapon
+inventory/equiped/lefthand/weight: ''
+inventory/equiped/lefthand/events/ondrop: campaign.warning('%s has dropped %s'
   % (player.displayname(), item.displayname()))
-core/inventory/equiped/lefthand/events/onequip: ''
-core/inventory/equiped/lefthand/events/onfinish: ''
-core/inventory/equiped/lefthand/events/onpickup: ''
-core/inventory/equiped/lefthand/events/onround: ''
-core/inventory/equiped/lefthand/events/onuse: ''
-core/inventory/equiped/legs: 
-core/inventory/equiped/neck: 
-core/inventory/equiped/rightfinger: 
-core/inventory/equiped/righthand/conditional/damage_type: stab
-core/inventory/equiped/righthand/conditional/dmg: 4
-core/inventory/equiped/righthand/conditional/range: ''
-core/inventory/equiped/righthand/conditional/save_against: none
-core/inventory/equiped/righthand/conditional/slot: ' righthand'
-core/inventory/equiped/righthand/conditional/to_hit: 0
-core/inventory/equiped/righthand/conditional/weapon_type: melee
-core/inventory/equiped/righthand/core/charges: 0
-core/inventory/equiped/righthand/core/current_rounds_performed: 0
-core/inventory/equiped/righthand/core/description: A small dagger balanced for use
+inventory/equiped/lefthand/events/onequip: ''
+inventory/equiped/lefthand/events/onfinish: ''
+inventory/equiped/lefthand/events/onpickup: ''
+inventory/equiped/lefthand/events/onround: ''
+inventory/equiped/lefthand/events/onuse: ''
+inventory/equiped/legs: 
+inventory/equiped/neck: 
+inventory/equiped/rightfinger: 
+inventory/equiped/righthand/damage_type: stab
+inventory/equiped/righthand/dmg: 4
+inventory/equiped/righthand/range: ''
+inventory/equiped/righthand/save_against: none
+inventory/equiped/righthand/slot: ' righthand'
+inventory/equiped/righthand/to_hit: 0
+inventory/equiped/righthand/weapon_type: melee
+inventory/equiped/righthand/charges: 0
+inventory/equiped/righthand/current_rounds_performed: 0
+inventory/equiped/righthand/description: A small dagger balanced for use
   in the main hand.
-core/inventory/equiped/righthand/core/icon: icons/dagger.png
-core/inventory/equiped/righthand/core/identified: true
-core/inventory/equiped/righthand/core/in_use: false
-core/inventory/equiped/righthand/core/name: Mainhand Dagger
-core/inventory/equiped/righthand/core/price/copper: ''
-core/inventory/equiped/righthand/core/price/gold: 25
-core/inventory/equiped/righthand/core/price/silver: ''
-core/inventory/equiped/righthand/core/rounds_per_charge: 0
-core/inventory/equiped/righthand/core/size: small
-core/inventory/equiped/righthand/core/type: weapon
-core/inventory/equiped/righthand/core/weight: ''
-core/inventory/equiped/righthand/events/ondrop: campaign.warning('%s has dropped %s'
+inventory/equiped/righthand/icon: icons/dagger.png
+inventory/equiped/righthand/identified: true
+inventory/equiped/righthand/in_use: false
+inventory/equiped/righthand/name: Mainhand Dagger
+inventory/equiped/righthand/price/copper: ''
+inventory/equiped/righthand/price/gold: 25
+inventory/equiped/righthand/price/silver: ''
+inventory/equiped/righthand/rounds_per_charge: 0
+inventory/equiped/righthand/size: small
+inventory/equiped/righthand/type: weapon
+inventory/equiped/righthand/weight: ''
+inventory/equiped/righthand/events/ondrop: campaign.warning('%s has dropped %s'
   % (player.displayname(), item.displayname()))
-core/inventory/equiped/righthand/events/onequip: ''
-core/inventory/equiped/righthand/events/onfinish: ''
-core/inventory/equiped/righthand/events/onpickup: ''
-core/inventory/equiped/righthand/events/onround: ''
-core/inventory/equiped/righthand/events/onuse: ''
-core/inventory/equiped/wrists: {}
-core/inventory/money/copper: 10
-core/inventory/money/gold: 105
-core/inventory/money/silver: 1
-core/inventory/pack:
+inventory/equiped/righthand/events/onequip: ''
+inventory/equiped/righthand/events/onfinish: ''
+inventory/equiped/righthand/events/onpickup: ''
+inventory/equiped/righthand/events/onround: ''
+inventory/equiped/righthand/events/onuse: ''
+inventory/equiped/wrists: {}
+inventory/money/copper: 10
+inventory/money/gold: 105
+inventory/money/silver: 1
+inventory/pack:
 - core:
     charges: 0
     current_rounds_performed: 0
@@ -123,7 +123,7 @@ core/inventory/pack:
       \ = rolldice(numdice=1, numsides=6, modifier=0)\r\ncampaign.message(roll_message)\r\
       \nresult = target.heal(health)\r\ncampaign.error('%s has been healed for %s,\
       \ and current hitpoints are %s' % (player.displayname(), health, result))"
-core/inventory/spells:
+inventory/spells:
 - conditional:
     spell_level: 1
     spell_school: Conjuration
@@ -158,15 +158,15 @@ core/inventory/spells:
       target.displayname()))
     onuse: campaign.error('%s is casting Magic Missile at %s' % (player.displayname(),
       target.displayname()))
-core/location/map: simple_room.json
-core/location/x: 1
-core/location/y: 6
-core/personal/alignment/law: neutral
-core/personal/alignment/social: good
-core/personal/backstory: ''
-core/personal/name/first: BARDIC
-core/personal/name/last: ROGUE
-core/personal/race: half-elf
-core/personal/sex: female
-core/personal/xp: 5460
-core/type: player
+location/map: simple_room.json
+location/x: 1
+location/y: 6
+personal/alignment/law: neutral
+personal/alignment/social: good
+personal/backstory: ''
+personal/name/first: BARDIC
+personal/name/last: ROGUE
+personal/race: half-elf
+personal/sex: female
+personal/xp: 5460
+type: player

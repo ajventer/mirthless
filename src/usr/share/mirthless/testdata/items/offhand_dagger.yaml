@@ -1,24 +1,24 @@
-conditional/damage_type: stab
-conditional/dmg: 4
-conditional/range: ''
-conditional/save_against: none
-conditional/slot: lefthand
-conditional/to_hit: 0
-conditional/weapon_type: melee
-core/charges: 0
-core/current_rounds_performed: 0
-core/description: A small dagger balanced for use in the offhand.
-core/icon: icons/dagger.png
-core/identified: false
-core/in_use: false
-core/name: Offhand_Dagger
-core/price/copper: ''
-core/price/gold: 2
-core/price/silver: ''
-core/rounds_per_charge: 0
-core/size: small
-core/type: weapon
-core/weight: ''
+damage_type: stab
+dmg: 4
+range: ''
+save_against: none
+slot: lefthand
+to_hit: 0
+weapon_type: melee
+charges: 0
+current_rounds_performed: 0
+description: A small dagger balanced for use in the offhand.
+icon: icons/dagger.png
+identified: false
+in_use: false
+name: Offhand_Dagger
+price/copper: ''
+price/gold: 2
+price/silver: ''
+rounds_per_charge: 0
+size: small
+type: weapon
+weight: ''
 events/ondrop: messages.warning('%s has dropped %s' % (player.displayname(), item.displayname()))
 events/onequip: ''
 events/onfinish: ''

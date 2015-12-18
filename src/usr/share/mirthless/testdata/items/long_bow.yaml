@@ -1,24 +1,24 @@
-conditional/damage_type: hack
-conditional/dmg: 8
-conditional/range: long
-conditional/save_against: none
-conditional/slot: twohand
-conditional/to_hit: 0
-conditional/weapon_type: melee
-core/charges: 0
-core/current_rounds_performed: 0
-core/description: A small dagger balanced for use in the main hand.
-core/icon: icons/longbow.png
-core/identified: false
-core/in_use: false
-core/name: Long bow
-core/price/copper: ''
-core/price/gold: 25
-core/price/silver: ''
-core/rounds_per_charge: 0
-core/size: large
-core/type: weapon
-core/weight: ''
+damage_type: hack
+dmg: 8
+range: long
+save_against: none
+slot: twohand
+to_hit: 0
+weapon_type: melee
+charges: 0
+current_rounds_performed: 0
+description: A small dagger balanced for use in the main hand.
+icon: icons/longbow.png
+identified: false
+in_use: false
+name: Long bow
+price/copper: ''
+price/gold: 25
+price/silver: ''
+rounds_per_charge: 0
+size: large
+type: weapon
+weight: ''
 events/ondrop: messages.warning('%s has dropped %s' % (player.displayname(), item.displayname()))
 events/onequip: ''
 events/onfinish: ''
