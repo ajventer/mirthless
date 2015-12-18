@@ -8,6 +8,7 @@ from button import render_text, Button, TextInput, Dropdown, checkboxbtn, Label
 from animatedsprite import AnimatedSprite
 from messages import messages
 import os
+from flatteneddict import FlattenedDict
 
 class YAMLEditor(FloatDialog, Tempsprites):
     def __init__(self, frontend, template, title):
@@ -19,6 +20,7 @@ class YAMLEditor(FloatDialog, Tempsprites):
         FloatDialog.__init__(self, self.rect, frontend)
         Tempsprites.__init__(self)
         self.item = Item({})
+        self.conditional_sprites = []
         self.baselayout()
         self.editorlayout()
 
@@ -51,32 +53,37 @@ class YAMLEditor(FloatDialog, Tempsprites):
         self.save()
 
     def editorlayout(self):
+        debug('Building editor layout')
+        self._rmtemp()
+        self.baselayout()
         col, row = 0, 0
         for key in [i for i in self.template if '__Y' in i]:
             value = self.item.get(realkey(key),False)
             if value is False:
                 self.item.put(realkey(key), self.template[key])            
-        for key in sorted([i for i in self.template if not i.startswith('conditional/') and not i.startswith('events/') and not '__Y' in i and not 'animations' in i]):
+        list1 = sorted([i for i in self.template if not i.startswith('conditional/') and not i.startswith('events/') and not '__Y' in i and not 'animations' in i])
+        list3 = sorted([i for i in self.template if  i.startswith('events/')])
+        list2 = sorted([i for i in self.conditional_sprites if not 'animations' in i])
+        allkeys = list1 + list2 + list3
+        debug ('\n\t'.join(allkeys))
+        for key in allkeys:
             x = col * 450 + self.rect.x + 10
             y = row * 33 + self.rect.y + 75
-            self.handlekey(key, x,y)
-            row += 1
-            if row * 33 + self.rect.y + 75 > self.rect.y + self.rect.h -75:
-                row = 0
-                col += 1
-        for key in sorted([i for i in self.template if  i.startswith('events/')]):
-            x = col * 450 + self.rect.x + 10
-            y = row * 33 + self.rect.y + 75
-            b = Button(realkey(key), 
-                self.make_event, 
-                [realkey(key)],
-                self.frontend.eventstack,
-                self.frontend.imagecache,
-                pos=(x ,y),
-                layer=6,
-                sendself=True,
-                fontsize=14)
-            self._addtemp('%s_button' % key, b)
+            if key.startswith('events/'):
+                b = Button(realkey(key), 
+                    self.make_event, 
+                    [realkey(key)],
+                    self.frontend.eventstack,
+                    self.frontend.imagecache,
+                    pos=(x ,y),
+                    layer=6,
+                    sendself=True,
+                    fontsize=14)
+                self._addtemp('%s_button' % key, b)
+            else: 
+                sprites = self.handlekey(key, x,y)
+                for sprite in sprites:
+                    self._addtemp('%s_%s' % (key,sprites.index(sprite)), sprite)
             row += 1
             if row * 33 + self.rect.y + 75 > self.rect.y + self.rect.h -75:
                 row = 0
@@ -84,22 +91,23 @@ class YAMLEditor(FloatDialog, Tempsprites):
 
     def handlekey(self,key, x,y):
         keyname = realkey(key)
+        has_label = True
         l = Label(keyname,(x,y))
         lsize = l.rect.w +10
         irect = pygame.Rect(x + lsize, y, 250, 20)
-        self._addtemp('%s_label' %key, l)
         value = self.item.get(keyname,'')
-        if keyname == key and not '__[' in str(self.template[key]):
+        debug(key, str(self.template[key]))
+        if (key.startswith('conditional') or keyname == key) and not '__[' in str(self.template[key]):
+            debug('match', key)
             if not value:
                 value = self.template[key]
-            t = TextInput(
+            d = TextInput(
                 irect,18, self.frontend.eventstack, prompt=str(value), clearprompt=False, layer=6, name=keyname)
-            self._addtemp('%s_textinput' % key,t)
-        elif keyname == key and '__[' in str(self.template[key]):
+        elif (key.startswith('conditional') or keyname == key) and '__[' in str(self.template[key]):
             liststr = self.template[key]
             items = liststr[3:-1].split(',')
             if sorted([i.upper() for i in items]) == ['FALSE','TRUE']:
-                del self.frontend.sprites['%s_label' %key]
+                has_label = False
                 d = checkboxbtn(keyname, 
                     self.valuechange, 
                     [],
@@ -112,15 +120,32 @@ class YAMLEditor(FloatDialog, Tempsprites):
                     self.frontend.eventstack, 
                     self.frontend.imagecache, 
                     16,
-                    irect, items,layer=7, 
+                    irect, items,layer=8, 
                     choice=value, 
                     onselect=self.valuechange,
                     name=keyname,
                     sendself=True)
-            self._addtemp('%s_dropdown' % key,d)
+        if has_label:
+            return [l, d]
+        else:
+            return [d]
 
-    def valuechange(*args):
-        pass
+    def updateconditionals(self):
+        self.conditional_sprites = []
+        conditional_keys = FlattenedDict(self.template).readsubtree('conditional')
+        for key in conditional_keys:
+            conditions = [k for k in key.split('/') if '=' in k]
+            for condition in conditions:
+                ckey, cval = condition.split('=')
+                if self.item.get(ckey,None) == cval:
+                    self.conditional_sprites.append('conditional/%s' % key)
+        debug(self.conditional_sprites)
+        self.editorlayout()
+
+    def valuechange(self, *args):
+        k, v =  args[0].name, args[1]
+        self.item.put(k, v)
+        self.updateconditionals()
 
     def changepreview(self,choice):
         self.previewsprite.setanimation(choice)

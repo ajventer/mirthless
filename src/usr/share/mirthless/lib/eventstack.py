@@ -31,7 +31,6 @@ class EventStack():
                 if self.events[k][sprite][1] == hash:
                     delme.append((k,sprite))
         for event in delme:
-            debug('Deregistering event %s for %s' % (event[0], event[1]))
             del self.events[event[0]][event[1]]
 
     def get_events(self, key):

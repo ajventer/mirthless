@@ -69,9 +69,11 @@ class Frontend(object):
                 self.sprites[item[1]].delete()
                 del self.sprites[item[1]]
         if key in self.sprites:
-                self.sprites[key].delete()
-                del self.sprites[key]
+            self.mapview.registerclickevent()
+            self.sprites[key].delete()
+            del self.sprites[key]
         else:
+            self.eventstack.unregister_event(self.mapview.clickhash)
             self.mainmenuitems = []
             item = obj(*args)
             self.mainmenuitems.append((item, key))

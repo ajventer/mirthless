@@ -36,6 +36,7 @@ class Button(pygame.sprite.DirtySprite):
     def __init__(self, label, onclick, onclick_params, eventstack,imagecache, pos=(0,0), layer=2, name='', sendself=False, fontsize=16):
         self._layer = layer
         self.registered_events = []
+        self.name = name
         super(pygame.sprite.DirtySprite, self).__init__()
         button_rest = imagecache['button_rest']
         button_hi = imagecache['button_hi']
@@ -106,6 +107,7 @@ class checkboxbtn(Button):
     def __init__(self, label, onclick, onclick_params, eventstack,imagecache, pos=(0,0),fontsize=16, layer=6, name='', sendself=False):
         self._layer = layer
         self.registered_events = []
+        self.name = name
         super(pygame.sprite.DirtySprite, self).__init__()
         self.pos = pos
         self.sendself = sendself
@@ -157,6 +159,7 @@ class TextInput(pygame.sprite.DirtySprite):
         self.text = prompt
         self._layer = layer
         self.registered_events = []
+        self.name = name
         super(pygame.sprite.DirtySprite, self).__init__()
         self.rect = rect
         self.fontsize = fontsize
@@ -252,6 +255,7 @@ class Dropdown(pygame.sprite.DirtySprite):
     def __init__(self, eventstack, imagecache, fontsize, rect, choices,layer=7, choice='',onselect=None,name='', sendself=False):
         self._layer = layer
         super(pygame.sprite.DirtySprite, self).__init__()
+        self.name = name
         self.sendself = sendself
         self.onselect = onselect
         self.choicerects = {}

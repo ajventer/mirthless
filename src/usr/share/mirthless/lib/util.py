@@ -24,6 +24,14 @@ default_text="""#This is a python snippet
 """
 
 def realkey(key):
+    key = stripslashes(key)
+    if key.startswith('conditional'):
+        conditions = [k for k in key.split('/') if '=' in k]
+        for condition in conditions:
+            newkey = key.split('/')
+            newkey = newkey[newkey.index(condition):][1:]
+            newkey = '/'.join(newkey) 
+            return newkey
     ret = []
     for k in key.split('/'):
         if k.startswith('__'):
@@ -84,7 +92,6 @@ def file_list(directory, needle='*'):
 def file_path(directory, filename, new=False):
     global gamedir
     gamedir = forcegamedir()
-    debug(gamedir)
     filename = os.path.join(gamedir, directory, filename)
     if new:
         return filename #Don't check for pre-existing when saving a new file
@@ -94,7 +101,6 @@ def file_path(directory, filename, new=False):
             filename = testpath
         else:
             raise IOError(testpath)
-    debug ('Loading file: ', filename)
     return filename
 
 def filename_parser(displayname):

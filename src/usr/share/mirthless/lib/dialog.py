@@ -276,7 +276,6 @@ class MapSelector(TileSelector):
         x, y = pos
         for path in self.pagepaths:
             if path[0].collidepoint(x, y):
-                debug('Loading ', path[1])
                 data = load_yaml('maps', path[1])
                 self.onselect(data, True)
 

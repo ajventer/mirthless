@@ -62,8 +62,8 @@ combat/max_hp: 0
 lightradius: 0
 personal/alignment/law: __[chaotic,neutral,lawful]
 personal/alignment/social: __[evil,good,neutral]
-personal/name/__Ufirst: ''
-personal/name/__Ulast: ''
+personal/name/first: ''
+personal/name/last: ''
 personal/race: __[human,elf,dwarf,half-elf,halfling,monster,creature,gnome]
 personal/sex: __[male,female]
 animations/portrait:
