@@ -9,29 +9,29 @@ class Tile(EzdmObject):
     >>> t = Tile({})
     """
     def revealed(self):
-        return self.get('core/revealed', False) is True
+        return self.get('revealed', False) is True
 
     def tiletype(self):
-        return self.get('core/type', 'floor')
+        return self.get('type', 'floor')
 
     def linktarget(self, target=None, x=0, y=0):
         if not target:
-            return self.get('conditional/newmap', {})
+            return self.get('newmap', {})
         else:
-            self.put('conditional/newmap', {'mapname': target, "x": x, "y": y})
+            self.put('newmap', {'mapname': target, "x": x, "y": y})
 
     def background(self):
-        return self.get('core/background',False)
+        return self.get('background',False)
 
     def canenter(self, new=None):
         if new is None:
-            return self.get('conditional/canenter', False)
-        self.put('conditional/canenter', new)
+            return self.get('canenter', False)
+        self.put('canenter', new)
 
     def add(self, name, objtype):
         if isinstance(name, str) and not name.endswith('.yaml'):
             name = '%s.yaml' % name
-        current = self.get('conditional/%s' % objtype, {})
+        current = self.get('%s' % objtype, {})
         if objtype == 'npcs':
             if isinstance(name, str):
                 name = Character(load_yaml('characters',name))
@@ -40,16 +40,16 @@ class Tile(EzdmObject):
                 name = Item(name)
         name.set_hash()
         current[name.get_hash()] = name()
-        self.writesubtree('/conditional/%s' % objtype, current)
+        self.writesubtree('%s' % objtype, current)
 
     def remove(self, hash, objtype):
-        del self()['conditional/%s/%s' %(objtype, hash) ]
+        del self()['%s/%s' %(objtype, hash) ]
 
     def list(self, objtype):
-        return self.get('/conditional/%s' % objtype, [])
+        return self.get('%s' % objtype, [])
 
     def onenter(self, player, page):
-        event(self, "conditional/events/onenter", {'tile': self, 'page': page, 'player': player})
+        event(self, "events/onenter", {'tile': self, 'page': page, 'player': player})
 
 
 class GameMap(EzdmObject):
@@ -85,7 +85,7 @@ class GameMap(EzdmObject):
         #Does not copy items, npcs or monsters !
         source = self.tile(src_x, src_y)()
         dest = copy.deepcopy(source)
-        filtered_keys = ['conditional/npcs', 'conditional/items', ['conditional/copper'], ['condition/silver'], ['conditional/gold']]
+        filtered_keys = ['npcs', 'items', ['copper'], ['condition/silver'], ['gold']]
         for key in filtered_keys:
             del dest[key]
         self.load_tile_from_dict(dest_x, dest_y, dest)
@@ -95,14 +95,14 @@ class GameMap(EzdmObject):
 
     def putmoney(self, x, y, gold, silver, copper):
         tile = self.tile(x, y)
-        tile.put('conditional/gold', gold)
-        tile.put('conditional/silver', silver)
-        tile.put('conditional/copper', copper)
+        tile.put('gold', gold)
+        tile.put('silver', silver)
+        tile.put('copper', copper)
         self.load_tile_from_dict(tile())
 
     def getmoney(self, x, y):
         tile = self.tile(x, y)
-        return (int(tile.get('conditional/gold', 0)), int(tile.get('conditional/silver', 0)), int(tile.get('conditional/copper', 0)))
+        return (int(tile.get('gold', 0)), int(tile.get('silver', 0)), int(tile.get('copper', 0)))
 
     def addtotile(self, x, y, name, objtype):
         tile = self.tile(x, y)
@@ -121,11 +121,11 @@ class GameMap(EzdmObject):
         if not tile():
             return {}
         out = []
-        for thingy in tile.get('/conditional/items', []):
+        for thingy in tile.get('items', []):
             data = FlattenedDict(load_yaml('items', thingy))
             if data:
                 i = Item(data)
-                out.append((data.get('/core/icon', ''), 'items'))
+                out.append((data.get('/icon', ''), 'items'))
         money = self.getmoney(x, y)
         if money[0] or money[1] or money[2]:
             #TODO - select a new gold icon and put here in the proper format.
@@ -161,9 +161,9 @@ class GameMap(EzdmObject):
         for pt_y in range(top, bottom):
             for pt_x in range(left, right):
                 tile = self.tile(pt_x, pt_y)
-                if not tile.get('core/revealed', False):
+                if not tile.get('revealed', False):
                     has_revealed = True
-                tile.put('/core/revealed', True)
+                tile.put('/revealed', True)
                 self.load_tile_from_json(pt_x, pt_y, tile())
         if has_revealed:
             #TODO - revealing may have included an enemy and started combat

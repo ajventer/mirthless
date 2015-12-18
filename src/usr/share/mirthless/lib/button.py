@@ -29,6 +29,9 @@ class Label(pygame.sprite.DirtySprite):
         self.name = ''
         self.value = text
 
+    def delete(self):
+        self.kill()
+
 class Button(pygame.sprite.DirtySprite):
     def __init__(self, label, onclick, onclick_params, eventstack,imagecache, pos=(0,0), layer=2, name='', sendself=False, fontsize=16):
         self._layer = layer

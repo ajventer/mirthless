@@ -58,13 +58,12 @@ class YAMLEditor(FloatDialog, Tempsprites):
                 self.item.put(realkey(key), self.template[key])            
         for key in sorted([i for i in self.template if not i.startswith('conditional/') and not i.startswith('events/') and not '__Y' in i]):
             x = col * 450 + self.rect.x + 10
-            y = row * 30 + self.rect.y + 75
+            y = row * 33 + self.rect.y + 75
             self.handlekey(key, x,y)
             row += 1
-            if row * 30 + self.rect.y + 75 > self.rect.y + self.rect.h -75:
+            if row * 33 + self.rect.y + 75 > self.rect.y + self.rect.h -75:
                 row = 0
                 col += 1
-        row -= 1
         for key in sorted([i for i in self.template if  i.startswith('events/')]):
             x = col * 450 + self.rect.x + 10
             y = row * 33 + self.rect.y + 75
@@ -134,6 +133,5 @@ class YAMLEditor(FloatDialog, Tempsprites):
 
     def delete(self):
         self._rmtemp()
-        del self.frontend.sprites['npc']
         self.kill()
         self.restorebg()

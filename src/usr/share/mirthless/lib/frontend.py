@@ -57,12 +57,20 @@ class Frontend(object):
             self.mapview.loadmap({})
 
     def npceditor(self):
-        npc_editor = YAMLEditor(self, 'template_character.yaml', 'Item Editor')
-        self.sprites['npceditor'] = npc_editor
+        if not 'npceditor' in self.sprites:
+            npc_editor = YAMLEditor(self, 'template_character.yaml', 'Item Editor')
+            self.sprites['npceditor'] = npc_editor
+        else:
+            self.sprites['npceditor'].delete()
+            del self.sprites['npceditor']
 
     def itemeditor(self):
-        item_editor = YAMLEditor(self, 'template_item.yaml', 'Item Editor')
-        self.sprites['itemeditor'] = item_editor
+        if not 'itemeditor' in self.sprites:
+            item_editor = YAMLEditor(self, 'template_item.yaml', 'Item Editor')
+            self.sprites['itemeditor'] = item_editor
+        else:
+            self.sprites['itemeditor'].delete()
+            del self.sprites['itemeditor']
 
 
     def settings(self):
@@ -73,7 +81,6 @@ class Frontend(object):
         else:
             self.mapview.registerclickevent()
             self.sprites['settingsmenu'].delete()
-        self.draw()
 
     def screenlayout(self):
         #Header:

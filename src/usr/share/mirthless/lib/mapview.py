@@ -108,11 +108,12 @@ class Mapview(Tempsprites):
         map_x, map_y = x, y
         debug('%s - %sx%s' % (bgpath, x, y))
         self.tile = self.gamemap.tile(map_x,map_y)
-        self.tile.put('core/background', bgpath)
+        self.tile.put('background', bgpath)
         self.updatetile(x,y) 
         x = x*self.tilesize+50
         y = y*self.tilesize+65
         self.click((x,y))
+        debug(bgpath)
 
     def rotate(self, x,y):
         bgpath = imagepath(self.tile.background())
@@ -132,7 +133,7 @@ class Mapview(Tempsprites):
         self.updatetile(x, y)
 
     def revealed(self, x, y):
-        self.tile.put('/core/revealed', self.frontend.sprites['te_canenter'].checked)
+        self.tile.put('/revealed', self.frontend.sprites['te_canenter'].checked)
         self.updatetile(x, y)
 
     def updatetile(self, x, y):

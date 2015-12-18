@@ -25,7 +25,7 @@ conditional/class.parent=warrior/shields: true
 conditional/class.parent=wizard/armor_types: 1
 conditional/class.parent=wizard/shields: false
 events/__Toninspect: ''
-events/__Toninteract: ''
+events/__Tontalk: ''
 loot/always_drops: []
 loot/copper: 99
 loot/gold: 99
@@ -59,7 +59,6 @@ class/parent: __[warrior,wizard,rogue,priest]
 combat/hitpoints: 0
 combat/level-hitdice: 1
 combat/max_hp: 0
-icon: ''
 lightradius: 0
 personal/alignment/law: __[chaotic,neutral,lawful]
 personal/alignment/social: __[evil,good,neutral]
@@ -67,3 +66,31 @@ personal/name/__Ufirst: ''
 personal/name/__Ulast: ''
 personal/race: __[human,elf,dwarf,half-elf,halfling,monster,creature,gnome]
 personal/sex: __[male,female]
+animations/portrait:
+ - Mage.png:0:0:0
+ - Mage.png:0:2:0
+ - Mage.png:0:3:0
+ - Mage.png:0:1:0
+animations/stand:
+ - Mage.png:3:0:0
+animations/walkleft:
+ - Mage.png:0:1:0
+ - Mage.png:1:1:0
+animation/walkright:
+ - Mage.png:0:2:0
+ - Mage.png:3:2:0
+animations/walkaway:
+ - Mage.png:0:3:0
+ - Mage.png:1:3:0
+animations/walktoward:
+ - Mage.png:0:0:0
+ - Mage.png:1:0:0
+animations/cast: 
+ - Mage.png:0:0:0
+animations/attackmelee:
+ - Mage.png:0:0:0
+animations/attackmisile:
+ - Mage.png:0:0:0
+
+
+

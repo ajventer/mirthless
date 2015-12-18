@@ -11,12 +11,22 @@ conditional/type=weapon/range: __[short,medium,long]
 conditional/type=weapon/save_against: __[ppd,rod,pp,breath,spell,none]
 conditional/type=weapon/slot: __[lefthand,righthand,twohand]
 conditional/type=weapon/weapon_type: __[melee,magic,misile]
+conditional/type=armor/animations/view: 
+ - Shield.png:5:0:0
+conditional/type=weapon/animations/view:
+ - LongWep.png:1:6:0
+conditional/type=weapon/animations/strike:
+ - LongWep.png:1:6:90
+conditional/type=spell/animations/travel:
+ - Effect0.png:1:16:0
+ - Effect0.png:0:17:0
+conditional/type=spell/animations/strike:
+ - Effect0.png:1:7:0
 description: ''
 canpickup: __[false,true]
 __Yrounds_used: 0
 __Yin_use: false
 charges: 0
-icon: ''
 identified: __[false,true]
 lightradius: 0
 name: ''

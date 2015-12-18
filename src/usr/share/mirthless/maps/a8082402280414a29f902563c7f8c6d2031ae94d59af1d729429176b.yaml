@@ -2,11 +2,11 @@ hash: a8082402280414a29f902563c7f8c6d2031ae94d59af1d729429176b
 lightradius: 1
 name: simple test map
 tiles:
-- - core/background: Wall1.png:0:0
+- - background: Wall1.png:0:0
     hash: de5aeb8d1febe4a29188bd2c1fd8200aa2f0c7c51278fb2a639286f5
-  - core/background: Wall1.png:1:0
+  - background: Wall1.png:1:0
     hash: 94bb1568b0acd5e34d12dfd2c66ce6871f5a9162ccc021dd47f609d8
-  - core/background: Wall1.png:2:0
+  - background: Wall1.png:2:0
     hash: 1497f36e77fa280ec5f739aa7a33bf2c0849dbcedda309aa4757dc5c
   - &id001 {}
   - *id001
@@ -25,11 +25,11 @@ tiles:
   - *id001
   - *id001
   - *id001
-- - core/background: Wall1.png:0:1
+- - background: Wall1.png:0:1
     hash: 5624a34ed75df0b3d3cab241b9cb398a2a8ce4a8fa87eaa239c0b0cc
-  - core/background: Tile.png:1:1
+  - background: Tile.png:1:1
     hash: dac84bc48f11a7ce60f405ef31079f15e657390beb9f7c2ce170861d
-  - core/background: Wall1.png:0:1
+  - background: Wall1.png:0:1
     hash: 4a47eb82585a916f9b8aba47879c1dcde64d4187c0fbcc23ab11af40
   - &id002 {}
   - *id002
@@ -48,11 +48,11 @@ tiles:
   - *id002
   - *id002
   - *id002
-- - core/background: Wall1.png:0:1
+- - background: Wall1.png:0:1
     hash: 8dfba84ff81671d2b2cf72ff7ef868fc8b6daaa37ac1b29322f3c348
-  - core/background: Pit0.png:6:26
+  - background: Pit0.png:6:26
     hash: 2989e218b4eca1e63b24f6f9ef092bf00108530dc65a90285b51940d
-  - core/background: Wall1.png:0:2
+  - background: Wall1.png:0:2
     hash: 1289e9c82f2266a880ef835f67014e06e2270ae1ff6e470a2059fe48
   - &id003 {}
   - *id003
@@ -71,11 +71,11 @@ tiles:
   - *id003
   - *id003
   - *id003
-- - core/background: Wall1.png:0:1
+- - background: Wall1.png:0:1
     hash: bea91cd9ae611d00164b7d663279df98481907aed234aac7ff95e766
-  - core/background: Pit0.png:6:26
+  - background: Pit0.png:6:26
     hash: 0fe3d7423f8944c33d0c5c8293738dcc983a8d41231b0752f06603ca
-  - core/background: Pit0.png:6:26
+  - background: Pit0.png:6:26
     hash: 7ebe13e3f290490784259eb92e9a5354c5ccae8e7faab1a79bafafbc
   - &id004 {}
   - *id004
@@ -94,11 +94,11 @@ tiles:
   - *id004
   - *id004
   - *id004
-- - core/background: Wall1.png:0:2
+- - background: Wall1.png:0:2
     hash: dcfc1d8a03f40ab78a69dc154ce6ef708c9378ac232dbce94ca734e7
-  - core/background: Wall1.png:1:0
+  - background: Wall1.png:1:0
     hash: 5a8378ba1cd56d2ae92e09ee08bc5644d407e9283a061a2961510398
-  - core/background: Wall1.png:1:0
+  - background: Wall1.png:1:0
     hash: 5c4996689d6fa129a5ad6e6d0061babf7883cd1aa754c4f31b458d25
   - &id005 {}
   - *id005
