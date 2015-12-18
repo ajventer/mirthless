@@ -166,7 +166,7 @@ class YAMLEditor(FloatDialog, Tempsprites):
         dirname = None
         if self.title == 'Item Editor':
             dirname = 'items'
-        elif self.template == 'NPC Editor':
+        elif self.title == 'NPC Editor':
             dirname = 'characters'
         if dirname:
             debug(dirname)

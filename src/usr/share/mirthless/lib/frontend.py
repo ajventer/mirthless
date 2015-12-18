@@ -79,14 +79,6 @@ class Frontend(object):
             self.mainmenuitems.append((item, key))
             self.sprites[key] = item
 
-    def npceditor(self):
-        if not 'npceditor' in self.sprites:
-            npc_editor = YAMLEditor(self, 'template_character.yaml', 'Item Editor')
-            self.sprites['npceditor'] = npc_editor
-        else:
-            self.sprites['npceditor'].delete()
-            del self.sprites['npceditor']
-
     def settings(self):
         if not 'settingsmenu' in self.sprites:
             settings = SettingsDialog(pygame.Rect(self.screensize.w/2 - 300,self.screensize.h/2 -200,600,400), self)

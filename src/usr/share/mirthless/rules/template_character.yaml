@@ -26,7 +26,7 @@ conditional/class.parent=wizard/armor_types: 1
 conditional/class.parent=wizard/shields: false
 events/__Toninspect: ''
 events/__Tontalk: ''
-loot/always_drops: []
+loot/__Yalways_drops: []
 loot/copper: 99
 loot/gold: 99
 loot/silver: 99
