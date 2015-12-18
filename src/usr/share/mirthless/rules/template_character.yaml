@@ -76,7 +76,7 @@ animations/stand:
 animations/walkleft:
  - Mage.png:0:1:0
  - Mage.png:1:1:0
-animation/walkright:
+animations/walkright:
  - Mage.png:0:2:0
  - Mage.png:3:2:0
 animations/walkaway:

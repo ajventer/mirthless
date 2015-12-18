@@ -68,7 +68,7 @@ class FloatDialog(Dialog, Tempsprites):
         self.frontend.screen.blit(self.background, self.rect)
 
 class SettingsDialog(FloatDialog, Tempsprites):
-    def __init__(self, rect, frontend):
+    def __init__(self, rect, frontend, title):
         self._layer = 6
         FloatDialog.__init__(self, rect, frontend)
         self.settingsdata = yaml.load(open(self.frontend.settingsfile).read())
@@ -83,7 +83,7 @@ class SettingsDialog(FloatDialog, Tempsprites):
         self.image.blit(render_text ('Game directory:', size=24, color=(255,0,0)),(10,10))
         self.gd = TextInput(pygame.Rect(self.rect.x + 220, self.rect.y + 10, self.rect.w-250, 30), 18, self.frontend.eventstack, prompt=self.settingsdata['gamedir'], clearprompt=False)
         self.gd._layer = 6
-        self._addtemp('gamedirinput', gd)
+        self._addtemp('gamedirinput', self.gd)
         self.image.blit(render_text ('Resolution:', size=24, color=(255,0,0)),(10,60))
         res_left = ButtonArrow(self.resbtn, ['left'], self.frontend.eventstack,self.frontend.imagecache, 'left', pos=(self.rect.x+120,self.rect.y+60), layer=6)
         res_right = ButtonArrow(self.resbtn, ['right'], self.frontend.eventstack,self.frontend.imagecache, 'right', pos=(self.rect.x+300,self.rect.y+60), layer=6)
@@ -109,7 +109,6 @@ class SettingsDialog(FloatDialog, Tempsprites):
 
     def delete(self):
         self._rmtemp()
-        del self.frontend.sprites['settingsmenu']
         self.kill()
         self.restorebg()
 

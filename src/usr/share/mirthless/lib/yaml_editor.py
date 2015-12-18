@@ -56,7 +56,7 @@ class YAMLEditor(FloatDialog, Tempsprites):
             value = self.item.get(realkey(key),False)
             if value is False:
                 self.item.put(realkey(key), self.template[key])            
-        for key in sorted([i for i in self.template if not i.startswith('conditional/') and not i.startswith('events/') and not '__Y' in i]):
+        for key in sorted([i for i in self.template if not i.startswith('conditional/') and not i.startswith('events/') and not '__Y' in i and not 'animations' in i]):
             x = col * 450 + self.rect.x + 10
             y = row * 33 + self.rect.y + 75
             self.handlekey(key, x,y)

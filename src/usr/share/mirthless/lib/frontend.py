@@ -18,23 +18,9 @@ def todo_event():
 
 class Frontend(object):
     def __init__(self,screen=None, imagecache=None, eventstack=None, tilemaps=None, mode='game', settingsfile='/etc/mirthless/mirthless.cfg'):
-        self.game_menu = [
-        ("Quit", sys.exit),
-        ("Inventory", todo_event),
-        ("Spellbook", todo_event),
-        ("Settings", self.settings),
-        ("About", todo_event),
-        ]
-        self.editor_menu = [
-        ("Quit", sys.exit),
-        ("Items/spells", self.itemeditor),
-        ("NPCs", self.npceditor),
-        ("Quests", todo_event),
-        ("Settings", self.settings),
-        ]
         self.mode = mode
         self.settingsfile = settingsfile
-        if screen:
+        if screen:          
             self.sprites = {}
             self.imagecache = imagecache
             self.eventstack = eventstack
@@ -55,6 +41,41 @@ class Frontend(object):
             self.sprites['mb'] = MessageBox(self.messagebox_rect, messages, self)
             self.mapview = Mapview(self)
             self.mapview.loadmap({})
+            self.mainmenuitems = []
+            self.game_menu = [
+            ("Quit", [sys.exit]),
+            ("Inventory", [todo_event]),
+            ("Spellbook", [todo_event]),
+            ("Settings", [self.settings]),
+            ("About", [todo_event]),
+            ]
+            self.editor_menu = [
+            ("Quit", [self.quit]),
+            ("Items/spells", [self.mainmenu, YAMLEditor, self, 'template_item.yaml', 'Item Editor']),
+            ("NPCs", [self.mainmenu, YAMLEditor, self, 'template_character.yaml', 'NPC Editor']),
+            ("Quests", [todo_event]),
+            ("Settings", [self.mainmenu, SettingsDialog, pygame.Rect(self.screensize.w/2 - 300,self.screensize.h/2 -200,600,400), self, 'Settings']),
+            ] 
+
+    def quit(self,*args):
+        sys.exit()
+
+    def mainmenu(self, *args):
+        obj = args[0]
+        key = args[-1]
+        args = args[1:]
+        for item in self.mainmenuitems:
+            if item[1] != key and item[1] in self.sprites:
+                self.sprites[item[1]].delete()
+                del self.sprites[item[1]]
+        if key in self.sprites:
+                self.sprites[key].delete()
+                del self.sprites[key]
+        else:
+            self.mainmenuitems = []
+            item = obj(*args)
+            self.mainmenuitems.append((item, key))
+            self.sprites[key] = item
 
     def npceditor(self):
         if not 'npceditor' in self.sprites:
@@ -63,15 +84,6 @@ class Frontend(object):
         else:
             self.sprites['npceditor'].delete()
             del self.sprites['npceditor']
-
-    def itemeditor(self):
-        if not 'itemeditor' in self.sprites:
-            item_editor = YAMLEditor(self, 'template_item.yaml', 'Item Editor')
-            self.sprites['itemeditor'] = item_editor
-        else:
-            self.sprites['itemeditor'].delete()
-            del self.sprites['itemeditor']
-
 
     def settings(self):
         if not 'settingsmenu' in self.sprites:
@@ -99,7 +111,7 @@ class Frontend(object):
             menu = self.editor_menu
         buttonplacement = self.screensize.w / len(menu)
         for button in menu:
-            self.sprites[button[0]] = Button(button[0], button[1], [], self.eventstack, self.imagecache, (menu.index(button) * buttonplacement,5))
+            self.sprites['%s_button' % button[0]] = Button(button[0], button[1][0],button[1][1:], self.eventstack, self.imagecache, (menu.index(button) * buttonplacement,5))
       
         self.screen.blit(seperator, (0,self.screensize.h -205))
         dialog = Dialog(self.rightwindow_rect, self.imagecache)
