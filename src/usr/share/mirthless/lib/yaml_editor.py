@@ -136,8 +136,10 @@ class YAMLEditor(FloatDialog, Tempsprites):
         for key in conditional_keys:
             conditions = [k for k in key.split('/') if '=' in k]
             for condition in conditions:
+                condition = condition.replace('.','/')
+                debug(condition)
                 ckey, cval = condition.split('=')
-                if self.item.get(ckey,None) == cval:
+                if self.item.get(ckey,False) == cval:
                     self.conditional_sprites.append('conditional/%s' % key)
         debug(self.conditional_sprites)
         self.editorlayout()

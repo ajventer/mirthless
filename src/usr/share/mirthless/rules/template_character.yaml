@@ -9,7 +9,7 @@ conditional/__1class.parent=rogue/abilities/pick pockets: 15
 conditional/__1class.parattributesent=rogue/abilities/read languages: 0
 conditional/__1class.parent=rogue/armor_types: 3
 conditional/__1class.parent=rogue/shields: false
-conditional/__2class.class=bard/__Yshields: true
+conditional/__2class.class=bard/shields: true
 conditional/__2class.class=bard/abilities/climb walls: 50
 conditional/__2class.class=bard/abilities/detect noise: 20
 conditional/__2class.class=bard/abilities/pick pockets: 10
@@ -18,7 +18,7 @@ conditional/class.class=paladin/abilities/Turn undead (level 3+): 100
 conditional/class.class=paladin/abilities/cure disease(weekly): 100
 conditional/class.class=paladin/abilities/lay on hands (daily): 100
 conditional/class.class=paladin/abilities/sense evil intent(must end turn): 100
-conditional/class.parent=priest/__Yshields: false
+conditional/class.parent=priest/shields: false
 conditional/class.parent=priest/armor_types: 1
 conditional/class.parent=warrior/armor_types: 4
 conditional/class.parent=warrior/shields: true
@@ -30,7 +30,7 @@ loot/always_drops: []
 loot/copper: 99
 loot/gold: 99
 loot/silver: 99
-disposition: __[friendly, neutral, aggressive]
+disposition: __[friendly,neutral,aggressive]
 __Yinventory/equiped/chest: {}
 __Yinventory/equiped/feet: {}
 __Yinventory/equiped/gloves: {}
@@ -54,8 +54,12 @@ attributes/dex: 0
 attributes/int: 0
 attributes/str: 0
 attributes/wis: 0
-class/class: __[fighter,bard,ranger,thief,druid,mage,illusionist,cleric,paladin]
+#class/class: __[fighter,bard,ranger,thief,druid,mage,illusionist,cleric,paladin]
 class/parent: __[warrior,wizard,rogue,priest]
+conditional/class.parent=warrior/class.class: __[fighter,ranger,paladin]
+conditional/class.parent=wizard/class.class: __[mage]
+conditional/class.parent=rogue/class.class: __[bard,thief]
+conditional/class.parent=priest/class.class: __[druid,cleric]
 combat/hitpoints: 0
 combat/level-hitdice: 1
 combat/max_hp: 0

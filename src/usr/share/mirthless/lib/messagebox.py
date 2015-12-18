@@ -41,7 +41,7 @@ DEFAULT = {
 
 class MessageBox(sprite.DirtySprite):
     def __init__(self, CLIP, messages, frontend):
-        self.layer=0
+        self._layer=0
         super(sprite.DirtySprite, self).__init__()
         self.glyph = Glyph(CLIP, ncols=2, **DEFAULT)
         self.frontend = frontend
