@@ -306,7 +306,7 @@ class Character(EzdmObject):
         True
         """
         ability_mods = load_yaml('rules', 'ability_scores.yaml')
-        strength = self.get('/core/abilities/str', 1)
+        strength = self.get('/core/attributes/str', 1)
         base = int(FlattenedDict(ability_mods).get('/str/%s/hit' % strength, 0))
         bonus = 0
         for weapon in self.weapons:
@@ -326,7 +326,7 @@ class Character(EzdmObject):
         True
         """
         ability_mods = FlattenedDict(load_yaml('rules', 'ability_scores.yaml'))
-        con = self.get('core/abilities/con', 1)
+        con = self.get('core/attributes/con', 1)
         return int(ability_mods['con/%s/ppd' % con])
 
     def dmg_mod(self):
@@ -336,7 +336,7 @@ class Character(EzdmObject):
         True
         """
         ability_mods = FlattenedDict(load_yaml('rules', 'ability_scores.yaml'))
-        strength = self.get('core/abilities/str', 0)
+        strength = self.get('core/attributes/str', 0)
         return int(ability_mods.get('/str/%s/dmg' % strength, 0))
 
     def def_mod(self):
@@ -346,7 +346,7 @@ class Character(EzdmObject):
         True
         """
         ability_mods = load_yaml('rules', 'ability_scores.yaml')
-        dex = self.get('/core/abilities/dex', 0)
+        dex = self.get('/core/attributes/dex', 0)
         return int(FlattenedDict(ability_mods).get('/dex/%s/defense' % dex, 0))
 
     @property
@@ -370,7 +370,7 @@ class Character(EzdmObject):
         saving = load_yaml('rules', 'saving_throws.yaml') or {}
         prettyname = saving['names'][against]
         race = self.get('/core/personal/race', '')
-        con = int(self.get('/core/abilities/con', 0))
+        con = int(self.get('/core/attributes/con', 0))
         mod = 0
         if race in list(saving.keys()):
             for key in list(saving[race].keys()):
@@ -424,7 +424,7 @@ class Character(EzdmObject):
         out = '%s has reached level %s !' % (self.displayname(), level)
         self.put('/core/combat/level-hitdice', level)
         ability_scores = load_yaml('rules', 'ability_scores.yaml')
-        con = self.get('/core/abilities/con', 1)
+        con = self.get('/core/attributes/con', 1)
         out += '<br>Character constitution: %s' % con
         con_bonus = int(FlattenedDict(ability_scores).get('/con/%s/hit' % con,0))
         out += '<br>Constitution Bonus: %s' % con_bonus
@@ -516,7 +516,7 @@ class Character(EzdmObject):
 
     def spell_success(self):
         ability_scores = load_yaml('rules', 'ability_scores.yaml')
-        wis = str(self.get('/core/abilities/wis', 0))
+        wis = str(self.get('/core/attributes/wis', 0))
         failrate = int(ability_scores["wis/%s/spell_failure" %(wis)].split('%')[0])
         out = "Spell failure rate: %s percent" % failrate
         roll = rolldice(numdice=1, numsides=100)
@@ -552,7 +552,7 @@ class Character(EzdmObject):
         oneline = list(canlearn[key].keys())[0]
         if spelltype not in canlearn[key][oneline]:
             return "%s cannot learn %s, failed to learn spell %s" % (self.displayname(), spelltype, spellitem.displayname())
-        intelect = str(self.get('/core/abilities/int', 1))
+        intelect = str(self.get('/core/attributes/int', 1))
         chance = FlattenedDict(load_yaml('rules', 'ability_scores.yaml'))
         chance = chance['/int/%s/spell_learn' % intelect]
         out = "<strong>%s has a %s chance to learn a new spell</strong>" % (self.displayname(), chance)
@@ -701,7 +701,7 @@ class Character(EzdmObject):
     def sell_price(self, gold, copper, silver):
             price = price_in_copper(gold, silver, copper)
 
-            cha = int(self.get('/core/abilities/cha', 1))
+            cha = int(self.get('/core/attributes/cha', 1))
             price = (price / 2) + ((price / 100) * cha)
             money = convert_money(price)
             return (int(money['gold']), int(money['silver']), int(money['copper']))

@@ -11,6 +11,7 @@ from eventstack import EventStack
 from mapview import Mapview
 from messages import messages
 from itemeditor import ItemEditor
+from yaml_editor import YAMLEditor
 
 def todo_event():
     messages.warning('Event not yet implemented')
@@ -27,7 +28,7 @@ class Frontend(object):
         self.editor_menu = [
         ("Quit", sys.exit),
         ("Items/spells", self.itemeditor),
-        ("NPCs", todo_event),
+        ("NPCs", self.npceditor),
         ("Quests", todo_event),
         ("Settings", self.settings),
         ]
@@ -55,15 +56,14 @@ class Frontend(object):
             self.mapview = Mapview(self)
             self.mapview.loadmap({})
 
+    def npceditor(self):
+        npc_editor = YAMLEditor(self, 'template_character.yaml', 'Item Editor')
+        self.sprites['npceditor'] = npc_editor
+
     def itemeditor(self):
-        if not 'npc' in self.sprites:
-            npc = ItemEditor(self)
-            self.eventstack.unregister_event(self.mapview.clickhash)
-            self.sprites['npc'] = npc
-        else:
-            self.mapview.registerclickevent()
-            self.sprites['npc'].delete()
-        self.draw()        
+        item_editor = YAMLEditor(self, 'template_item.yaml', 'Item Editor')
+        self.sprites['itemeditor'] = item_editor
+
 
     def settings(self):
         if not 'settingsmenu' in self.sprites:

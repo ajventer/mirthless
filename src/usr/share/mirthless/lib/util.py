@@ -23,6 +23,15 @@ default_text="""#This is a python snippet
 #When you're done, save the file and close the text editor to return to Mirthless.
 """
 
+def realkey(key):
+    ret = []
+    for k in key.split('/'):
+        if k.startswith('__'):
+            ret.append(k[3:])
+        else:
+            ret.append(k)
+    return '/'.join(ret).strip('/')
+
 def editsnippet(data):
     editor = os.getenv('EDITOR')
     if 'win' in sys.platform and not editor:

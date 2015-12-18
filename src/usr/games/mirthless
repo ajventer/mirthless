@@ -46,7 +46,10 @@ if __name__ == "__main__":
         clock.tick(60)  
         for event in pygame.event.get():
             quit = eventstack.handle_event(event)
-        frontend.draw()
+        if eventstack.app is not None:
+            eventstack.app.paint()
+        else:
+            frontend.draw()
         pygame.display.flip()
 
 

@@ -6,12 +6,12 @@ conditional/abilities/open locks: 10
 conditional/abilities/pick pockets: 10
 conditional/abilities/read languages: 5
 conditional/armor_types: 3
-core/abilities/cha: 17
-core/abilities/con: 11
-core/abilities/dex: 12
-core/abilities/int: 14
-core/abilities/str: 9
-core/abilities/wis: 8
+core/attributes/cha: 17
+core/attributes/con: 11
+core/attributes/dex: 12
+core/attributes/int: 14
+core/attributes/str: 9
+core/attributes/wis: 8
 core/class/class: bard
 core/class/parent: rogue
 core/combat/hitpoints: 17

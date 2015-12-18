@@ -6,15 +6,14 @@ conditional/core.type=spell/spell_level: 1
 conditional/core.type=spell/spell_school: __[Abjuration,Alteration,Conjuration,Enchantment,Divination,Illusion,Invocation,Necromancy]
 conditional/core.type=spell/spell_type: __[priest spells,wizard spells]
 conditional/core.type=weapon/__Idmg: ''
-conditional/core.type=weapon/__Ito_hit: ''
 conditional/core.type=weapon/damage_type: __[slice,hack,stab]
-conditional/core.type=weapon/events/__Tonstrike: ''
 conditional/core.type=weapon/range: __[short,medium,long]
 conditional/core.type=weapon/save_against: __[ppd,rod,pp,breath,spell,none]
 conditional/core.type=weapon/slot: __[lefthand,righthand,twohand]
 conditional/core.type=weapon/weapon_type: __[melee,magic,misile]
-core/__Tdescription: ''
-core/__Ycurrent_rounds_performed: 0
+core/description: ''
+core/canpickup: __[false,true]
+core/__Yrounds_used: 0
 core/__Yin_use: false
 core/charges: 0
 core/icon: ''
@@ -35,3 +34,4 @@ events/__Tonpickup: ''
 events/__Tonround: ''
 events/__Tonunequip: ''
 events/__Tonuse: ''
+events/__Tonstrike: ''

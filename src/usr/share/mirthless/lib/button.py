@@ -18,9 +18,19 @@ def scrn_print(surface, text, x, y, size=32, color=(0,0,0)):
     textpos.centery = y      
     surface.blit(rendered_text, textpos)
 
+class Label(pygame.sprite.DirtySprite):
+    def __init__(self, text,pos, layer=6):
+        self._layer = layer
+        super(pygame.sprite.DirtySprite, self).__init__()
+        self.image = render_text (text, size=16, color=(255,0,0), font=None)
+        self.rect = self.image.get_rect()
+        self.rect.x = pos[0]
+        self.rect.y = pos[1]
+        self.name = ''
+        self.value = text
 
 class Button(pygame.sprite.DirtySprite):
-    def __init__(self, label, onclick, onclick_params, eventstack,imagecache, pos=(0,0), layer=2):
+    def __init__(self, label, onclick, onclick_params, eventstack,imagecache, pos=(0,0), layer=2, name='', sendself=False, fontsize=16):
         self._layer = layer
         self.registered_events = []
         super(pygame.sprite.DirtySprite, self).__init__()
@@ -30,7 +40,9 @@ class Button(pygame.sprite.DirtySprite):
         self.pos = pos
         self.onclick = onclick
         self.onclick_params = onclick_params
-        self.label = render_text (label, size=16, color=(20,250,20))
+        self.sendself = sendself
+        #self.label = render_text (label, size=fontsize, color=(20,250,20))
+        self.label = render_text (label, size=fontsize, color=(255,255,255))
 
         labelrect = self.label.get_rect()
         
@@ -67,7 +79,10 @@ class Button(pygame.sprite.DirtySprite):
     def click(self, pos):
         self.image = self.button_click
         if self.onclick is not None:
-            self.onclick(*self.onclick_params)
+            if not self.sendself:
+                self.onclick(*self.onclick_params)
+            else:
+                self.onclick(self, *self.onclick_params)
 
     def delete(self):
         for h in self.registered_events:
@@ -85,14 +100,15 @@ class ButtonArrow(Button):
 
 class checkboxbtn(Button):
     checked = False
-    def __init__(self, label, onclick, onclick_params, eventstack,imagecache, pos=(0,0), layer=6):
+    def __init__(self, label, onclick, onclick_params, eventstack,imagecache, pos=(0,0),fontsize=16, layer=6, name='', sendself=False):
         self._layer = layer
         self.registered_events = []
         super(pygame.sprite.DirtySprite, self).__init__()
         self.pos = pos
+        self.sendself = sendself
         self.onclick = onclick
         self.onclick_params = onclick_params
-        self.label = render_text (label, size=24, color=(255,0,20))
+        self.label = render_text (label, size=fontsize, color=(255,0,20))
 
         labelrect = self.label.get_rect()        
                 
@@ -113,6 +129,10 @@ class checkboxbtn(Button):
         self.registered_events.append(self.eventstack.register_event("button1", self, self.click))
 
     @property
+    def value(self):
+        return self.checked
+
+    @property
     def image(self):
         if self.checked:
             return self.checkedimg
@@ -122,10 +142,13 @@ class checkboxbtn(Button):
     def click(self, pos):
         self.checked = not self.checked
         if self.onclick is not None:
-            self.onclick(*self.onclick_params)
+            if not self.sendself:
+                self.onclick(*self.onclick_params)
+            else:
+                self.onclick(self, *self.onclick_params)
 
 class TextInput(pygame.sprite.DirtySprite):
-    def __init__(self, rect, fontsize, eventstack, prompt='', clearprompt=True, layer=1):
+    def __init__(self, rect, fontsize, eventstack, prompt='', clearprompt=True, layer=1, name=''):
         self.prompt = prompt
         self.clearprompt = clearprompt
         self.text = prompt
@@ -148,6 +171,10 @@ class TextInput(pygame.sprite.DirtySprite):
             return ''
         else:
             return self.text
+
+    @property
+    def value(self):
+        return self.text
 
     @property
     def image(self):
@@ -219,9 +246,10 @@ class TextInput(pygame.sprite.DirtySprite):
             self.text = ''
 
 class Dropdown(pygame.sprite.DirtySprite):
-    def __init__(self, eventstack, imagecache, fontsize, rect, choices,layer=7, choice='',onselect=None):
+    def __init__(self, eventstack, imagecache, fontsize, rect, choices,layer=7, choice='',onselect=None,name='', sendself=False):
         self._layer = layer
         super(pygame.sprite.DirtySprite, self).__init__()
+        self.sendself = sendself
         self.onselect = onselect
         self.choicerects = {}
         self.eventstack = eventstack
@@ -236,7 +264,8 @@ class Dropdown(pygame.sprite.DirtySprite):
         self.upsurface = pygame.Surface((self.uprect.w, self.uprect.h))
         self.dnsurface = pygame.Surface((self.downrect.w, self.downrect.h))
         self.upsurface.fill((255,255,255))
-        self.upsurface.blit(imagecache['arrow_down'],(rect.w - 30, 0))
+        self.arrow_down = pygame.transform.smoothscale(imagecache['arrow_down'],(32,self.rect.h))
+        self.upsurface.blit(self.arrow_down,(rect.w - 30, 0))
         counter = 1
         self.image = self.upsurface
         self.registered_events = []
@@ -245,6 +274,10 @@ class Dropdown(pygame.sprite.DirtySprite):
         self.mouseover('force')
         self.down = False
         self.upsurface.blit(render_text (self.choice, font=self.font, color=(0,0,0)),(0,0))
+
+    @property
+    def value(self):
+        return self.choice
 
     def itemsurface(self, choice, highlight=False):
         surface = pygame.Surface((self.uprect.w, self.uprect.h))
@@ -285,9 +318,12 @@ class Dropdown(pygame.sprite.DirtySprite):
                     self.choice = k
                     self.upsurface.fill((255,255,255))
                     self.upsurface.blit(render_text (k, font=self.font, color=(0,0,0)),(0,0))
-                    self.upsurface.blit(self.imagecache['arrow_down'],(self.uprect.w - 30, 0))
+                    self.upsurface.blit(self.arrow_down,(self.uprect.w - 30, 0))
                     if self.onselect is not None:
-                        self.onselect(self.choice)
+                        if not self.sendself:
+                            self.onselect(self.choice)
+                        else:
+                            self.onselect(self, self.choice)
                     break
         self.down = not self.down
 
