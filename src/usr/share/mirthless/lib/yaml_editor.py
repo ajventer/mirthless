@@ -15,7 +15,6 @@ class YAMLEditor(FloatDialog, Tempsprites):
         self.frontend = frontend
         self.title = title
         self.template = load_yaml('rules', template)
-        debug(self.template)
         self.rect = pygame.Rect(0,50, self.frontend.screensize.w, self.frontend.screensize.h - 250)
         FloatDialog.__init__(self, self.rect, frontend)
         Tempsprites.__init__(self)
@@ -65,7 +64,6 @@ class YAMLEditor(FloatDialog, Tempsprites):
         list3 = sorted([i for i in self.template if  i.startswith('events/')])
         list2 = sorted([i for i in self.conditional_sprites if not 'animations' in i])
         allkeys = list1 + list2 + list3
-        debug ('\n\t'.join(allkeys))
         for key in allkeys:
             x = col * 450 + self.rect.x + 10
             y = row * 33 + self.rect.y + 75
@@ -96,9 +94,7 @@ class YAMLEditor(FloatDialog, Tempsprites):
         lsize = l.rect.w +10
         irect = pygame.Rect(x + lsize, y, 250, 20)
         value = self.item.get(keyname,'')
-        debug(key, str(self.template[key]))
         if (key.startswith('conditional') or keyname == key) and not '__[' in str(self.template[key]):
-            debug('match', key)
             if not value:
                 value = self.template[key]
             d = TextInput(
@@ -115,6 +111,10 @@ class YAMLEditor(FloatDialog, Tempsprites):
                     self.frontend.imagecache, 
                     pos=(x,y), fontsize=16,
                     layer=6, name=key, sendself=True)
+                if d.name in self.item():
+                    d.checked = self.item.get(d.name)
+                else:
+                    d.checked = items[0].upper() == 'TRUE'
             else:
                 d = Dropdown(
                     self.frontend.eventstack, 
@@ -134,26 +134,44 @@ class YAMLEditor(FloatDialog, Tempsprites):
         self.conditional_sprites = []
         conditional_keys = FlattenedDict(self.template).readsubtree('conditional')
         for key in conditional_keys:
-            conditions = [k for k in key.split('/') if '=' in k]
+            conditions = [k.replace('.','/') for k in key.split('/') if '=' in k]
             for condition in conditions:
-                condition = condition.replace('.','/')
-                debug(condition)
                 ckey, cval = condition.split('=')
                 if self.item.get(ckey,False) == cval:
                     self.conditional_sprites.append('conditional/%s' % key)
-        debug(self.conditional_sprites)
         self.editorlayout()
 
     def valuechange(self, *args):
         k, v =  args[0].name, args[1]
         self.item.put(k, v)
+        self.update_yaml()
         self.updateconditionals()
 
     def changepreview(self,choice):
         self.previewsprite.setanimation(choice)
 
+    def update_yaml(self):
+        for item in self.temp:
+            sprite = item[0]
+            try:
+                k = realkey(sprite.name)
+                v = sprite.value
+                if k and v:
+                    self.item.put(k, v)
+            except:
+                continue
+
     def save(self):
-        debug(self.item())
+        self.update_yaml()
+        dirname = None
+        if self.title == 'Item Editor':
+            dirname = 'items'
+        elif self.template == 'NPC Editor':
+            dirname = 'characters'
+        if dirname:
+            debug(dirname)
+            filename = self.item.save_to_file(dirname)
+            messages.error('Saved to %s' % os.path.basename(filename))
 
     def load(self):
         pass

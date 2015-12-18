@@ -150,7 +150,7 @@ class checkboxbtn(Button):
             if not self.sendself:
                 self.onclick(*self.onclick_params)
             else:
-                self.onclick(self, *self.onclick_params)
+                self.onclick(self, self.checked, *self.onclick_params)
 
 class TextInput(pygame.sprite.DirtySprite):
     def __init__(self, rect, fontsize, eventstack, prompt='', clearprompt=True, layer=1, name=''):

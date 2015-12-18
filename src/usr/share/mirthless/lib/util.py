@@ -32,7 +32,7 @@ def realkey(key):
             newkey = newkey[newkey.index(condition):][1:]
             newkey = '/'.join(newkey)
             newkey = newkey.replace('.','/')
-            return newkey
+            key = newkey
     ret = []
     for k in key.split('/'):
         if k.startswith('__'):
