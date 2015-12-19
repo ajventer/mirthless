@@ -1,6 +1,6 @@
 from objects import EzdmObject, event
 from item import Item
-from util import save_yaml, load_yaml,debug
+from util import save_yaml, load_yaml,debug, price_in_copper
 import copy
 from flatteneddict import FlattenedDict
 
@@ -10,9 +10,6 @@ class Tile(EzdmObject):
     """
     def revealed(self):
         return self.get('revealed', False) is True
-
-    def tiletype(self):
-        return self.get('type', 'floor')
 
     def linktarget(self, target=None, x=0, y=0):
         if not target:
@@ -31,16 +28,8 @@ class Tile(EzdmObject):
     def add(self, name, objtype):
         if isinstance(name, str) and not name.endswith('.yaml'):
             name = '%s.yaml' % name
-        current = self.get('%s' % objtype, {})
-        if objtype == 'npcs':
-            if isinstance(name, str):
-                name = Character(load_yaml('characters',name))
-        else:
-            if isinstance(name, str):
-                name = Item(name)
-        name.set_hash()
-        current[name.get_hash()] = name()
-        self.writesubtree('%s' % objtype, current)
+        current = self.get('%s' % objtype, [])
+        current.append((objtype, name.get_hash()))
 
     def remove(self, hash, objtype):
         del self()['%s/%s' %(objtype, hash) ]
@@ -108,15 +97,13 @@ class GameMap(EzdmObject):
         tile = self.tile(x, y)
         tile.add(name, objtype)
         self.load_tile_from_json(x, y, tile())
-        self.save()
 
     def removefromtile(self, x, y, name, objtype):
         tile = self.tile(x, y)
         tile.remove(name, objtype)
         self.load_tile_from_json(x, y, tile())
-        self.save()
 
-    def tile_icons(self, x, y, unique=False):
+    def tile_sprites(self, x, y, unique=False):
         tile = self.tile(x, y)
         if not tile():
             return {}
@@ -125,11 +112,19 @@ class GameMap(EzdmObject):
             data = FlattenedDict(load_yaml('items', thingy))
             if data:
                 i = Item(data)
-                out.append((data.get('/icon', ''), 'items'))
+                sprite = AnimatedSprite(i.get('/animations', {}))
+                out.append(('items', sprite))
         money = self.getmoney(x, y)
-        if money[0] or money[1] or money[2]:
-            #TODO - select a new gold icon and put here in the proper format.
-            out.append(('money', 'tilemap:x:y', 'money'))
+        if price_in_copper(*money):
+            m = AnimatedSprite({"view":[]})
+            if money[0]:
+                #TODO - select a new gold icon and put here in the proper format.
+                m.animations['view'].append('Money.png:0:1')
+            if money[1]:
+                m.animations['view'].append('Money.png:3:1')
+            if money[2]:
+                m.animations['view'].append('Money.png:0:0')
+            out.append('money', m)
         if not unique:
             return out
         else:

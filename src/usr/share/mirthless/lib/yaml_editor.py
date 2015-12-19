@@ -3,7 +3,7 @@ from pygame.locals import *
 from item import Item
 from npc import NPC
 from util import debug, editsnippet,default_text, load_yaml, realkey
-from dialog import FloatDialog, TileSelector
+from dialog import FloatDialog, TileSelector, ContainerDialog
 from tempsprites import Tempsprites
 from button import render_text, Button, TextInput, Dropdown, checkboxbtn, Label, ButtonArrow, BlitButton
 from animatedsprite import AnimatedSprite
@@ -16,6 +16,11 @@ class YAMLEditor(FloatDialog, Tempsprites):
         self.frontend = frontend
         self.title = title
         self.template = load_yaml('rules', template)
+        self.dirname = None
+        if self.title == 'Item Editor':
+            self.dirname = 'items'
+        elif self.title == 'NPC Editor':
+            self.dirname = 'characters'
         self.rect = pygame.Rect(0,50, self.frontend.screensize.w, self.frontend.screensize.h - 250)
         FloatDialog.__init__(self, self.rect, frontend)
         Tempsprites.__init__(self)
@@ -83,7 +88,7 @@ class YAMLEditor(FloatDialog, Tempsprites):
             if row * 33 + self.rect.y + 75 > self.rect.y + self.rect.h -75:
                 row = 0
                 col += 1
-        for key in sorted([i for i in self.conditional_sprites if 'animations' in i]):
+        for key in sorted([i for i in self.conditional_sprites if 'animations' in i])+sorted(i for i in self.template if 'animations' in i and not 'conditional' in i):
             keyname = realkey(key)
             value = self.item.get(keyname,[])
             if not value:
@@ -106,8 +111,6 @@ class YAMLEditor(FloatDialog, Tempsprites):
         else:
             self.previewsprite.setanimation(self.currentanimation)
             self.previewsprite.pause = self.paused.checked
-
-        debug(self.previewsprite.animations.keys())
         self._addtemp('previewsprite', self.previewsprite)
         self.animation = Dropdown(self.frontend.eventstack, 
             self.frontend.imagecache, 
@@ -164,7 +167,6 @@ class YAMLEditor(FloatDialog, Tempsprites):
     def delframe(self):
         key = 'animations/%s' % self.currentanimation
         idx = self.previewsprite.frame
-        debug('Deleted frame %s from  %s' % (idx, key))
         messages.warning('Deleted frame %s' % (idx))
         del self.item()[key][idx]
 
@@ -183,6 +185,28 @@ class YAMLEditor(FloatDialog, Tempsprites):
         self.item.put(key, animations)
         self.editorlayout()
 
+    def listmanager(self,keyname, items):
+        self._rmtemp()
+        debug('Adding listmanager for', keyname)
+        c = ContainerDialog(self.rect,
+            self.frontend,
+            keyname,
+            7,
+            items=items,
+            onselect=self.updatelist,
+            onselect_parms=[keyname],
+            animation='view',
+            can_add=True,
+            can_remove=True,
+            can_select=False,
+            addfrom=[])
+        self._addtemp('%s_listmanager' %keyname, c)
+        #self.editorlayout()
+
+    def updatelist(self, items, keyname):
+        self.item.put(keyname, items)
+        self.editorlayout()
+
     def handlekey(self,key, x,y):
         keyname = realkey(key)
         has_label = True
@@ -190,9 +214,19 @@ class YAMLEditor(FloatDialog, Tempsprites):
         lsize = l.rect.w +10
         irect = pygame.Rect(x + lsize, y, 250, 20)
         value = self.item.get(keyname,'')
-        if (key.startswith('conditional') or keyname == key) and not '__[' in str(self.template[key]):
-            if not value:
-                value = self.template[key]
+        if not value:
+            value = self.template[key]
+            if str(value).startswith('__'):
+                value = ''
+        if isinstance(value, list):
+            d = Button('Manage list', 
+                self.listmanager,
+                [keyname, value],
+                self.frontend.eventstack,
+                self.frontend.imagecache,
+                pos=(irect.x, irect.y),
+                layer=self._layer +1)
+        elif (key.startswith('conditional') or keyname == key) and not '__[' in str(self.template[key]):
             d = TextInput(
                 irect,18, self.frontend.eventstack, prompt=str(value), clearprompt=False, layer=6, name=keyname)
         elif (key.startswith('conditional') or keyname == key) and '__[' in str(self.template[key]):
@@ -263,14 +297,8 @@ class YAMLEditor(FloatDialog, Tempsprites):
 
     def save(self):
         self.update_yaml()
-        dirname = None
-        if self.title == 'Item Editor':
-            dirname = 'items'
-        elif self.title == 'NPC Editor':
-            dirname = 'characters'
-        if dirname:
-            debug(dirname)
-            filename = self.item.save_to_file(dirname)
+        if self.dirname:
+            filename = self.item.save_to_file(self.dirname)
             messages.error('Saved to %s' % os.path.basename(filename))
 
     def load(self):

@@ -81,7 +81,7 @@ class Frontend(object):
 
     def settings(self):
         if not 'settingsmenu' in self.sprites:
-            settings = SettingsDialog(pygame.Rect(self.screensize.w/2 - 300,self.screensize.h/2 -200,600,400), self)
+            settings = SettingsDialog(pygame.Rect(self.screensize.w/2 - 300,self.screensize.h/2 -200,600,400), self,layer=20)
             self.eventstack.unregister_event(self.mapview.clickhash)
             self.sprites['settingsmenu'] = settings 
         else:
@@ -108,7 +108,7 @@ class Frontend(object):
             self.sprites['%s_button' % button[0]] = Button(button[0], button[1][0],button[1][1:], self.eventstack, self.imagecache, (menu.index(button) * buttonplacement,5))
       
         self.screen.blit(seperator, (0,self.screensize.h -205))
-        dialog = Dialog(self.rightwindow_rect, self.imagecache)
+        dialog = Dialog(self.rightwindow_rect, self.imagecache, layer=1)
         self.screen.blit(dialog.image, (self.rightwindow_rect.x, self.rightwindow_rect.y))
         self.sprites['rightwindow'] = dialog
 

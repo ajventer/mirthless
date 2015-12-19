@@ -1,6 +1,6 @@
 import pygame
 from pygame.locals import *
-from util import debug, file_list, gamedir, imagepath, load_yaml, dump_yaml
+from util import debug, file_list, gamedir, imagepath, load_yaml, dump_yaml, make_hash
 from button import Button, render_text, TextInput, ButtonArrow, checkboxbtn
 from tempsprites import Tempsprites
 from messages import messages
@@ -67,10 +67,86 @@ class FloatDialog(Dialog, Tempsprites):
     def restorebg(self):
         self.frontend.screen.blit(self.background, self.rect)
 
+class ContainerDialog(FloatDialog):
+    def __init__(self, rect, frontend, title, layer=20, items=[],onselect=None,onselect_parms=[], animation='view',can_add=False, can_remove=False,can_select=True,addfrom=[]):
+        self._layer = layer
+        FloatDialog.__init__(self, rect, frontend, layer=layer)
+        self.frontend = frontend
+        self.image.blit(render_text (title, size=24, color=(255,0,0)),(10,10))
+        self.rect = rect
+        self.can_add = can_add
+        self.can_remove = can_remove
+        self.items = items
+        self.addfrom = addfrom
+        self.animation = animation
+        self.onselect = onselect
+        self.onselect_parms = onselect_parms
+        self.clickhash = self.frontend.eventstack.register_event("button1", self, self.click)
+        self.can_select = can_select
+        self.layout()
+
+    def layout(self):
+        self._rmtemp()
+        if self.can_add:
+            addbtn = Button('Add Item', 
+                self.item,
+                ['add'],
+                self.frontend.eventstack,
+                self.frontend.imagecache,
+                pos=(self.rect.x + 15,self.rect.y + 35),
+                layer=self._layer +1)
+            self._addtemp(make_hash(), addbtn)
+
+    def click(self, pos):
+        x,y = pos
+        self._rmtemp()
+        self.layout()
+        if self.can_select:
+            selectbtn = Button('Select Item', 
+                self.item,
+                ['select'],
+                self.frontend.eventstack,
+                self.frontend.imagecache,
+                pos=(self.rect.x + 150,self.rect.y + 35),
+                layer=self._layer +1)
+            self._addtemp(make_hash(), selectbtn)
+        else:
+            selectbtn = Button('Done', 
+                self.done,
+                [],
+                self.frontend.eventstack,
+                self.frontend.imagecache,
+                pos=(self.rect.x + 150,self.rect.y + 35),
+                layer=self._layer +1)
+            self._addtemp(make_hash(), selectbtn)
+        if self.can_remove:
+            rmbtn = Button('Remove Item', 
+                self.item,
+                ['remove'],
+                self.frontend.eventstack,
+                self.frontend.imagecache,
+                pos=(self.rect.x + 300,self.rect.y + 35),
+                layer=self._layer +1)
+            self._addtemp(make_hash(), rmbtn)
+
+    def delete(self):
+        self.frontend.eventstack.unregister_event(self.clickhash)
+        self._rmtemp()
+        self.kill()
+        self.restorebg()
+
+    def item(self, action):
+        pass
+
+    def done(self):
+        self.onselect(self.items, *self.onselect_parms)
+
+
+
 class SettingsDialog(FloatDialog, Tempsprites):
-    def __init__(self, rect, frontend, title):
-        self._layer = 6
-        FloatDialog.__init__(self, rect, frontend)
+    def __init__(self, rect, frontend, title, layer=19):
+        self._layer = layer
+        FloatDialog.__init__(self, rect, frontend, layer=layer)
         self.settingsdata = yaml.load(open(self.frontend.settingsfile).read())
         self.resolution = (self.settingsdata['res_x'],self.settingsdata['res_y'])
         try:
@@ -81,23 +157,22 @@ class SettingsDialog(FloatDialog, Tempsprites):
 
     def layout(self):
         self.image.blit(render_text ('Game directory:', size=24, color=(255,0,0)),(10,10))
-        self.gd = TextInput(pygame.Rect(self.rect.x + 220, self.rect.y + 10, self.rect.w-250, 30), 18, self.frontend.eventstack, prompt=self.settingsdata['gamedir'], clearprompt=False)
-        self.gd._layer = 6
+        self.gd = TextInput(pygame.Rect(self.rect.x + 220, self.rect.y + 10, self.rect.w-250, 30), 18, self.frontend.eventstack, prompt=self.settingsdata['gamedir'], clearprompt=False, layer=self._layer +1)
         self._addtemp('gamedirinput', self.gd)
         self.image.blit(render_text ('Resolution:', size=24, color=(255,0,0)),(10,60))
-        res_left = ButtonArrow(self.resbtn, ['left'], self.frontend.eventstack,self.frontend.imagecache, 'left', pos=(self.rect.x+120,self.rect.y+60), layer=6)
-        res_right = ButtonArrow(self.resbtn, ['right'], self.frontend.eventstack,self.frontend.imagecache, 'right', pos=(self.rect.x+300,self.rect.y+60), layer=6)
+        res_left = ButtonArrow(self.resbtn, ['left'], self.frontend.eventstack,self.frontend.imagecache, 'left', pos=(self.rect.x+120,self.rect.y+60), layer=self._layer +1)
+        res_right = ButtonArrow(self.resbtn, ['right'], self.frontend.eventstack,self.frontend.imagecache, 'right', pos=(self.rect.x+300,self.rect.y+60), layer=self._layer +1)
         self._addtemp('settings_res_left', res_left)
         self._addtemp('settings_res_right', res_right)
         self.image.blit(render_text ('%s X %s' %self.resolution, size=24, color=(255,0,0)),(170,60))
-        self.fullscreenbtn = checkboxbtn('Full screen', self.fullscreen, [], self.frontend.eventstack,self.frontend.imagecache, pos=(self.rect.x + 10,self.rect.y +100))
+        self.fullscreenbtn = checkboxbtn('Full screen', self.fullscreen, [], self.frontend.eventstack,self.frontend.imagecache, fontsize=24, pos=(self.rect.x + 10,self.rect.y +100),layer=self._layer +1)
         self.fullscreenbtn.checked = self.settingsdata['fullscreen']        
         self._addtemp('fullscreen', self.fullscreenbtn)
-        self.hardwarebtn = checkboxbtn('Hardware rendering(requires fullscreen)', self.hardware, [], self.frontend.eventstack,self.frontend.imagecache, pos=(self.rect.x + 10,self.rect.y +130))
+        self.hardwarebtn = checkboxbtn('Hardware rendering(requires fullscreen)', self.hardware, [], self.frontend.eventstack,self.frontend.imagecache,fontsize=24, pos=(self.rect.x + 10,self.rect.y +130),layer=self._layer +1)
         self.hardwarebtn.checked = self.settingsdata['hardware_buffer']
         self._addtemp('hardware rendering', self.hardwarebtn)
         self.image.blit(render_text ('Note: changes only take effect when you restart', size=24, color=(255,0,0)),(10,200))
-        save_btn = Button('Save changes', self.save, [], self.frontend.eventstack,self.frontend.imagecache, pos=(self.rect.x + 200,self.rect.y + 250), layer=6)
+        save_btn = Button('Save changes', self.save, [], self.frontend.eventstack,self.frontend.imagecache, pos=(self.rect.x + 200,self.rect.y + 250), layer=self._layer +1)
         self._addtemp('savesettings', save_btn)
 
     def save(self):

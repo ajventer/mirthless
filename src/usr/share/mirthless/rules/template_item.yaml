@@ -10,10 +10,13 @@ conditional/type=weapon/range: __[short,medium,long]
 conditional/type=weapon/save_against: __[ppd,rod,pp,breath,spell,none]
 conditional/type=weapon/slot: __[lefthand,righthand,twohand,either hand]
 conditional/type=weapon/weapon_type: __[melee,magic,misile]
-conditional/type=armor/animations/view: 
+conditional/type=container/random_contents: __[true,false]
+conditional/type=container/contents: []
+conditional/type=container/locked: __[false,true]
+conditional/type=container/events.onopen: ''
+conditional/type=door/locked: __[false,true]
+animations/view: 
  - Shield.png:5:0:0
-conditional/type=weapon/animations/view:
- - LongWep.png:1:6:0
 conditional/type=weapon/animations/strike:
  - LongWep.png:1:6:90
 conditional/type=spell/animations/travel:
@@ -21,6 +24,10 @@ conditional/type=spell/animations/travel:
  - Effect0.png:0:17:0
 conditional/type=spell/animations/strike:
  - Effect0.png:1:7:0
+conditional/type=container/animations/closed: []
+conditional/type=container/animations/open: []
+conditional/type=door/animations/open: []
+conditional/type=door/animations/closed: []
 description: ''
 canpickup: __[false,true]
 __Yrounds_used: 0
@@ -34,7 +41,7 @@ price/gold: 0
 price/silver: 0
 rounds_per_charge: 0
 size: __[small,medium,large]
-type: __[weapon,armor,spell,other]
+type: __[weapon,armor,spell,container,door,other]
 weight: 1
 events/__Tondrop: ''
 events/__Tonequip: ''
