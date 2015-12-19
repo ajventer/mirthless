@@ -69,7 +69,7 @@ class FloatDialog(Dialog, Tempsprites):
         self.frontend.screen.blit(self.background, self.rect)
 
 class ContainerDialog(FloatDialog):
-    def __init__(self, rect, frontend, title, layer=20, items=[],onselect=None,onselect_parms=[], animation='view',can_add=False, can_remove=False,addfrom=[]):
+    def __init__(self, rect, frontend, title, layer=20, items=[],onclose=None, onselect=None,onselect_parms=[], animation='view',can_add=False, can_remove=False,addfrom=[]):
         self._layer = layer
         FloatDialog.__init__(self, rect, frontend, layer=layer)
         self.frontend = frontend
@@ -81,18 +81,29 @@ class ContainerDialog(FloatDialog):
         self.addfrom = addfrom
         self.animation = animation
         self.onselect = onselect
+        self.onclose = onclose
         self.onselect_parms = onselect_parms
         self.layout()
 
     def layout(self):
         self._rmtemp()
+        buttonspacing = ((self.rect.w - 30)/2)+15
+        donebtn = Button('Close', 
+            self.item,
+            ['close'],
+            self.frontend.eventstack,
+            self.frontend.imagecache,
+            pos=(self.rect.x + 15,self.rect.y + 35),
+            layer=self._layer +1)
+        self._addtemp(make_hash(), donebtn)
+
         if self.can_add:
             addbtn = Button('Add Item', 
                 self.item,
                 ['add'],
                 self.frontend.eventstack,
                 self.frontend.imagecache,
-                pos=(self.rect.x + 15,self.rect.y + 35),
+                pos=(self.rect.x + buttonspacing,self.rect.y + 35),
                 layer=self._layer +1)
             self._addtemp(make_hash(), addbtn)
         col, row = 0,0
@@ -116,6 +127,10 @@ class ContainerDialog(FloatDialog):
                 row += 1
         #TODO - pager for when there are too many to fit in the box
 
+    def closesubwindow(self):
+        self._rmtemp()
+        self.layout()
+
     def delete(self):
         self._rmtemp()
         self.kill()
@@ -125,7 +140,6 @@ class ContainerDialog(FloatDialog):
         self.onselect(item)
 
     def item(self, action):
-        debug('Item action', action)
         if action == 'add':
             debug('Opening add item dialog')
             offset = (self.rect.w/10, self.rect.h/10)
@@ -135,6 +149,7 @@ class ContainerDialog(FloatDialog):
                 'Add item to container',
                 layer=self._layer+1,
                 items=self.addfrom,
+                onclose=self.closesubwindow,
                 onselect=self.additem,
                 onselect_parms=[],
                 animation='view',
@@ -142,6 +157,9 @@ class ContainerDialog(FloatDialog):
                 can_remove=False,
                 addfrom=[])
             self._addtemp(make_hash(), self.c)
+        if action == 'close':
+            self.delete()
+            self.onclose()
 
     def additem(self,item):
         self.items.append(item)
