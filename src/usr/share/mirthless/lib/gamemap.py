@@ -29,6 +29,9 @@ class Tile(EzdmObject):
         if isinstance(name, str) and not name.endswith('.yaml'):
             name = '%s.yaml' % name
         current = self.get('%s' % objtype, [])
+        name = EzdmObject(name)
+        name.set_hash()
+        #TODO: Save to gamesave slot
         current.append((objtype, name.get_hash()))
 
     def remove(self, hash, objtype):

@@ -69,7 +69,7 @@ class FloatDialog(Dialog, Tempsprites):
         self.frontend.screen.blit(self.background, self.rect)
 
 class ContainerDialog(FloatDialog):
-    def __init__(self, rect, frontend, title, layer=20, items=[],onclose=None, onselect=None,onselect_parms=[], animation='view',can_add=False, can_remove=False,addfrom=[]):
+    def __init__(self, rect, frontend, title, layer=20, items=[],onclose=None, onclose_parms=[], onselect=None,onselect_parms=[], animation='view',can_add=False, can_remove=False,addfrom=[]):
         self._layer = layer
         FloatDialog.__init__(self, rect, frontend, layer=layer)
         self.frontend = frontend
@@ -82,12 +82,14 @@ class ContainerDialog(FloatDialog):
         self.animation = animation
         self.onselect = onselect
         self.onclose = onclose
+        self.onclose_parms = onclose_parms
         self.onselect_parms = onselect_parms
+        self.selected = None
         self.layout()
 
     def layout(self):
         self._rmtemp()
-        buttonspacing = ((self.rect.w - 30)/2)+15
+        buttons = []
         donebtn = Button('Close', 
             self.item,
             ['close'],
@@ -95,17 +97,31 @@ class ContainerDialog(FloatDialog):
             self.frontend.imagecache,
             pos=(self.rect.x + 15,self.rect.y + 35),
             layer=self._layer +1)
-        self._addtemp(make_hash(), donebtn)
-
+        buttons.append(donebtn)
         if self.can_add:
             addbtn = Button('Add Item', 
                 self.item,
                 ['add'],
                 self.frontend.eventstack,
                 self.frontend.imagecache,
-                pos=(self.rect.x + buttonspacing,self.rect.y + 35),
+                pos=(self.rect.x, self.rect.y + 35),
                 layer=self._layer +1)
-            self._addtemp(make_hash(), addbtn)
+            buttons.append(addbtn)
+        if self.can_remove and self.selected:
+            rmbtn = Button('Remove Item', 
+                self.item,
+                ['remove'],
+                self.frontend.eventstack,
+                self.frontend.imagecache,
+                pos=(self.rect.x, self.rect.y + 35),
+                layer=self._layer +1)
+            buttons.append(rmbtn)
+        for button in buttons:
+            buttonspacing = ((self.rect.w-30)/len(buttons))*buttons.index(button)
+            debug(buttonspacing, len(buttons))
+            button.rect = pygame.Rect(self.rect.x+15+ buttonspacing, button.rect.y, button.rect.w,button.rect.h)
+            debug(button.rect, button._layer)
+            self._addtemp(make_hash(), button)
         col, row = 0,0
         size = self.frontend.mapscale + 2
         for item in self.items:
@@ -127,7 +143,7 @@ class ContainerDialog(FloatDialog):
                 row += 1
         #TODO - pager for when there are too many to fit in the box
 
-    def closesubwindow(self):
+    def closesubwindow(self,*args):
         self._rmtemp()
         self.layout()
 
@@ -137,7 +153,10 @@ class ContainerDialog(FloatDialog):
         self.restorebg()
 
     def select(self, item):
-        self.onselect(item)
+        self.selected = item
+        self.layout()
+        if self.onselect:
+            self.onselect(item)
 
     def item(self, action):
         if action == 'add':
@@ -157,13 +176,18 @@ class ContainerDialog(FloatDialog):
                 can_remove=False,
                 addfrom=[])
             self._addtemp(make_hash(), self.c)
-        if action == 'close':
+        elif action == 'close':
             self.delete()
-            self.onclose()
+            self.onclose(self.items, *self.onclose_parms)
+        elif action == 'remove':
+            if self.selected in self.items:
+                del self.items[self.items.index(self.selected)]
+            self.selected = None
+            self.layout()
 
     def additem(self,item):
         self.items.append(item)
-        self._rmtemp()
+        #self._rmtemp()
         self.layout()
         debug('additem')
         pass

@@ -199,15 +199,13 @@ class YAMLEditor(FloatDialog, Tempsprites):
             keyname,
             7,
             items=items,
-            onclose=self.editorlayout,
-            onselect=self.updatelist,
-            onselect_parms=[keyname],
+            onclose=self.updatelist,
+            onclose_parms=[keyname],
             animation='view',
             can_add=True,
             can_remove=True,
             addfrom=itemlist)
         self._addtemp('%s_listmanager' %keyname, c)
-        #self.editorlayout()
 
     def updatelist(self, items, keyname):
         self.item.put(keyname, items)
