@@ -198,7 +198,7 @@ class YAMLEditor(FloatDialog, Tempsprites):
             self.frontend,
             keyname,
             7,
-            items=itemlist,
+            items=items,
             onselect=self.updatelist,
             onselect_parms=[keyname],
             animation='view',

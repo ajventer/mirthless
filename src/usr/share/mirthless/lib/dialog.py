@@ -167,10 +167,10 @@ class ContainerDialog(FloatDialog):
                 can_add=False,
                 can_remove=False,
                 can_select=True,
-                addfrom=self.addfrom)
+                addfrom=[])
             self._addtemp(make_hash(), c)
 
-    def item(self, itemhash):
+    def additem(self):
         pass
 
     def done(self):
