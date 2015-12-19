@@ -118,7 +118,6 @@ class ContainerDialog(FloatDialog):
             buttons.append(rmbtn)
         for button in buttons:
             buttonspacing = ((self.rect.w-30)/len(buttons))*buttons.index(button)
-            debug(buttonspacing, len(buttons))
             button.rect = pygame.Rect(self.rect.x+15+ buttonspacing, button.rect.y, button.rect.w,button.rect.h)
             debug(button.rect, button._layer)
             self._addtemp(make_hash(), button)
@@ -294,7 +293,8 @@ class TileSelector(FloatDialog):
         y = 10
         filename = self.pages[self.page]
         self.pagepaths = []
-        self.image.blit(render_text (filename, size=32, color=(0,0,0)),(self.rect.x+self.rect.w/2, self.rect.y+self.rect.h -50))
+        filenameblit = render_text (filename, size=32, color=(255,0,0))
+        self.image.blit(filenameblit,(self.rect.x+self.rect.w/2 - filenameblit.get_rect().w/2, self.rect.y+self.rect.h -120))
         for imagepath in self.frontend.tilemaps.iterall(filename):
             if x >= self.rect.w - 75:
                 col = 0

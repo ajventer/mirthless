@@ -25,6 +25,7 @@ class Tilemap(object):
         image = imagecache(filename)
         image_width, image_height = image.get_size()
         tile_table = []
+        tile_y = 0
         for tile_x in range(0, image_width/width):
             line = []
             tile_table.append(line)

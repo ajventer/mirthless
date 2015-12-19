@@ -45,9 +45,9 @@ __Yinventory/equiped/wrists: {}
 __Yinventory/money/copper: 0
 __Yinventory/money/gold: 0
 __Yinventory/money/silver: 0
-__Yinventory/pack: []
-__Yinventory/spells: []
-__Yinventory/spells_memorized: []
+inventory/pack: []
+inventory/spells: []
+inventory/spells_memorized: []
 class/parent: __[warrior,wizard,rogue,priest]
 conditional/class.parent=warrior/class.class: __[fighter,ranger,paladin]
 conditional/class.parent=wizard/class.class: __[mage]
