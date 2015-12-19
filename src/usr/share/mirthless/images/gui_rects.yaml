@@ -99,6 +99,64 @@ plusarrow:
     y: 120
     w: 32
     h: 30
+neck:
+    x: 32
+    y: 32
+    w: 32
+    h: 32
+head:
+    x: 224
+    y: 32
+    w: 32
+    h: 32
+chest:
+    x: 416
+    y: 32
+    w: 32
+    h: 32
+leftfinger:
+    x: 32
+    y: 203
+    w: 32
+    h: 32
+rightfinger:
+    x: 416
+    y: 203
+    w: 32
+    h: 32
+lefthand:
+    x: 32
+    y: 300
+    w: 32
+    h: 32
+righthand:
+    x: 448
+    y: 300
+    w: 32
+    h: 32
+wrists:
+    x: 32
+    y: 416
+    w: 32
+    h: 32
+legs:
+    x: 123
+    y: 416
+    w: 32
+    h: 32
+feet:
+    x: 224
+    y: 416
+    w: 32
+    h: 32
+gloves:
+    x: 416
+    y: 224
+    w: 32
+    h: 32
+
+
+
 
 
 
