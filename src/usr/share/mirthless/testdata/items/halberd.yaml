@@ -19,9 +19,15 @@ rounds_per_charge: 0
 size: large
 type: weapon
 weight: ''
-events/ondrop: messages.warning('%s has dropped %s' % (player.displayname(), item.displayname()))
-events/onequip: ''
-events/onfinish: ''
-events/onpickup: ''
-events/onround: ''
-events/onuse: ''
+events/ondrop:
+ - messages.warning('%s has dropped %s' % (player.displayname(), item.displayname()))
+events/onequip:
+ - ''
+events/onfinish:
+ - ''
+events/onpickup:
+ - ''
+events/onround:
+ - ''
+events/onuse:
+ - ''

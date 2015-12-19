@@ -5,7 +5,6 @@ from gamemap import GameMap
 import copy
 from random import randrange
 import operator
-from graphics import frontend
 from flatteneddict import FlattenedDict
 from messages import messages
 from animatedsprite import AnimatedSprite
@@ -20,6 +19,7 @@ class Character(EzdmObject):
 
     def __init__(self, data):
         EzdmObject.__init__(self, data)
+        self.animations = self.getsubtree('animations')
 
     def roll_hit_dice(self):
         """
@@ -37,71 +37,71 @@ class Character(EzdmObject):
         self.put('combat/hitpoints', rolldice(numdice=numdice, numsides=8)[0])
         self.put('combat/max_hp', numdice * 8)
 
-    def handle_death(self):
-        loc = self.location()
-        debug("Dead character was at %s" % loc)
-        chartype = self.character_type()
-        if chartype == 'player':
-            chartype = 'players'
-            todel = self.name()
-        else:
-            chartype = 'npcs'
-            todel = self.get_hash()
-            for char in list(frontend.campaign.characterlist):
-                if char.character_type() == 'player':
-                    frontend.campaign.message(char.give_xp(self.xp_worth()))
-                    char.autosave()
-            frontend.campaign.chars_in_round()
-        gamemap = GameMap(load_yaml('maps', loc['map']))
-        if todel != -1:
-            gamemap.removefromtile(loc['x'], loc['y'], todel, chartype)
-        debug(chartype)
-        if chartype == 'npcs':
-            max_gold = self.get('loot/gold', 0)
-            max_silver = self.get('loot/silver', 0)
-            max_copper = self.get('loot/copper', 0)
-            loot_items = self.get('loot/items_possible', [])
-            max_items = self.get('loot/max_items', 1)
-            debug('Max Items:', max_items)
-            always_drops = self.get('loot/always_drops', [])
-            gold = rolldice(1, max_gold, 0)[0]
-            silver = rolldice(1, max_silver, 0)[0]
-            copper = rolldice(1, max_copper, 0)[0]
-            if isinstance(loot_items, str):
-                try:
-                    debug('Trying to convert loot_items from string')
-                    loot_items = simpleobjdata.loads(loot_items)
-                except:
-                    loot_items = []
-            debug("Dropping money %s - %s - %s" % (gold, silver, copper))
-            for counter in range(0, max_items):
-                item = None
-                debug("Potential drop: %s of %s" % (counter, max_items))
-                drops_item = rolldice(1, 100, 0)[0]
-                debug("Drop-roll: %s" % drops_item)
-                debug('Loot items:', loot_items)
-                if loot_items and drops_item > 50:
-                    debug("Select random item from to drop from %s" % loot_items)
-                    if len(loot_items) >= 2:
-                        item = loot_items[randrange(0, len(loot_items) - 1)]
-                    else:
-                        item = loot_items[0]
-                if item:
-                    debug("Item dropped %s" % item)
-                    gamemap.addtotile(loc['x'], loc['y'], item, 'items')
-            debug("Always drops: %s" % always_drops)
-            if isinstance(always_drops, str):
-                try:
-                    always_drops = simpleobjdata.loads(always_drops)
-                except:
-                    always_drops = []
-            for item in always_drops:
-                debug("Dropping %s" % item)
-                gamemap.addtotile(loc['x'], loc['y'], item, 'items')
-            gamemap.putmoney(loc['x'], loc['y'], gold, silver, copper)
-        self.autosave()
-        gamemap.save()
-        frontend.campaign.chars_in_round()
+    # def handle_death(self):
+    #     loc = self.location()
+    #     debug("Dead character was at %s" % loc)
+    #     chartype = self.character_type()
+    #     if chartype == 'player':
+    #         chartype = 'players'
+    #         todel = self.name()
+    #     else:
+    #         chartype = 'npcs'
+    #         todel = self.get_hash()
+    #         for char in list(frontend.campaign.characterlist):
+    #             if char.character_type() == 'player':
+    #                 frontend.campaign.message(char.give_xp(self.xp_worth()))
+    #                 char.autosave()
+    #         frontend.campaign.chars_in_round()
+    #     gamemap = GameMap(load_yaml('maps', loc['map']))
+    #     if todel != -1:
+    #         gamemap.removefromtile(loc['x'], loc['y'], todel, chartype)
+    #     debug(chartype)
+    #     if chartype == 'npcs':
+    #         max_gold = self.get('loot/gold', 0)
+    #         max_silver = self.get('loot/silver', 0)
+    #         max_copper = self.get('loot/copper', 0)
+    #         loot_items = self.get('loot/items_possible', [])
+    #         max_items = self.get('loot/max_items', 1)
+    #         debug('Max Items:', max_items)
+    #         always_drops = self.get('loot/always_drops', [])
+    #         gold = rolldice(1, max_gold, 0)[0]
+    #         silver = rolldice(1, max_silver, 0)[0]
+    #         copper = rolldice(1, max_copper, 0)[0]
+    #         if isinstance(loot_items, str):
+    #             try:
+    #                 debug('Trying to convert loot_items from string')
+    #                 loot_items = simpleobjdata.loads(loot_items)
+    #             except:
+    #                 loot_items = []
+    #         debug("Dropping money %s - %s - %s" % (gold, silver, copper))
+    #         for counter in range(0, max_items):
+    #             item = None
+    #             debug("Potential drop: %s of %s" % (counter, max_items))
+    #             drops_item = rolldice(1, 100, 0)[0]
+    #             debug("Drop-roll: %s" % drops_item)
+    #             debug('Loot items:', loot_items)
+    #             if loot_items and drops_item > 50:
+    #                 debug("Select random item from to drop from %s" % loot_items)
+    #                 if len(loot_items) >= 2:
+    #                     item = loot_items[randrange(0, len(loot_items) - 1)]
+    #                 else:
+    #                     item = loot_items[0]
+    #             if item:
+    #                 debug("Item dropped %s" % item)
+    #                 gamemap.addtotile(loc['x'], loc['y'], item, 'items')
+    #         debug("Always drops: %s" % always_drops)
+    #         if isinstance(always_drops, str):
+    #             try:
+    #                 always_drops = simpleobjdata.loads(always_drops)
+    #             except:
+    #                 always_drops = []
+    #         for item in always_drops:
+    #             debug("Dropping %s" % item)
+    #             gamemap.addtotile(loc['x'], loc['y'], item, 'items')
+    #         gamemap.putmoney(loc['x'], loc['y'], gold, silver, copper)
+    #     self.autosave()
+    #     gamemap.save()
+    #     frontend.campaign.chars_in_round()
 
     def location(self):
         """
@@ -588,7 +588,7 @@ class Character(EzdmObject):
         """
         >>> char = Character({})
         >>> mhand = Item(load_yaml('items', 'mainhand_dagger.yaml'))
-        >>> ohand = Item(load_yaml('items', 'offhand_dagger.yaml'))
+        >>> ohand = mhand
         >>> twohand = Item(load_yaml('items', 'halberd.yaml'))
         >>> char.acquire_item(twohand)
         >>> char.equip_item(0)
@@ -601,14 +601,14 @@ class Character(EzdmObject):
         1
         >>> char.acquire_item(mhand)
         >>> char.equip_item(0)
-        (True, '[ ] has equiped Mainhand Dagger')
+        (True, '[ ] has equiped Dagger')
         >>> char.weapons
         [<item.Item object at ...>]
-        >>> char.weapons[0].displayname() == 'Mainhand Dagger'
+        >>> char.weapons[0].displayname() == 'Dagger'
         True
         >>> char.acquire_item(ohand)
         >>> char.equip_item(0)
-        (True, '[ ] has equiped Offhand_Dagger')
+        (True, '[ ] has equiped Dagger')
         >>> char.weapons
         [<item.Item object at ...>, <item.Item object at ...>]
         >>> len(char.weapons)
@@ -662,6 +662,17 @@ class Character(EzdmObject):
                     slots = ['rightfinger']
                 if not slots:
                     slots = ['leftfinger']
+            elif item.slot() == 'either hand':
+                #Check if there is a hand with nothing in it
+                chosen_slot = None
+                for s in ['lefthand', 'righthand']:
+                    t = self.getsubtree('inventory/equiped/%s' %s)
+                    if not t:
+                        chosen_slot = s
+                #Both hands equipped, equip in righthand
+                if not chosen_slot:
+                    chosen_slot = 'righthand'
+                slots = [chosen_slot]
             else:
                 slots = [item.slot()]
             for slot in slots:

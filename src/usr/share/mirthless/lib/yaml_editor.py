@@ -1,6 +1,7 @@
 import pygame
 from pygame.locals import *
 from item import Item
+from character import Character
 from util import debug, editsnippet,default_text, load_yaml, realkey
 from dialog import FloatDialog
 from tempsprites import Tempsprites
@@ -18,8 +19,13 @@ class YAMLEditor(FloatDialog, Tempsprites):
         self.rect = pygame.Rect(0,50, self.frontend.screensize.w, self.frontend.screensize.h - 250)
         FloatDialog.__init__(self, self.rect, frontend)
         Tempsprites.__init__(self)
-        self.item = Item({})
+        if self.title == 'Item Editor':
+            self.item = Item({})
+        elif self.title == 'NPC Editor':
+            self.item = Character({})
+        debug (self.item.animations)
         self.conditional_sprites = []
+        self.lastlayer = 20
         self.baselayout()
         self.editorlayout()
 
@@ -44,12 +50,13 @@ class YAMLEditor(FloatDialog, Tempsprites):
         self._addtemp('saveitem', save_btn)
         self._addtemp('loaditem', load_btn)
 
-    def make_event(self, key):
-        self.save()
-        data = self.item.get(keyname, default_text)
-        data = editsnippet(data)
-        self.item.put(keyname,data)
-        self.save()
+    def make_event(self, sender, key):
+        self.update_yaml()
+        data = self.item.get(key, default_text)
+        data.insert(0,'#%s' % key)
+        data = editsnippet('\n'.join(data))
+        self.item.put(key,data.split('\n'))
+        self.update_yaml()
 
     def editorlayout(self):
         debug('Building editor layout')
@@ -120,11 +127,12 @@ class YAMLEditor(FloatDialog, Tempsprites):
                     self.frontend.eventstack, 
                     self.frontend.imagecache, 
                     16,
-                    irect, items,layer=8, 
+                    irect, items,layer=self.lastlayer, 
                     choice=value, 
                     onselect=self.valuechange,
                     name=keyname,
                     sendself=True)
+                self.lastlayer -= 1
         if has_label:
             return [l, d]
         else:
@@ -160,6 +168,7 @@ class YAMLEditor(FloatDialog, Tempsprites):
                     self.item.put(k, v)
             except:
                 continue
+        debug(self.item())
 
     def save(self):
         self.update_yaml()

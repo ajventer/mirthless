@@ -21,7 +21,7 @@ default_text="""#This is a python snippet
 #messages: Send a message, warning or error. message.error('You have been cursed !!!')
 #You can safely delete these comments if you want to, or just put your event handling code below.
 #When you're done, save the file and close the text editor to return to Mirthless.
-"""
+""".split('\n')
 
 def realkey(key):
     key = stripslashes(key)

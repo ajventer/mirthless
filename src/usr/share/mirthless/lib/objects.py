@@ -2,7 +2,7 @@ from util import debug, dump_yaml, make_hash, gamedir, save_yaml
 from flatteneddict import FlattenedDict, stripslashes
 
 def event(obj, key, localvars):
-    code = obj.get(key, '')
+    code = '\n'.join(obj.get(key, ''))
     debug('Got code %s' % code)
     #localvars['campaign'] = campaign()
     if code:
