@@ -63,3 +63,26 @@ class AnimatedSprite(pygame.sprite.DirtySprite):
         self.kill()
 
 
+
+class ButtonSprite(AnimatedSprite):
+    def __init__(self, tilemaps, rect, eventstack, onclick=None, onclick_params=[], animations={}, layer=2, fps=60,sendself=False):
+        self._layer = layer
+        AnimatedSprite.__init__(self, tilemaps, rect, animations, layer, fps)
+        self.registered_events = []
+        self.eventstack = eventstack
+        self.onclick = onclick
+        self.onclick_params = onclick_params
+        self.sendself = sendself
+        self.registered_events.append(self.eventstack.register_event("button1", self, self.click))
+
+    def click(self, pos):
+         if self.onclick is not None:
+            if not self.sendself:
+                self.onclick(*self.onclick_params)
+            else:
+                self.onclick(self, *self.onclick_params)
+
+    def delete(self):
+        for h in self.registered_events:
+            self.eventstack.unregister_event(h)
+        self.kill()

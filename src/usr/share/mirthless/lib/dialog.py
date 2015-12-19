@@ -6,7 +6,7 @@ from tempsprites import Tempsprites
 from messages import messages
 from gamemap import GameMap
 import yaml
-from animatedsprite import AnimatedSprite
+from animatedsprite import AnimatedSprite, ButtonSprite
 
 class Dialog(pygame.sprite.DirtySprite):
     def __init__(self, rect, imagecache, layer=4):
@@ -69,7 +69,7 @@ class FloatDialog(Dialog, Tempsprites):
         self.frontend.screen.blit(self.background, self.rect)
 
 class ContainerDialog(FloatDialog):
-    def __init__(self, rect, frontend, title, layer=20, items=[],onselect=None,onselect_parms=[], animation='view',can_add=False, can_remove=False,can_select=True,addfrom=[]):
+    def __init__(self, rect, frontend, title, layer=20, items=[],onselect=None,onselect_parms=[], animation='view',can_add=False, can_remove=False,addfrom=[]):
         self._layer = layer
         FloatDialog.__init__(self, rect, frontend, layer=layer)
         self.frontend = frontend
@@ -82,8 +82,6 @@ class ContainerDialog(FloatDialog):
         self.animation = animation
         self.onselect = onselect
         self.onselect_parms = onselect_parms
-        self.clickhash = self.frontend.eventstack.register_event("button1", self, self.click)
-        self.can_select = can_select
         self.layout()
 
     def layout(self):
@@ -97,24 +95,20 @@ class ContainerDialog(FloatDialog):
                 pos=(self.rect.x + 15,self.rect.y + 35),
                 layer=self._layer +1)
             self._addtemp(make_hash(), addbtn)
-        if not self.can_select:
-            selectbtn = Button('Done', 
-                self.done,
-                [],
-                self.frontend.eventstack,
-                self.frontend.imagecache,
-                pos=(self.rect.x + 150,self.rect.y + 35),
-                layer=self._layer +1)
         col, row = 0,0
         size = self.frontend.mapscale + 2
         for item in self.items:
             x = col * size + self.rect.x + 15
             y = row * size + self.rect.y + 75
-            sprite = AnimatedSprite(self.frontend.tilemaps,
+            sprite = ButtonSprite(self.frontend.tilemaps,
                 pygame.Rect(x,y, size, size),
-                item.getsubtree('animations'),
+                eventstack=self.frontend.eventstack,
+                onclick=self.select,
+                onclick_params=[item],
+                animations=item.getsubtree('animations'),
                 layer=self._layer + 1,
-                fps=5)
+                fps=5,
+                sendself=False)
             self._addtemp(make_hash(), sprite)
             col += 1
             if col * size + 15 > self.rect.x + self.rect.w - 15:
@@ -122,41 +116,21 @@ class ContainerDialog(FloatDialog):
                 row += 1
         #TODO - pager for when there are too many to fit in the box
 
-    def click(self, pos):
-        x,y = pos
-        self._rmtemp()
-        self.layout()
-        if self.can_select:
-            selectbtn = Button('Select Item', 
-                self.item,
-                ['select'],
-                self.frontend.eventstack,
-                self.frontend.imagecache,
-                pos=(self.rect.x + 150,self.rect.y + 35),
-                layer=self._layer +1)
-            self._addtemp(make_hash(), selectbtn)
-            self._addtemp(make_hash(), selectbtn)
-        if self.can_remove:
-            rmbtn = Button('Remove Item', 
-                self.item,
-                ['remove'],
-                self.frontend.eventstack,
-                self.frontend.imagecache,
-                pos=(self.rect.x + 300,self.rect.y + 35),
-                layer=self._layer +1)
-            self._addtemp(make_hash(), rmbtn)
-
     def delete(self):
-        self.frontend.eventstack.unregister_event(self.clickhash)
         self._rmtemp()
         self.kill()
         self.restorebg()
+
+    def select(self, item):
+        self.onselect(item)
 
     def item(self, action):
         debug('Item action', action)
         if action == 'add':
             debug('Opening add item dialog')
-            c = ContainerDialog(self.rect,
+            offset = (self.rect.w/10, self.rect.h/10)
+            irect = pygame.Rect(self.rect.x+offset[0], self.rect.y+offset[1],self.rect.w - 2* offset[0], self.rect.h- 2*offset[1])
+            self.c = ContainerDialog(irect,
                 self.frontend,
                 'Add item to container',
                 layer=self._layer+1,
@@ -166,11 +140,14 @@ class ContainerDialog(FloatDialog):
                 animation='view',
                 can_add=False,
                 can_remove=False,
-                can_select=True,
                 addfrom=[])
-            self._addtemp(make_hash(), c)
+            self._addtemp(make_hash(), self.c)
 
-    def additem(self):
+    def additem(self,item):
+        self.items.append(item)
+        self._rmtemp()
+        self.layout()
+        debug('additem')
         pass
 
     def done(self):

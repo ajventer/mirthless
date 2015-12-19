@@ -204,7 +204,6 @@ class YAMLEditor(FloatDialog, Tempsprites):
             animation='view',
             can_add=True,
             can_remove=True,
-            can_select=False,
             addfrom=itemlist)
         self._addtemp('%s_listmanager' %keyname, c)
         #self.editorlayout()
