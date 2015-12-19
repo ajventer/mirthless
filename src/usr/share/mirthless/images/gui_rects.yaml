@@ -154,6 +154,12 @@ gloves:
     y: 224
     w: 32
     h: 32
+inventory_portrait:
+    x: 128
+    y: 128
+    w: 256
+    h: 256
+
 
 
 
