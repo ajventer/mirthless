@@ -21,6 +21,10 @@ class EzdmObject(object):
         if not self.get_hash():
             self.set_hash()
 
+    @property
+    def animations(self):
+        return self.getsubtree('animations')
+
     def set_hash(self):
         """
         >>> o = EzdmObject({'test': 0})

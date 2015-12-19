@@ -6,10 +6,6 @@ from animatedsprite import AnimatedSprite
 
 
 class Item(EzdmObject):
-    def __init__(self, data):
-        EzdmObject.__init__(self, data)
-        self.animations = self.getsubtree('animations')
-
     def displayname(self):
         name = self.get('/name', '')
         tohit = int(self.get('tohit', 0))

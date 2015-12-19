@@ -3,9 +3,9 @@ from pygame.locals import *
 from item import Item
 from character import Character
 from util import debug, editsnippet,default_text, load_yaml, realkey
-from dialog import FloatDialog
+from dialog import FloatDialog, TileSelector
 from tempsprites import Tempsprites
-from button import render_text, Button, TextInput, Dropdown, checkboxbtn, Label
+from button import render_text, Button, TextInput, Dropdown, checkboxbtn, Label, ButtonArrow, BlitButton
 from animatedsprite import AnimatedSprite
 from messages import messages
 import os
@@ -25,22 +25,12 @@ class YAMLEditor(FloatDialog, Tempsprites):
             self.item = Character({})
         debug (self.item.animations)
         self.conditional_sprites = []
-        self.lastlayer = 20
+        self.currentanimation = None
         self.baselayout()
         self.editorlayout()
 
     def baselayout(self):
-        scale = self.frontend.mapscale
-        self.previewsprite = AnimatedSprite(self.frontend.tilemaps, pygame.Rect(self.rect.x + 12, self.rect.y +12, scale, scale), self.item.animations, 8, 5)
-        self._addtemp('previewsprite', self.previewsprite)
-        self.animation = Dropdown(self.frontend.eventstack, 
-            self.frontend.imagecache, 
-            18,
-            pygame.Rect(self.rect.x + 100, self.rect.y + 12, 200, 30),
-            self.previewsprite.animations.keys(),
-            choice=self.previewsprite.animation,
-            onselect=self.changepreview)
-        self._addtemp('selectanimation', self.animation)
+        self.lastlayer = 18
         self.image.blit(render_text (self.title, size=32, color=(255,0,0)),(self.rect.w/2 - 20,10))
         split = self.frontend.imagecache['seperator']
         split = pygame.transform.smoothscale(split,(self.frontend.screensize.w -20, 10))
@@ -93,6 +83,105 @@ class YAMLEditor(FloatDialog, Tempsprites):
             if row * 33 + self.rect.y + 75 > self.rect.y + self.rect.h -75:
                 row = 0
                 col += 1
+        for key in sorted([i for i in self.conditional_sprites if 'animations' in i]):
+            keyname = realkey(key)
+            value = self.item.get(keyname,[])
+            if not value:
+                value = self.template[key]
+            self.item.put(keyname, value)
+        if self.item.animations:
+            x = col * 450 + self.rect.x + 10
+            y = row * 33 + self.rect.y + 75
+            self.animation_editor(x,y)
+
+    def animation_editor(self, x, y):
+        l = Label('Animations', (x,y))
+        y += l.rect.h
+        self._addtemp('animations_label', l)
+        scale = self.frontend.mapscale
+        self.previewsprite = AnimatedSprite(self.frontend.tilemaps, pygame.Rect(x, y, scale, scale), self.item.animations, 8, 5)
+        if self.currentanimation is None:
+            self.currentanimation = self.previewsprite.animation
+            self.previewsprite.pause = True
+        else:
+            self.previewsprite.setanimation(self.currentanimation)
+            self.previewsprite.pause = self.paused.checked
+
+        debug(self.previewsprite.animations.keys())
+        self._addtemp('previewsprite', self.previewsprite)
+        self.animation = Dropdown(self.frontend.eventstack, 
+            self.frontend.imagecache, 
+            18,
+            pygame.Rect(x + scale + 2, y, 200, 20),
+            self.previewsprite.animations.keys(),
+            choice=self.currentanimation,
+            onselect=self.changeanimation,
+            layer = self.lastlayer)
+        self.lastlayer -= 1
+        self._addtemp('selectanimation', self.animation)
+        self.paused = checkboxbtn('Paused', 
+                    self.togglepause, 
+                    [],
+                    self.frontend.eventstack,
+                    self.frontend.imagecache, 
+                    pos=(x + 150,y+22), fontsize=16,
+                    layer=6, sendself=True)
+        self.paused.checked = self.previewsprite.pause
+        self._addtemp('AnimationPauseButton', self.paused)
+        if self.paused.checked:
+            nextframebtn = ButtonArrow(self.previewsprite.nextframe, 
+                [],
+                self.frontend.eventstack,
+                self.frontend.imagecache,
+                'right',
+                pos=(x + scale,y+22),
+                layer=6)
+            self._addtemp('nextframebtn', nextframebtn)
+            delframebtn = BlitButton(self.delframe, 
+                [],
+                self.frontend.eventstack,
+                self.frontend.imagecache,
+                'minusarrow',
+                pos=(nextframebtn.rect.x + nextframebtn.rect.w,y+22),
+                layer=6)
+            self._addtemp('delete frame button',delframebtn)
+            addframebtn = BlitButton(self.addframe,[],
+                self.frontend.eventstack,
+                self.frontend.imagecache,
+                'plusarrow',
+                pos=(delframebtn.rect.x + delframebtn.rect.w,y+22),
+                layer=6)
+            self._addtemp('add frame button',addframebtn)
+    
+    def togglepause(self,pausbtn, *args):
+        self.previewsprite.pause = pausbtn.checked
+        self.editorlayout()
+
+    def changeanimation(self,animation):
+        self.previewsprite.setanimation(animation)
+        self.currentanimation = animation
+
+    def delframe(self):
+        key = 'animations/%s' % self.currentanimation
+        idx = self.previewsprite.frame
+        debug('Deleted frame %s from  %s' % (idx, key))
+        messages.warning('Deleted frame %s' % (idx))
+        del self.item()[key][idx]
+
+    def addframe(self):
+        self.updateconditionals()
+        self._rmtemp()
+        self.tileselector = TileSelector(self.rect, self.frontend, self.newframe,[])
+        self._addtemp('ye_tileselector', self.tileselector)
+
+    def newframe(self, framepath):
+        self._rmtemp()
+        key = 'animations/%s' % self.currentanimation
+        idx = self.previewsprite.frame
+        animations = self.item.get(key)
+        animations.insert(idx, '%s:0' %framepath)
+        self.item.put(key, animations)
+        self.editorlayout()
 
     def handlekey(self,key, x,y):
         keyname = realkey(key)

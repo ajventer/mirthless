@@ -89,6 +89,16 @@ arrow_right:
     y: 15
     w: 32
     h: 30
+minusarrow:
+    x: 326
+    y: 120
+    w: 32
+    h: 30
+plusarrow:
+    x: 363
+    y: 120
+    w: 32
+    h: 30
 
 
 

@@ -17,10 +17,6 @@ class Character(EzdmObject):
     """
     weapon = 0
 
-    def __init__(self, data):
-        EzdmObject.__init__(self, data)
-        self.animations = self.getsubtree('animations')
-
     def roll_hit_dice(self):
         """
         >>> objdata = load_yaml('characters', 'bardic_rogue.yaml')

@@ -70,30 +70,30 @@ personal/name/first: ''
 personal/name/last: ''
 personal/race: __[human,elf,dwarf,half-elf,halfling,monster,creature,gnome]
 personal/sex: __[male,female]
-animations/portrait:
+__Yanimations/portrait:
  - Mage.png:0:0:0
  - Mage.png:0:2:0
  - Mage.png:0:3:0
  - Mage.png:0:1:0
-animations/stand:
+__Yanimations/stand:
  - Mage.png:3:0:0
-animations/walkleft:
+__Yanimations/walkleft:
  - Mage.png:0:1:0
  - Mage.png:1:1:0
-animations/walkright:
+__Yanimations/walkright:
  - Mage.png:0:2:0
  - Mage.png:3:2:0
-animations/walkaway:
+__Yanimations/walkaway:
  - Mage.png:0:3:0
  - Mage.png:1:3:0
-animations/walktoward:
+__Yanimations/walktoward:
  - Mage.png:0:0:0
  - Mage.png:1:0:0
-animations/cast: 
+__Yanimations/cast: 
  - Mage.png:0:0:0
-animations/attackmelee:
+__Yanimations/attackmelee:
  - Mage.png:0:0:0
-animations/attackmisile:
+__Yanimations/attackmisile:
  - Mage.png:0:0:0
 
 

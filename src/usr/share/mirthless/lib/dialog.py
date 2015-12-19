@@ -8,8 +8,8 @@ from gamemap import GameMap
 import yaml
 
 class Dialog(pygame.sprite.DirtySprite):
-    def __init__(self, rect, imagecache):
-        #TODO - create a container type to add things to dialogs and make them work more cleanly
+    def __init__(self, rect, imagecache, layer=4):
+        self._layer=layer
         super(pygame.sprite.DirtySprite, self).__init__()
         self.pos = (rect.x, rect.y)
         tl = imagecache['frame_topleft']
@@ -57,10 +57,10 @@ class FloatDialog(Dialog, Tempsprites):
         (1920,1200),
         (1360,768)
         ]
-    def __init__(self, rect, frontend):
+    def __init__(self, rect, frontend, layer=5):
         self.frontend = frontend
-        self._layer=5
-        Dialog.__init__(self, rect, self.frontend.imagecache)
+        self._layer=layer
+        Dialog.__init__(self, rect, self.frontend.imagecache, layer=self._layer)
         self.background = self.frontend.screen.subsurface(self.rect).copy()
         Tempsprites.__init__(self)
 
@@ -139,15 +139,15 @@ class SettingsDialog(FloatDialog, Tempsprites):
 
 
 class TileSelector(FloatDialog):
-    def __init__(self, rect, frontend, onselect, onselect_parms):
+    def __init__(self, rect, frontend, onselect, onselect_parms, layer=5):
         self.onselect = onselect
         self.selected = None
         self.frontend = frontend
-        self._layer=5
-        FloatDialog.__init__(self, rect, self.frontend)
+        self._layer=layer
+        FloatDialog.__init__(self, rect, self.frontend, layer=self._layer)
         self.page = self.frontend.tilemaps.lastpage
-        prevbtn = Button('Prev', self.prev, [], self.frontend.eventstack, self.frontend.imagecache, (rect.x+10,rect.y+rect.h-50), layer=6)
-        nextbtn = Button('Next', self.next, [], self.frontend.eventstack, self.frontend.imagecache, (rect.x+rect.w-100,rect.y+rect.h-50), layer=6)
+        prevbtn = Button('Prev', self.prev, [], self.frontend.eventstack, self.frontend.imagecache, (rect.x+10,rect.y+rect.h-50), layer=self._layer +1)
+        nextbtn = Button('Next', self.next, [], self.frontend.eventstack, self.frontend.imagecache, (rect.x+rect.w-100,rect.y+rect.h-50), layer=self._layer +1)
         self.clickhash = self.frontend.eventstack.register_event("button1", self, self.click)
         self._addtemp('ts_prevbtn', prevbtn)
         self._addtemp('ts_nextbtn', nextbtn)

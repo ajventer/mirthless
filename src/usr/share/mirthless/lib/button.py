@@ -93,14 +93,21 @@ class Button(pygame.sprite.DirtySprite):
             self.eventstack.unregister_event(h)
         self.kill()
 
-class ButtonArrow(Button):
-    def __init__(self, onclick, onclick_params, eventstack,imagecache, direction, pos=(0,0), layer=10):
+class BlitButton(Button):
+    def __init__(self, onclick, onclick_params, eventstack,imagecache, imagekey, pos=(0,0), layer=10):
         self._layer = layer
         Button.__init__(self, '', onclick, onclick_params, eventstack, imagecache, pos, layer)
-        self.button_rest = imagecache['arrow_%s' %direction]
+        self.button_rest = imagecache[imagekey]
         self.button_hi = self.button_rest
         self.button_click = self.button_rest
         self.image = self.button_rest
+        self.rect = self.button_rest.get_rect()
+        self.rect.x, self.rect.y = pos
+
+class ButtonArrow(BlitButton):
+    def __init__(self, onclick, onclick_params, eventstack,imagecache, direction, pos=(0,0), layer=10):
+        self._layer = layer
+        BlitButton.__init__(self, onclick, onclick_params, eventstack, imagecache,'arrow_%s' %direction, pos, layer)
 
 class checkboxbtn(Button):
     checked = False
