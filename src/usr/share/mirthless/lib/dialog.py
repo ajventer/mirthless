@@ -165,8 +165,6 @@ class TileSelector(FloatDialog):
         y = 10
         filename = self.pages[self.page]
         self.pagepaths = []
-
-        messages.message('Tilemap '+filename)
         self.image.blit(render_text (filename, size=32, color=(0,0,0)),(self.rect.x+self.rect.w/2, self.rect.y+self.rect.h -50))
         for imagepath in self.frontend.tilemaps.iterall(filename):
             if x >= self.rect.w - 75:

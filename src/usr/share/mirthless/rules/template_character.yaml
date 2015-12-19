@@ -1,28 +1,28 @@
 
-conditional/__1class.parent=rogue/abilities/climb walls: 60
-conditional/__1class.parent=rogue/abilities/detect noise: 15
-conditional/__1class.parent=rogue/abilities/find-remove traps: 5
-conditional/__1class.parent=rogue/abilities/hide in shadows: 5
-conditional/__1class.parent=rogue/abilities/move silently: 10
-conditional/__1class.parent=rogue/abilities/open locks: 10
-conditional/__1class.parent=rogue/abilities/pick pockets: 15
-conditional/__1class.parattributesent=rogue/abilities/read languages: 0
-conditional/__1class.parent=rogue/armor_types: 3
-conditional/__1class.parent=rogue/shields: false
-conditional/__2class.class=bard/shields: true
-conditional/__2class.class=bard/abilities/climb walls: 50
-conditional/__2class.class=bard/abilities/detect noise: 20
-conditional/__2class.class=bard/abilities/pick pockets: 10
-conditional/__2class.class=bard/abilities/read languages: 5
+conditional/class.parent=rogue/abilities/climb walls: 60
+conditional/class.parent=rogue/abilities/detect noise: 15
+conditional/class.parent=rogue/abilities/find-remove traps: 5
+conditional/class.parent=rogue/abilities/hide in shadows: 5
+conditional/class.parent=rogue/abilities/move silently: 10
+conditional/class.parent=rogue/abilities/open locks: 10
+conditional/class.parent=rogue/abilities/pick pockets: 15
+conditional/class.parattributesent=rogue/abilities/read languages: 0
+conditional/class.parent=rogue/armor_types: __[leather]
+conditional/class.parent=rogue/shields: false
+conditional/class.class=bard/shields: true
+conditional/class.class=bard/abilities/climb walls: 50
+conditional/class.class=bard/abilities/detect noise: 20
+conditional/class.class=bard/abilities/pick pockets: 10
+conditional/class.class=bard/abilities/read languages: 5
 conditional/class.class=paladin/abilities/Turn undead (level 3+): 100
 conditional/class.class=paladin/abilities/cure disease(weekly): 100
 conditional/class.class=paladin/abilities/lay on hands (daily): 100
 conditional/class.class=paladin/abilities/sense evil intent(must end turn): 100
 conditional/class.parent=priest/shields: false
-conditional/class.parent=priest/armor_types: 1
-conditional/class.parent=warrior/armor_types: 4
+conditional/class.parent=priest/armor_types: __[cloth]
+conditional/class.parent=warrior/armor_types: __[plate]
 conditional/class.parent=warrior/shields: true
-conditional/class.parent=wizard/armor_types: 1
+conditional/class.parent=wizard/armor_types: __[cloth]
 conditional/class.parent=wizard/shields: false
 events/__Toninspect: ''
 events/__Tontalk: ''
@@ -48,21 +48,45 @@ __Yinventory/money/silver: 0
 __Yinventory/pack: []
 __Yinventory/spells: []
 __Yinventory/spells_memorized: []
-attributes/cha: 0
-attributes/con: 0
-attributes/dex: 0
-attributes/int: 0
-attributes/str: 0
-attributes/wis: 0
-#class/class: __[fighter,bard,ranger,thief,druid,mage,illusionist,cleric,paladin]
 class/parent: __[warrior,wizard,rogue,priest]
 conditional/class.parent=warrior/class.class: __[fighter,ranger,paladin]
 conditional/class.parent=wizard/class.class: __[mage]
 conditional/class.parent=rogue/class.class: __[bard,thief]
 conditional/class.parent=priest/class.class: __[druid,cleric]
-combat/hitpoints: 0
-combat/level-hitdice: 1
-combat/max_hp: 0
+
+conditional/class.parent=warrior/attributes.str: 16
+conditional/class.parent=wizard/attributes.str: 8
+conditional/class.parent=rogue/attributes.str: 12
+conditional/class.parent=priest/attributes.str: 9
+
+conditional/class.parent=warrior/attributes.cha: 9
+conditional/class.parent=wizard/attributes.cha: 11
+conditional/class.parent=rogue/attributes.cha: 16
+conditional/class.parent=priest/attributes.cha: 14
+
+conditional/class.parent=warrior/attributes.con: 15
+conditional/class.parent=wizard/attributes.con: 9
+conditional/class.parent=rogue/attributes.con: 14
+conditional/class.parent=priest/attributes.con: 11
+
+conditional/class.parent=warrior/attributes.dex: 10
+conditional/class.parent=wizard/attributes.dex: 7
+conditional/class.parent=rogue/attributes.dex: 16
+conditional/class.parent=priest/attributes.dex: 9
+
+conditional/class.parent=warrior/attributes.int: 7
+conditional/class.parent=wizard/attributes.int: 16
+conditional/class.parent=rogue/attributes.int: 13
+conditional/class.parent=priest/attributes.int: 15
+
+conditional/class.parent=warrior/attributes.wis: 10
+conditional/class.parent=wizard/attributes.wis: 14
+conditional/class.parent=rogue/attributes.wis: 12
+conditional/class.parent=priest/attributes.wis: 16
+
+__Ycombat/hitpoints: 0
+__Ycombat/level-hitdice: 1
+__Ycombat/max_hp: 0
 lightradius: 0
 personal/alignment/law: __[chaotic,neutral,lawful]
 personal/alignment/social: __[evil,good,neutral]

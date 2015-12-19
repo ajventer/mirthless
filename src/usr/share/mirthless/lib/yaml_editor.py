@@ -1,7 +1,7 @@
 import pygame
 from pygame.locals import *
 from item import Item
-from character import Character
+from npc import NPC
 from util import debug, editsnippet,default_text, load_yaml, realkey
 from dialog import FloatDialog, TileSelector
 from tempsprites import Tempsprites
@@ -22,7 +22,7 @@ class YAMLEditor(FloatDialog, Tempsprites):
         if self.title == 'Item Editor':
             self.item = Item({})
         elif self.title == 'NPC Editor':
-            self.item = Character({})
+            self.item = NPC({},1)
         debug (self.item.animations)
         self.conditional_sprites = []
         self.currentanimation = None
@@ -62,7 +62,7 @@ class YAMLEditor(FloatDialog, Tempsprites):
         list2 = sorted([i for i in self.conditional_sprites if not 'animations' in i])
         allkeys = list1 + list2 + list3
         for key in allkeys:
-            x = col * 450 + self.rect.x + 10
+            x = col * 450 + self.rect.x + 15
             y = row * 33 + self.rect.y + 75
             if key.startswith('events/'):
                 b = Button(realkey(key), 
@@ -90,7 +90,7 @@ class YAMLEditor(FloatDialog, Tempsprites):
                 value = self.template[key]
             self.item.put(keyname, value)
         if self.item.animations:
-            x = col * 450 + self.rect.x + 10
+            x = col * 450 + self.rect.x + 15
             y = row * 33 + self.rect.y + 75
             self.animation_editor(x,y)
 
@@ -212,6 +212,8 @@ class YAMLEditor(FloatDialog, Tempsprites):
                 else:
                     d.checked = items[0].upper() == 'TRUE'
             else:
+                if not value and len(items) == 1:
+                    value = items[0]
                 d = Dropdown(
                     self.frontend.eventstack, 
                     self.frontend.imagecache, 
