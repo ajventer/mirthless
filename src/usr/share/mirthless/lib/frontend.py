@@ -46,6 +46,7 @@ class Frontend(object):
             ("Quit", [sys.exit]),
             ("Inventory", [todo_event]),
             ("Spellbook", [todo_event]),
+            ("Journal", [todo_event]),
             ("Settings", [self.settings]),
             ("About", [todo_event]),
             ]

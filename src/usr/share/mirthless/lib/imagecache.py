@@ -7,10 +7,13 @@ import os
 
 class ImageCache(dict):
     def load(self):
-        global tilemaps
         for image in file_list('images', '*.png'):
             debug('Loading: ',image)
             key = os.path.basename(image)
+            self[key] = pygame.image.load(image).convert_alpha()
+        for image in file_list('portraits', '*.png'):
+            key = 'portrait_%s' % os.path.basename(image)
+            debug ('Loading: ', key)
             self[key] = pygame.image.load(image).convert_alpha()
         gui_map = load_yaml('images', 'gui_rects.yaml')
         for key in gui_map:

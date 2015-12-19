@@ -68,7 +68,7 @@ class Tilemaps(dict):
         keyfilter.append('paper background.png')
         keyfilter.append('landscape.png')
         for key in imagecache:
-            if not key in keyfilter:
+            if not key in keyfilter and not key.startswith('portrait_'):
                 self[key] = Tilemap(key)
         return self
 

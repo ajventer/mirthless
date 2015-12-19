@@ -2,7 +2,7 @@ import pygame
 from pygame.locals import *
 from item import Item
 from npc import NPC
-from util import debug, editsnippet,default_text, load_yaml, realkey, file_list
+from util import debug, editsnippet,default_text, load_yaml, realkey, file_list, make_hash
 from dialog import FloatDialog, TileSelector, ContainerDialog
 from tempsprites import Tempsprites
 from button import render_text, Button, TextInput, Dropdown, checkboxbtn, Label, ButtonArrow, BlitButton
@@ -62,7 +62,7 @@ class YAMLEditor(FloatDialog, Tempsprites):
             value = self.item.get(realkey(key),False)
             if value is False:
                 self.item.put(realkey(key), self.template[key])            
-        list1 = sorted([i for i in self.template if not i.startswith('conditional/') and not i.startswith('events/') and not '__Y' in i and not 'animations' in i])
+        list1 = sorted([i for i in self.template if not i.startswith('conditional/') and not i.startswith('events/') and not '__Y' in i and not 'animations' in i and i != 'personal/portrait'])
         list3 = sorted([i for i in self.template if  i.startswith('events/')])
         list2 = sorted([i for i in self.conditional_sprites if not 'animations' in i])
         allkeys = list1 + list2 + list3
@@ -85,10 +85,10 @@ class YAMLEditor(FloatDialog, Tempsprites):
                 for sprite in sprites:
                     self._addtemp('%s_%s' % (key,sprites.index(sprite)), sprite)
             row += 1
-            if row * 33 + self.rect.y + 75 > self.rect.y + self.rect.h -75:
+            if row * 33 + self.rect.y + 75 + 128 > self.rect.y + self.rect.h -75:
                 row = 0
                 col += 1
-        for key in sorted([i for i in self.conditional_sprites if 'animations' in i])+sorted(i for i in self.template if 'animations' in i and not 'conditional' in i):
+        for key in sorted([i for i in self.conditional_sprites if 'animations' in i])+sorted(i for i in self.template if 'animations' in i and not 'conditional' in i and i != 'personal/portrait'):
             keyname = realkey(key)
             value = self.item.get(keyname,[])
             if not value:
@@ -98,6 +98,9 @@ class YAMLEditor(FloatDialog, Tempsprites):
             x = col * 450 + self.rect.x + 15
             y = row * 33 + self.rect.y + 75
             self.animation_editor(x,y)
+        y = y + 75
+        for sprite in self.handlekey('personal/portrait', x,y):
+            self._addtemp(make_hash(), sprite)
 
     def animation_editor(self, x, y):
         l = Label('Animations', (x,y))
@@ -222,7 +225,19 @@ class YAMLEditor(FloatDialog, Tempsprites):
             value = self.template[key]
             if str(value).startswith('__'):
                 value = ''
-        if isinstance(value, list):
+        if keyname == 'personal/portrait':
+            self.portrait = value
+            d = BlitButton(
+                self.nextportrait, 
+                [],
+                self.frontend.eventstack,
+                self.frontend.imagecache,
+                self.portrait,
+                pos=(irect.x,y),
+                scale=128,
+                layer=7
+                )
+        elif isinstance(value, list):
             d = Button('Manage list', 
                 self.listmanager,
                 [keyname, value],
@@ -266,6 +281,16 @@ class YAMLEditor(FloatDialog, Tempsprites):
             return [l, d]
         else:
             return [d]
+
+    def nextportrait(self):
+        portraitlist = [i for i in self.frontend.imagecache.keys() if i.startswith('portrait_')]
+        idx = portraitlist.index(self.portrait)
+        idx += 1
+        if idx >= len(portraitlist) -1:
+            idx = 0
+        self.portrait = portraitlist[idx]
+        self.item.put('personal/portrait', self.portrait)
+        self.editorlayout()
 
     def updateconditionals(self):
         self.conditional_sprites = []

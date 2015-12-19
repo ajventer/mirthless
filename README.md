@@ -73,6 +73,8 @@ Game art from:
 
 2. http://opengameart.org/content/dawnlike-16x16-universal-rogue-like-tileset-v181
 
+3. Adonthel
+
 The GLYPH text rendering library for pygame is included with the project and used in several parts of the interface.
 http://www.pygame.org/project-Glyph-1002-2794.html
 

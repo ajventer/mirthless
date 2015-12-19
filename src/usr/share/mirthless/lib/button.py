@@ -94,10 +94,12 @@ class Button(pygame.sprite.DirtySprite):
         self.kill()
 
 class BlitButton(Button):
-    def __init__(self, onclick, onclick_params, eventstack,imagecache, imagekey, pos=(0,0), layer=10):
+    def __init__(self, onclick, onclick_params, eventstack,imagecache, imagekey, pos=(0,0), layer=10, scale=0):
         self._layer = layer
         Button.__init__(self, '', onclick, onclick_params, eventstack, imagecache, pos, layer)
-        self.button_rest = imagecache[imagekey]
+        self.button_rest = imagecache[imagekey].copy()
+        if scale:
+            self.button_rest = pygame.transform.smoothscale(self.button_rest, (scale, scale))
         self.button_hi = self.button_rest
         self.button_click = self.button_rest
         self.image = self.button_rest
