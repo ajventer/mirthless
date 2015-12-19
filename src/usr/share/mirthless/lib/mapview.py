@@ -23,7 +23,6 @@ class Mapview(Tempsprites):
         Tempsprites.__init__(self)
         self.firstload = True
 
-
     def tileimage(self, x, y, scale):
         tile = self.gamemap.tile(x,y)
         tileimage = pygame.Surface((16, 16))

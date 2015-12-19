@@ -1,0 +1,25 @@
+animations/strike:
+- ShortWep.png:3:0:0
+animations/view:
+- ShortWep.png:3:0:0
+canpickup: true
+charges: '0'
+description: Point and stab
+hash: 5afd70ce71189bfa98236d191fb14f4439058e2700bc9c9c0d6d009c
+identified: true
+in_use: false
+lightradius: '0'
+max_dmg: '4'
+name: Bronze Dagger
+price/copper: '5'
+price/gold: '0'
+price/silver: '0'
+range: short
+rounds_per_charge: '0'
+rounds_used: 0
+save_against: none
+size: small
+slot: either hand
+type: weapon
+weapon_type: melee
+weight: '1'

@@ -2,7 +2,7 @@ import pygame
 from pygame.locals import *
 from item import Item
 from npc import NPC
-from util import debug, editsnippet,default_text, load_yaml, realkey
+from util import debug, editsnippet,default_text, load_yaml, realkey, file_list
 from dialog import FloatDialog, TileSelector, ContainerDialog
 from tempsprites import Tempsprites
 from button import render_text, Button, TextInput, Dropdown, checkboxbtn, Label, ButtonArrow, BlitButton
@@ -168,7 +168,10 @@ class YAMLEditor(FloatDialog, Tempsprites):
         key = 'animations/%s' % self.currentanimation
         idx = self.previewsprite.frame
         messages.warning('Deleted frame %s' % (idx))
-        del self.item()[key][idx]
+        try:
+            del self.item()[key][idx]
+        except IndexError:
+            debug('Tried to delete from an already empty list.')
 
     def addframe(self):
         self.updateconditionals()
@@ -187,19 +190,22 @@ class YAMLEditor(FloatDialog, Tempsprites):
 
     def listmanager(self,keyname, items):
         self._rmtemp()
-        debug('Adding listmanager for', keyname)
+        itemlist = []
+        for itemfile in file_list('items'):
+            itemfile = os.path.basename(itemfile)
+            itemlist.append(Item(load_yaml('items',itemfile)))
         c = ContainerDialog(self.rect,
             self.frontend,
             keyname,
             7,
-            items=items,
+            items=itemlist,
             onselect=self.updatelist,
             onselect_parms=[keyname],
             animation='view',
             can_add=True,
             can_remove=True,
             can_select=False,
-            addfrom=[])
+            addfrom=itemlist)
         self._addtemp('%s_listmanager' %keyname, c)
         #self.editorlayout()
 

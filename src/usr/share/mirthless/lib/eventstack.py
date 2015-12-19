@@ -17,7 +17,6 @@ class EventStack():
             "wheeldown": {},
             "keydown": {},
         }
-        self.app = None
 
     def register_event(self, event, sprite, method):
         id = make_hash()
@@ -40,8 +39,6 @@ class EventStack():
         return eventlist
 
     def handle_event(self, event):
-        if self.app is not None:
-            self.app.event(event)
         handlers = []
         deleteme =[]
         if event.type == KEYDOWN:

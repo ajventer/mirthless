@@ -6,6 +6,7 @@ from tempsprites import Tempsprites
 from messages import messages
 from gamemap import GameMap
 import yaml
+from animatedsprite import AnimatedSprite
 
 class Dialog(pygame.sprite.DirtySprite):
     def __init__(self, rect, imagecache, layer=4):
@@ -96,6 +97,30 @@ class ContainerDialog(FloatDialog):
                 pos=(self.rect.x + 15,self.rect.y + 35),
                 layer=self._layer +1)
             self._addtemp(make_hash(), addbtn)
+        if not self.can_select:
+            selectbtn = Button('Done', 
+                self.done,
+                [],
+                self.frontend.eventstack,
+                self.frontend.imagecache,
+                pos=(self.rect.x + 150,self.rect.y + 35),
+                layer=self._layer +1)
+        col, row = 0,0
+        size = self.frontend.mapscale + 2
+        for item in self.items:
+            x = col * size + self.rect.x + 15
+            y = row * size + self.rect.y + 75
+            sprite = AnimatedSprite(self.frontend.tilemaps,
+                pygame.Rect(x,y, size, size),
+                item.getsubtree('animations'),
+                layer=self._layer + 1,
+                fps=5)
+            self._addtemp(make_hash(), sprite)
+            col += 1
+            if col * size + 15 > self.rect.x + self.rect.w - 15:
+                col = 0
+                row += 1
+        #TODO - pager for when there are too many to fit in the box
 
     def click(self, pos):
         x,y = pos
@@ -110,14 +135,6 @@ class ContainerDialog(FloatDialog):
                 pos=(self.rect.x + 150,self.rect.y + 35),
                 layer=self._layer +1)
             self._addtemp(make_hash(), selectbtn)
-        else:
-            selectbtn = Button('Done', 
-                self.done,
-                [],
-                self.frontend.eventstack,
-                self.frontend.imagecache,
-                pos=(self.rect.x + 150,self.rect.y + 35),
-                layer=self._layer +1)
             self._addtemp(make_hash(), selectbtn)
         if self.can_remove:
             rmbtn = Button('Remove Item', 
@@ -136,6 +153,24 @@ class ContainerDialog(FloatDialog):
         self.restorebg()
 
     def item(self, action):
+        debug('Item action', action)
+        if action == 'add':
+            debug('Opening add item dialog')
+            c = ContainerDialog(self.rect,
+                self.frontend,
+                'Add item to container',
+                layer=self._layer+1,
+                items=self.addfrom,
+                onselect=self.additem,
+                onselect_parms=[],
+                animation='view',
+                can_add=False,
+                can_remove=False,
+                can_select=True,
+                addfrom=self.addfrom)
+            self._addtemp(make_hash(), c)
+
+    def item(self, itemhash):
         pass
 
     def done(self):
