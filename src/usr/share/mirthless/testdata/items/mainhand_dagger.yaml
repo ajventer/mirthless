@@ -1,33 +1,25 @@
-damage_type: stab
-dmg: 4
-range: ''
-save_against: none
-slot: 'either hand'
-to_hit: 0
-weapon_type: melee
-charges: 0
-current_rounds_performed: 0
-description: A small dagger balanced for use in the main hand.
-icon: icons/dagger.png
-identified: false
+animations/strike:
+- ShortWep.png:3:0:0
+animations/view:
+- ShortWep.png:3:0:0
+canpickup: true
+charges: '0'
+description: Point and stab
+hash: 5afd70ce71189bfa98236d191fb14f4439058e2700bc9c9c0d6d009c
+identified: true
 in_use: false
+lightradius: '0'
+max_dmg: '4'
 name: Dagger
-price/copper: ''
-price/gold: 2
-price/silver: ''
-rounds_per_charge: 0
+price/copper: '5'
+price/gold: '0'
+price/silver: '0'
+range: short
+rounds_per_charge: '0'
+rounds_used: 0
+save_against: none
 size: small
+slot: either hand
 type: weapon
-weight: ''
-events/ondrop:
- - messages.warning('%s has dropped %s' % (player.displayname(), item.displayname()))
-events/onequip:
- - ''
-events/onfinish:
- - ''
-events/onpickup:
- - ''
-events/onround:
- - ''
-events/onuse:
- - ''
+weapon_type: melee
+weight: '1'

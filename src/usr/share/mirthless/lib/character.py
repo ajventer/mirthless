@@ -664,6 +664,13 @@ class Character(EzdmObject):
         [<item.Item object at ...>]
         >>> char.weapons[0].displayname()
         'Fist'
+        >>> dagger = Item(load_yaml('items', 'mainhand_dagger.yaml'))
+        >>> dagger = char.acquire_item(dagger)
+        >>> char.equip_item(dagger)
+        (True, '[ ] has equiped Dagger')
+        >>> char.unequip_item('righthand')
+        >>> char.weapons[0].displayname()
+        'Fist'
         """
         itemdata = self.getsubtree('inventory/equiped/%s' % slot)
         if not itemdata:
@@ -678,6 +685,7 @@ class Character(EzdmObject):
         else:
             slots = [slot]
         for s in slots:
+            debug('Unequipping from ', slot)
             self().deltree('inventory/equiped/%s' %s)
             self.put('inventory/equiped/%s' %s, {})
 

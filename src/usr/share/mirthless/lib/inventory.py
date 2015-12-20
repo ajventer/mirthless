@@ -5,6 +5,7 @@ from dialog import FloatDialog, ContainerDialog
 from util import file_list, debug, load_yaml, make_hash
 from animatedsprite import ButtonSprite
 import os
+from messages import messages
 
 class Inventory(FloatDialog):
     def __init__(self, rect, frontend, char, layer=5, onclose=None):
@@ -59,7 +60,7 @@ class Inventory(FloatDialog):
                 irect,
                 self.frontend.eventstack,
                 onclick=self.unequip_item,
-                onclick_params=[item],
+                onclick_params=[slot],
                 animations=item.getsubtree('animations'),
                 layer=self._layer + 2,
                 fps=5,
@@ -73,11 +74,16 @@ class Inventory(FloatDialog):
         self.onclose()
 
     def equip_item(self, item):
-        self.char.equip_item(item)
+        status = self.char.equip_item(item)
+        if status[0]:
+            messages.message(status[1])
+        else:
+            messages.error(status[1])
         self.layout()
 
-    def unequip_item(self, item, *args):
-        self.char.unequip_item(item)
+    def unequip_item(self, sprite, slot):
+        debug('Unequiping item from ', slot)
+        self.char.unequip_item(slot)
         self.layout()
 
 
