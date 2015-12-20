@@ -14,9 +14,10 @@ exepath = os.path.abspath(__file__)
 gamedir = None
 if exepath == '/usr/games/mirthless':
     settingsfile = '/etc/mirthless/mirthless.cfg'
+    gamedir = '/usr/share/mirthless'
 else:
-    settingsfile = os.path.dirname(exepath)+'/../../etc/mirthless/mirthless.cfg'
-    gamedir =  os.path.abspath(os.path.dirname(exepath)+'/../share/mirthless')
+    settingsfile = os.path.dirname(exepath)+'/etc/mirthless/mirthless.cfg'
+    gamedir =  os.path.abspath(os.path.dirname(exepath)+'/src/')
 
 if os.path.exists('/etc/mirthless/mirthless.cfg'):
     settingsfile = '/etc/mirthless/mirthless.cfg'
@@ -28,6 +29,7 @@ if gamedir is None:
     gamedir = settings['gamedir']
 
 sys.path.append(os.path.join(gamedir,'lib'))
+print sys.path
 import util
 util.gamedir = gamedir
 util.debug('Library path:', '\n\t'.join(sys.path))

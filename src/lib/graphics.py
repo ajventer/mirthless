@@ -121,7 +121,10 @@ def initpygame(settings, caption, settingsfile):
     pygame.display.set_caption(caption)  
     frontend = Frontend(screen,imagecache,eventstack, tilemaps, mode=mode, settingsfile=settingsfile)
     messages = Messages(screen, eventstack)
-    messages.error('Welcome to Mirthless')    
+    messages.error('Welcome to Mirthless')
+    if not '--editor' in sys.argv:
+        messages.error('Game mode is barely started. The editor is much further along. Try starting the game with --editor')
+        messages.message(':)')
     tilemaps.initialize()
 
     return screen, frontend.screenlayout(), frontend

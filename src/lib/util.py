@@ -68,13 +68,9 @@ def imagepath(s):
     return (parts[0], int(parts[1]), int(parts[2]), rot)
 
 def forcegamedir():
-    """
-    >>> forcegamedir().endswith('mirthless')
-    True
-    """
     global gamedir
     if gamedir == 'TESTDATA':
-        gamedir = os.path.abspath(__file__) + '/../../'
+        gamedir = os.path.dirname(os.path.abspath(__file__)) + '/..'
         gamedir = os.path.abspath(gamedir)
         return gamedir
     else:

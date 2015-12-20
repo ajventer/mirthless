@@ -33,6 +33,9 @@ To run the unit tests use:
 
 `make test`
 
+To run the editor:
+`mirthless --editor`
+
 Credits:
 Game art from: 
 
