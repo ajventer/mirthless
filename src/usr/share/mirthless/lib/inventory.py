@@ -64,6 +64,8 @@ class Inventory(FloatDialog):
                 animations=item.getsubtree('animations'),
                 layer=self._layer + 2,
                 fps=5,
+                mouseover=item.displayname(),
+                frontend=self.frontend,
                 sendself=True
                 )
             sprite.setanimation('view')

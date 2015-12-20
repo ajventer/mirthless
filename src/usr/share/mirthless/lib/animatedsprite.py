@@ -62,7 +62,6 @@ class AnimatedSprite(pygame.sprite.DirtySprite):
         self.kill()
 
 
-
 class ButtonSprite(AnimatedSprite):
     def __init__(self, tilemaps, rect, eventstack, onclick=None, onclick_params=[], animations={}, layer=2, fps=60,sendself=False, mouseover='', frontend=None):
         self._layer = layer
