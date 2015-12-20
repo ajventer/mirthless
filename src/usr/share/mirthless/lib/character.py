@@ -678,7 +678,8 @@ class Character(EzdmObject):
         item = Item(itemdata)
         currentslot = item.slot()
         pack = self.get('inventory/pack',[])
-        pack.append(item())
+        if item.displayname() != 'Fist':
+            pack.append(item())
         self.put('inventory/pack', pack)
         if currentslot.strip() == 'twohand':
             slots = ['lefthand','righthand']
