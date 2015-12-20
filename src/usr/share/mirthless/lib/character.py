@@ -823,8 +823,8 @@ class Character(EzdmObject):
         """
         equipedweapons = self.equiped_by_type('weapon')
         if not equipedweapons:
-            debug('No weapons equipped - equipping fist')
-            fist = Item(load_yaml('items', 'fist.yaml'))
+            messages.warning('No weapons equipped - equipping fist')
+            fist = Item(load_yaml('items', 'ff7b801f5dfa6ad84870ca1ce2d43c74685d9ddbfcdc488e2ad66caa.yaml'))
             fist = self.acquire_item(fist)
             self.equip_item(fist)
             equipedweapons = self.equiped_by_type('weapon')

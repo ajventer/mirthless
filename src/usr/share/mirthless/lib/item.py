@@ -54,13 +54,16 @@ class Item(EzdmObject):
 
     def onpickup(self, player):
         event(self, "/events/onpickup", {'item': self, 'player': player, 'messages': messages})
-        player.autosave()
+
 
     def onequip(self, player):
         event(self, "/events/onequip", {'item': self, 'player': player, 'messages': messages})
 
     def onunequip(self, player):
         event(self, "/events/onunequip", {'item': self, 'player': player, 'messages': messages})
+
+    def onattack(self, player, target):
+        event(self, "events/onattack", {'item': self, 'player': player, 'target': target, 'messages': messages})
 
     def onstrike(self, player, target):
         event(self, "events/onstrike", {'item': self, 'player': player, 'target': target, 'messages': messages})

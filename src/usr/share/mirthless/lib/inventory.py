@@ -84,6 +84,7 @@ class Inventory(FloatDialog):
     def unequip_item(self, sprite, slot):
         debug('Unequiping item from ', slot)
         self.char.unequip_item(slot)
+        self.char.weapons
         self.layout()
 
 

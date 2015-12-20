@@ -48,8 +48,13 @@ class YAMLEditor(FloatDialog, Tempsprites):
 
     def make_event(self, sender, key):
         self.update_yaml()
-        data = self.item.get(key, default_text)
-        data.insert(0,'#%s' % key)
+        if key.startswith('event'):
+            default = default_text
+        else:
+            default = ['']
+        data = self.item.get(key, default)
+        if data[0] != key:
+            data.insert(0,'#%s' % key)
         data = editsnippet('\n'.join(data))
         self.item.put(key,data.split('\n'))
         self.update_yaml()
@@ -86,7 +91,7 @@ class YAMLEditor(FloatDialog, Tempsprites):
                 self._addtemp('%s_button' % key, b)
                 row += 1
                 continue
-            if key.startswith('events/'):
+            if key.startswith('events/') or key.startswith('__T'):
                 b = Button(realkey(key), 
                     self.make_event, 
                     [realkey(key)],
@@ -260,7 +265,10 @@ class YAMLEditor(FloatDialog, Tempsprites):
         irect = pygame.Rect(x + lsize, y, 250, 20)
         value = self.item.get(keyname,'')
         if not value:
-            value = self.template[key]
+            if key in self.template:
+                value = self.template[key]
+            else:
+                return ()
             if str(value).startswith('__'):
                 value = ''
         if keyname == 'personal/portrait':
@@ -369,7 +377,31 @@ class YAMLEditor(FloatDialog, Tempsprites):
             messages.error('Saved to %s' % os.path.basename(filename))
 
     def load(self):
-        pass
+        self._rmtemp()
+        itemlist = []
+        for itemfile in file_list(self.dirname):
+            itemfile = os.path.basename(itemfile)
+            if self.dirname == 'items':
+                itemlist.append(Item(load_yaml(self.dirname,itemfile)))
+            else:
+                itemlist.append(NPC(load_yaml(self.dirname,itemfile)))
+        c = ContainerDialog(self.rect,
+            self.frontend,
+            'Load %s' %self.dirname,
+            7,
+            items=itemlist,
+            onselect=self.loaditem,
+            onselect_parms=[],
+            animation='view',
+            can_add=False,
+            can_remove=False
+            )
+        self._addtemp(make_hash(), c)
+
+    def loaditem(self, item):
+        debug('Loading item', item.displayname())
+        self.item = item
+        self.editorlayout()
 
     def delete(self):
         self._rmtemp()

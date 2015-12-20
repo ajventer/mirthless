@@ -75,6 +75,8 @@ Game art from:
 
 3. Adonthel
 
+4. Fist icon from: https://openclipart.org/detail/19831/chibi-fist
+
 The GLYPH text rendering library for pygame is included with the project and used in several parts of the interface.
 http://www.pygame.org/project-Glyph-1002-2794.html
 

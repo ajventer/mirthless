@@ -105,6 +105,7 @@ def attack(player, target, attack_modifiers, custom_tohit, custom_dmg):
             frontend.campaign.message('Applying modifier %s: %s' % (mod, attack_mods[mod]))
         debug("Attack number", attack_number, "Out of", num_attacks, "Target alive", target_alive)
         weapon = player.current_weapon()
+        weapon.onattack(player, target)
         frontend.campaign.message('Attacking with weapon %s' % weapon.displayname())
         range_modifier = range_mod(player, target, weapon)
         if range_modifier:
@@ -128,7 +129,7 @@ def attack(player, target, attack_modifiers, custom_tohit, custom_dmg):
             if target.is_casting:
                 target.interrupt_cast()
                 frontend.campaign.message('%s was casting but it was interrupted by a successfull hit' % target.displayname)
-            player.current_weapon().onstrike(player, target)
+            weapon.onstrike(player, target)
             damage_result = calc_damage(player, target, custom_dmg)
             target_alive = damage_result is True
             for char in [player, target]:

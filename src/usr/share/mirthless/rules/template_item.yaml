@@ -28,7 +28,7 @@ conditional/type=container/animations/closed: []
 conditional/type=container/animations/open: []
 conditional/type=door/animations/open: []
 conditional/type=door/animations/closed: []
-description: ''
+__Tdescription: ''
 canpickup: __[false,true]
 __Yrounds_used: 0
 __Yin_use: false
@@ -51,3 +51,4 @@ events/__Tonround: ''
 events/__Tonunequip: ''
 events/__Tonuse: ''
 events/__Tonstrike: ''
+events/__Tonattack: ''
