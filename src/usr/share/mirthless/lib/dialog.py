@@ -80,6 +80,7 @@ class ContainerDialog(FloatDialog):
         self.onclose_parms = onclose_parms
         self.onselect_parms = onselect_parms
         self.selected = None
+        debug(self.items)
         self.layout()
 
     def layout(self):
@@ -167,7 +168,7 @@ class ContainerDialog(FloatDialog):
             self._addtemp(make_hash(), self.c)
         elif action == 'close':
             self.delete() 
-            self.onclose([i.set_hash() for i in items], *self.onclose_parms)
+            self.onclose(self.items, *self.onclose_parms)
         elif action == 'remove':
             if self.selected in self.items:
                 del self.items[self.items.index(self.selected)]

@@ -102,58 +102,58 @@ plusarrow:
 neck:
     x: 32
     y: 32
-    w: 32
-    h: 32
+    w: 64
+    h: 64
 head:
     x: 224
     y: 32
-    w: 32
-    h: 32
+    w: 64
+    h: 64
 chest:
     x: 416
     y: 32
-    w: 32
-    h: 32
+    w: 64
+    h: 64
 leftfinger:
     x: 32
     y: 203
-    w: 32
-    h: 32
+    w: 64
+    h: 64
 rightfinger:
     x: 416
     y: 203
-    w: 32
-    h: 32
+    w: 64
+    h: 64
 lefthand:
     x: 32
     y: 300
-    w: 32
-    h: 32
+    w: 64
+    h: 64
 righthand:
-    x: 448
+    x: 416
     y: 300
-    w: 32
-    h: 32
+    w: 64
+    h: 64
 wrists:
     x: 32
     y: 416
-    w: 32
-    h: 32
+    w: 64
+    h: 64
 legs:
     x: 123
     y: 416
-    w: 32
-    h: 32
+    w: 64
+    h: 64
 feet:
     x: 224
     y: 416
-    w: 32
-    h: 32
+    w: 64
+    h: 64
 gloves:
     x: 416
     y: 224
-    w: 32
-    h: 32
+    w: 64
+    h: 64
 inventory_portrait:
     x: 128
     y: 128

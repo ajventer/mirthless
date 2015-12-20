@@ -229,6 +229,7 @@ class YAMLEditor(FloatDialog, Tempsprites):
 
     def showinventory(self, *args):
         #rect, frontend, char, layer=5
+        self.update_yaml()
         self._rmtemp()
         inventory = Inventory(
             self.rect, 
@@ -240,8 +241,15 @@ class YAMLEditor(FloatDialog, Tempsprites):
         self._addtemp('editor_inventory', inventory)
 
     def updatelist(self, items, keyname):
-        items = [i() for i in items]
-        self.item.put(keyname, items)
+        if keyname == 'inventory/pack':
+            pack = self.item.get(keyname,[])
+            for I  in pack:
+                self.item.drop_item(Item(I))
+            for I in items:
+                self.item.acquire_item(I)
+        else:
+            items = [i() for i in items]
+            self.item.put(keyname, items)
         self.editorlayout()
 
     def handlekey(self,key, x,y):
@@ -256,6 +264,7 @@ class YAMLEditor(FloatDialog, Tempsprites):
             if str(value).startswith('__'):
                 value = ''
         if keyname == 'personal/portrait':
+            self.item.put('personal/portrait', value)
             self.portrait = value
             d = BlitButton(
                 self.nextportrait, 
@@ -352,7 +361,6 @@ class YAMLEditor(FloatDialog, Tempsprites):
                     self.item.put(k, v)
             except:
                 continue
-        debug(self.item())
 
     def save(self):
         self.update_yaml()

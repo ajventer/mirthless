@@ -38,12 +38,10 @@ class AnimatedSprite(pygame.sprite.DirtySprite):
             return 'NoFrameSpecified'
 
     def nextframe(self):
-        debug('Nextframe called. Animation:', self.animation)
         if self.frame < len(self.animations[self.animation]) -1:
             self.frame += 1
         else:
             self.frame = 0
-        debug ('Frame now ', self.frame)
 
     def currentimage(self):
         imgpath = self.currentframe()

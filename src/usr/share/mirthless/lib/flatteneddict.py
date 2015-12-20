@@ -44,10 +44,7 @@ class FlattenedDict(dict):
         return result
 
     def __str__(self):
-        out = {}
-        for k in self:
-            out[k] = self[k]
-        return yaml.safe_dump(out, default_flow_style=False, encoding='utf-8')
+        return yaml.safe_dump(dict(self), default_flow_style=False, encoding='utf-8')
 
     # def __getitem__(self, key ):      
     #     return self.getvalue(key)

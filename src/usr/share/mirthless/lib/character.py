@@ -129,7 +129,6 @@ class Character(EzdmObject):
             if level not in result:
                 result[level] = []
             result[level].append(idx)
-        debug(result)
         return result
 
     def moveto(self, mapname, x, y, page=None):
@@ -142,12 +141,10 @@ class Character(EzdmObject):
             except:
                 return
         current = self.location()
-        debug(current)
         ctype = self.character_type == 'player' and 'players' or 'npcs'
         if current.get('map') and x and y:
             gamemap = GameMap(load_yaml('maps', current['map']))
             gamemap.removefromtile(current['x'], current['y'], self.name(), ctype)
-            debug("Saving", gamemap.save())
         self.put('location/x', x)
         self.put('location/y', y)
         self.put('location/map', mapname)
@@ -160,21 +157,37 @@ class Character(EzdmObject):
             gamemap.load_tile_from_objdata(x, y, tile())
         if self.character_type == 'player':
             gamemap.reveal(x, y, self.lightradius)
-        debug("Saving", gamemap.save())
 
     def inventory_generator(self, sections=['pack', 'equiped', 'spells']):
+        """
+        >>> c = Character({})
+        >>> mhand = Item(load_yaml('items', 'mainhand_dagger.yaml'))
+        >>> mhand = c.acquire_item(mhand)
+        >>> len(list(c.inventory_generator(['pack'])))
+        1
+        >>> c.equip_item(mhand)
+        (True, '[ ] has equiped Dagger')
+        >>> len(list(c.inventory_generator(['pack'])))
+        0
+        >>> len(list(c.inventory_generator(['equiped'])))
+        1
+        >>> for item in c.inventory_generator(['equiped']): item[1].displayname()
+        'Dagger'
+        """
         for section in sections:
-            items = self.get('inventory/%s' % section, [])
-            idx = -1
-            if isinstance(items, list):
+            if section in ['pack', 'spells']:
+                items = self.get('inventory/%s' % section, [])
+                idx = -1
                 for item in items:
                     idx += 1
                     yield (section, Item(item), idx)
             else:
-                items = self.getsubtree('inventory/%s' % section)
-                for slots in FlattenedDict(items).subkeys():
-                    itemdata =  self.get('inventory/equiped/%s' %slot)
-                    yield(section, Item(item),slot)
+                item = self.getsubtree('inventory/%s' % section)
+                for slot in FlattenedDict(item).subkeys():
+                    debug('Getting inventory from ', slot)
+                    itemdata =  self.getsubtree('inventory/equiped/%s' %slot)
+                    if itemdata:
+                        yield(section, Item(itemdata),slot)
 
     @property
     def is_casting(self):
@@ -200,9 +213,7 @@ class Character(EzdmObject):
 
     def xp_worth(self):
         xpkey = self.get('combat/level-hitdice', 1)
-        debug(xpkey)
         xpvalues = load_yaml('adnd2e', 'creature_xp.objdata')
-        debug(xpvalues)
         if str(xpkey) in list(xpvalues.keys()):
             xp = xpvalues[str(xpkey)]
         elif int(xpkey) > 12:
@@ -654,19 +665,19 @@ class Character(EzdmObject):
         >>> char.weapons[0].displayname()
         'Fist'
         """
-        item = Item(self.getsubtree('inventory/equiped/%s' % slot))
+        itemdata = self.getsubtree('inventory/equiped/%s' % slot)
+        if not itemdata:
+            return
+        item = Item(itemdata)
         currentslot = item.slot()
         pack = self.get('inventory/pack',[])
         pack.append(item())
         self.put('inventory/pack', pack)
-        debug ('Unequipping from ', slot)
         if currentslot.strip() == 'twohand':
             slots = ['lefthand','righthand']
         else:
             slots = [slot]
-        debug ('Slots = ', slots)
         for s in slots:
-            debug(s)
             self().deltree('inventory/equiped/%s' %s)
             self.put('inventory/equiped/%s' %s, {})
 
