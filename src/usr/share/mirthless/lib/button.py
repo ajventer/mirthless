@@ -32,6 +32,17 @@ class Label(pygame.sprite.DirtySprite):
     def delete(self):
         self.kill()
 
+class MouseOver(Label):
+    def __init__(self, text, pos, layer=6):
+        self.__layer = layer
+        text = '   '+text
+        Label.__init__(self, text, pos, layer)
+        img = pygame.Surface((self.rect.w, self.rect.h))
+        img.fill((209,212,144))
+        img.blit(self.image,(0,0))
+        self.image = img
+
+
 class Button(pygame.sprite.DirtySprite):
     def __init__(self, label, onclick, onclick_params, eventstack,imagecache, pos=(0,0), layer=2, name='', sendself=False, fontsize=16):
         self._layer = layer

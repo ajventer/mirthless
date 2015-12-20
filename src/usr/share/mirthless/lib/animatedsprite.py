@@ -1,7 +1,8 @@
 import pygame
 from pygame.locals import *
 from messages import messages
-from util import debug
+from util import debug, make_hash
+from button import MouseOver
 
 class AnimatedSprite(pygame.sprite.DirtySprite):
     animations = {
@@ -63,7 +64,7 @@ class AnimatedSprite(pygame.sprite.DirtySprite):
 
 
 class ButtonSprite(AnimatedSprite):
-    def __init__(self, tilemaps, rect, eventstack, onclick=None, onclick_params=[], animations={}, layer=2, fps=60,sendself=False):
+    def __init__(self, tilemaps, rect, eventstack, onclick=None, onclick_params=[], animations={}, layer=2, fps=60,sendself=False, mouseover='', frontend=None):
         self._layer = layer
         AnimatedSprite.__init__(self, tilemaps, rect, animations, layer, fps)
         self.registered_events = []
@@ -72,6 +73,11 @@ class ButtonSprite(AnimatedSprite):
         self.onclick_params = onclick_params
         self.sendself = sendself
         self.registered_events.append(self.eventstack.register_event("button1", self, self.click))
+        self.mouseover_text = mouseover
+        if mouseover:
+            self.mo_hash = make_hash()
+            self.frontend = frontend
+            self.registered_events.append(self.eventstack.register_event("mouseover", self, self.mouseover))
 
     def click(self, pos):
          if self.onclick is not None:
@@ -80,7 +86,19 @@ class ButtonSprite(AnimatedSprite):
             else:
                 self.onclick(self, *self.onclick_params)
 
+    def mouseover(self, pos):
+        self.m = MouseOver(self.mouseover_text, pos, layer=self._layer +1)
+        self.frontend.sprites[self.mo_hash] = self.m
+        self.eventstack.register_event("mouseout", self, self.mouseout)
+
+    def mouseout(self, pos):
+        self.m.delete()
+        if self.mo_hash in self.frontend.sprites:
+            del self.frontend.sprites[self.mo_hash]
+
     def delete(self):
         for h in self.registered_events:
             self.eventstack.unregister_event(h)
+        if self.mouseover_text and self.mo_hash in self.frontend.sprites:
+            del self.frontend.sprites[self.mo_hash]
         self.kill()

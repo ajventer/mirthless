@@ -130,7 +130,9 @@ class ContainerDialog(FloatDialog):
                 animations=item.getsubtree('animations'),
                 layer=self._layer + 1,
                 fps=5,
-                sendself=False)
+                sendself=False,
+                mouseover=item.displayname(),
+                frontend=self.frontend)
             self._addtemp(make_hash(), sprite)
             col += 1
             if col * size + 15 > self.rect.x + self.rect.w - 15:
