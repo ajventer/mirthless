@@ -10,6 +10,7 @@ from animatedsprite import AnimatedSprite
 from messages import messages
 import os
 from flatteneddict import FlattenedDict
+from inventory import Inventory
 
 class YAMLEditor(FloatDialog, Tempsprites):
     def __init__(self, frontend, template, title):
@@ -65,10 +66,26 @@ class YAMLEditor(FloatDialog, Tempsprites):
         list1 = sorted([i for i in self.template if not i.startswith('conditional/') and not i.startswith('events/') and not '__Y' in i and not 'animations' in i and i != 'personal/portrait'])
         list3 = sorted([i for i in self.template if  i.startswith('events/')])
         list2 = sorted([i for i in self.conditional_sprites if not 'animations' in i])
-        allkeys = list1 + list2 + list3
+        if [i for i in self.template if 'equiped' in i]:
+            list4=['inventory']
+        else:
+            list4 = []
+        allkeys = list1 + list2 + list3 + list4
         for key in allkeys:
             x = col * 450 + self.rect.x + 15
-            y = row * 33 + self.rect.y + 75
+            y = row * 35 + self.rect.y + 75
+            if key == 'inventory':
+                b = Button('Iventory', 
+                    self.showinventory, 
+                    [],
+                    self.frontend.eventstack,
+                    self.frontend.imagecache,
+                    pos=(x ,y),
+                    layer=6,
+                    fontsize=14)
+                self._addtemp('%s_button' % key, b)
+                row += 1
+                continue
             if key.startswith('events/'):
                 b = Button(realkey(key), 
                     self.make_event, 
@@ -85,7 +102,7 @@ class YAMLEditor(FloatDialog, Tempsprites):
                 for sprite in sprites:
                     self._addtemp('%s_%s' % (key,sprites.index(sprite)), sprite)
             row += 1
-            if row * 33 + self.rect.y + 75 + 128 > self.rect.y + self.rect.h -75:
+            if row * 35 + self.rect.y + 75 + 128> self.rect.y + self.rect.h -75:
                 row = 0
                 col += 1
         for key in sorted([i for i in self.conditional_sprites if 'animations' in i])+sorted(i for i in self.template if 'animations' in i and not 'conditional' in i and i != 'personal/portrait'):
@@ -96,7 +113,7 @@ class YAMLEditor(FloatDialog, Tempsprites):
             self.item.put(keyname, value)
         if self.item.animations:
             x = col * 450 + self.rect.x + 15
-            y = row * 33 + self.rect.y + 75
+            y = row * 35 + self.rect.y + 75
             self.animation_editor(x,y)
         y = y + 75
         for sprite in self.handlekey('personal/portrait', x,y):
@@ -201,7 +218,7 @@ class YAMLEditor(FloatDialog, Tempsprites):
             self.frontend,
             keyname,
             7,
-            items=items,
+            items=[Item(i) for i in items],
             onclose=self.updatelist,
             onclose_parms=[keyname],
             animation='view',
@@ -210,7 +227,20 @@ class YAMLEditor(FloatDialog, Tempsprites):
             addfrom=itemlist)
         self._addtemp('%s_listmanager' %keyname, c)
 
+    def showinventory(self, *args):
+        #rect, frontend, char, layer=5
+        self._rmtemp()
+        inventory = Inventory(
+            self.rect, 
+            self.frontend,
+            self.item,
+            7,
+            self.editorlayout
+            )
+        self._addtemp('editor_inventory', inventory)
+
     def updatelist(self, items, keyname):
+        items = [i() for i in items]
         self.item.put(keyname, items)
         self.editorlayout()
 

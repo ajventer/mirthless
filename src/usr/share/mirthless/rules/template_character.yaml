@@ -42,9 +42,9 @@ __Yinventory/equiped/neck: {}
 __Yinventory/equiped/rightfinger: {}
 __Yinventory/equiped/righthand: {}
 __Yinventory/equiped/wrists: {}
-__Yinventory/money/copper: 0
-__Yinventory/money/gold: 0
-__Yinventory/money/silver: 0
+inventory/money/copper: 0
+inventory/money/gold: 0
+inventory/money/silver: 0
 inventory/pack: []
 inventory/spells: []
 inventory/spells_memorized: []

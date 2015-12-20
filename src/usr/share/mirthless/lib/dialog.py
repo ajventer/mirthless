@@ -48,22 +48,17 @@ class Dialog(pygame.sprite.DirtySprite):
 
 
 class FloatDialog(Dialog, Tempsprites):
-    resolutions=[
-        (1024,768),
-        (1280,768),
-        (1280,800),
-        (1280,1024),
-        (1400,1050),
-        (1920,1080),
-        (1920,1200),
-        (1360,768)
-        ]
     def __init__(self, rect, frontend, layer=5):
         self.frontend = frontend
         self._layer=layer
         Dialog.__init__(self, rect, self.frontend.imagecache, layer=self._layer)
         self.background = self.frontend.screen.subsurface(self.rect).copy()
         Tempsprites.__init__(self)
+
+    def delete(self, *args):
+        self._rmtemp()
+        self.kill()
+        self.restorebg()
 
     def restorebg(self):
         self.frontend.screen.blit(self.background, self.rect)
@@ -146,11 +141,6 @@ class ContainerDialog(FloatDialog):
         self._rmtemp()
         self.layout()
 
-    def delete(self):
-        self._rmtemp()
-        self.kill()
-        self.restorebg()
-
     def select(self, item):
         self.selected = item
         self.layout()
@@ -176,8 +166,8 @@ class ContainerDialog(FloatDialog):
                 addfrom=[])
             self._addtemp(make_hash(), self.c)
         elif action == 'close':
-            self.delete()
-            self.onclose(self.items, *self.onclose_parms)
+            self.delete() 
+            self.onclose([i.set_hash() for i in items], *self.onclose_parms)
         elif action == 'remove':
             if self.selected in self.items:
                 del self.items[self.items.index(self.selected)]
@@ -197,6 +187,16 @@ class ContainerDialog(FloatDialog):
 
 
 class SettingsDialog(FloatDialog, Tempsprites):
+    resolutions=[
+        (1024,768),
+        (1280,768),
+        (1280,800),
+        (1280,1024),
+        (1400,1050),
+        (1920,1080),
+        (1920,1200),
+        (1360,768)
+        ]
     def __init__(self, rect, frontend, title, layer=19):
         self._layer = layer
         FloatDialog.__init__(self, rect, frontend, layer=layer)

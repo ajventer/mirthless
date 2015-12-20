@@ -10,3 +10,8 @@ class NPC(Character):
             maxhp = rolldice(numdice=level, numsides=8, modifier=0)
             self.put('combat/hitpoints', maxhp)
             self.put('combat/maxhp', maxhp)
+
+    @property
+    def character_type(self):
+        return 'npc'
+    

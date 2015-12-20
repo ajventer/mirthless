@@ -36,7 +36,7 @@ class Character(EzdmObject):
     # def handle_death(self):
     #     loc = self.location()
     #     debug("Dead character was at %s" % loc)
-    #     chartype = self.character_type()
+    #     chartype = self.character_type
     #     if chartype == 'player':
     #         chartype = 'players'
     #         todel = self.name()
@@ -143,7 +143,7 @@ class Character(EzdmObject):
                 return
         current = self.location()
         debug(current)
-        ctype = self.character_type() == 'player' and 'players' or 'npcs'
+        ctype = self.character_type == 'player' and 'players' or 'npcs'
         if current.get('map') and x and y:
             gamemap = GameMap(load_yaml('maps', current['map']))
             gamemap.removefromtile(current['x'], current['y'], self.name(), ctype)
@@ -158,7 +158,7 @@ class Character(EzdmObject):
             tile = gamemap.tile(x, y)
             tile.onenter(self, page)
             gamemap.load_tile_from_objdata(x, y, tile())
-        if self.character_type() == 'player':
+        if self.character_type == 'player':
             gamemap.reveal(x, y, self.lightradius)
         debug("Saving", gamemap.save())
 
@@ -190,16 +190,10 @@ class Character(EzdmObject):
         #TODO - rewrite
         pass
 
+    @property
     def character_type(self):
-        """
-        >>> char = Character(load_yaml('characters', 'bardic_rogue.yaml'))
-        >>> char.character_type()
-        'player'
-        >>> char = Character(load_yaml('characters', 'random_monster.yaml'))
-        >>> char.character_type()
-        'npc'
-        """
-        return self.get('type', 'player')
+        #Override in subclasses
+        return 'npc'
 
     def oninteract(self, target, page):
         event(self, 'events/oninteract', {'character': self, 'page': page, 'target': target})
@@ -290,7 +284,7 @@ class Character(EzdmObject):
         pass
 
     def autosave(self):
-        if self.character_type() == 'player':
+        if self.character_type == 'player':
             return self.save()
         else:
             return self.save_to_tile()
@@ -570,78 +564,49 @@ class Character(EzdmObject):
         >>> char = Character({})
         >>> item = Item(load_yaml('items', 'health_potion.yaml'))
         >>> char.acquire_item(item)
+        <item.Item object at ...>
         >>> Item(char()['inventory/pack'][0]).displayname() == 'Health Potion'
         True
         """
-        if self.character_type() == 'player':
+        if self.character_type == 'player':
             item.onpickup(self)
+        item.set_hash()
         li = self.objdata.get('inventory/pack',[])
         li.insert(0, item())
         self.put('inventory/pack',li)
+        return item
 
 
-    def equip_item(self, itemname):
+    def equip_item(self, item):
         """
         >>> char = Character({})
         >>> mhand = Item(load_yaml('items', 'mainhand_dagger.yaml'))
-        >>> ohand = mhand
         >>> twohand = Item(load_yaml('items', 'halberd.yaml'))
-        >>> char.acquire_item(twohand)
-        >>> char.equip_item(0)
+        >>> twohand = char.acquire_item(twohand)
+        >>> mhand = char.acquire_item(mhand)
+        >>> char.equip_item(twohand)
         (True, '[ ] has equiped Halberd')
-        >>> char.weapons
-        [<item.Item object at ...>]
-        >>> char.weapons[0].displayname()
-        'Halberd'
-        >>> len(char.weapons)
-        1
-        >>> char.acquire_item(mhand)
-        >>> char.equip_item(0)
+        >>> char.equip_item(mhand)
         (True, '[ ] has equiped Dagger')
         >>> char.weapons
         [<item.Item object at ...>]
-        >>> char.weapons[0].displayname() == 'Dagger'
-        True
-        >>> char.acquire_item(ohand)
-        >>> char.equip_item(0)
-        (True, '[ ] has equiped Dagger')
-        >>> char.weapons
-        [<item.Item object at ...>, <item.Item object at ...>]
-        >>> len(char.weapons)
-        2
-        >>> char.acquire_item(twohand)
-        >>> char.equip_item(0)
-        (True, '[ ] has equiped Halberd')
         >>> char.weapons[0].displayname()
-        'Halberd'
-        >>> len(char.weapons)
-        1
+        'Dagger'
+        >>> mhand = char.acquire_item(mhand)
+        >>> char.equip_item(mhand)
+        (True, '[ ] has equiped Dagger')
+        >>> [i.displayname() for i in char.weapons]
+        ['Dagger', 'Dagger']
         """
         slots = []
         canwear = self.get('armor_types', 0)
         armor_types = load_yaml('rules', 'armor_types.yaml')
         shields = self.get('shields', False)
 
-        if isinstance(itemname, int):
-            try:
-                item = Item(self.get('inventory/pack', [])[itemname])
-            except IndexError:
-                raise IndexError('%s - %s' % (itemname, self.get('inventory/pack')))
-        elif isinstance(itemname, str):
-            for item in [Item(i) for i in self.get('inventory/pack', [])]:
-                debug (itemname, item.displayname())
-                if item.displayname() == itemname:
-                    break
-        elif isinstance(itemname, Item):
-            for item in [Item(i) for i in self.get('inventory/pack', [])]:
-                debug (itemname.displayname(), item.displayname())
-                if item.displayname() == itemname.displayname():
-                    break
-
-        if item:
+        if item() in self.get('inventory/pack',[]):
             if not item.identified():
                 item.identify()
-            if self.character_type() == 'player':
+            if self.character_type == 'player':
                 item.onequip(self)           
             if item.armortype() == 'shield' and not shields:
                 return (False, "%s cannot wear %s shields like %s" % (self.displayname(), item.armortype(), item.displayname()))
@@ -659,51 +624,52 @@ class Character(EzdmObject):
                 if not slots:
                     slots = ['leftfinger']
             elif item.slot() == 'either hand':
-                #Check if there is a hand with nothing in it
-                chosen_slot = None
-                for s in ['lefthand', 'righthand']:
-                    t = self.getsubtree('inventory/equiped/%s' %s)
-                    if not t:
-                        chosen_slot = s
-                #Both hands equipped, equip in righthand
-                if not chosen_slot:
-                    chosen_slot = 'righthand'
-                slots = [chosen_slot]
+                left = self.getsubtree('inventory/equiped/lefthand')
+                right = self.getsubtree('inventory/equiped/righthand')
+                if not left:
+                    slots = ['lefthand']
+                if not right:
+                    slots = ['righthand']
+                if not slots:
+                    slots = ['righthand']
+
             else:
                 slots = [item.slot()]
             for slot in slots:
                 self.unequip_item(slot)
                 self.putsubtree('inventory/equiped/%s' % slot.strip(), item())
-            self.drop_item(item.displayname())
+            self.drop_item(item)
         return (True, "%s has equiped %s" % (self.displayname(), item.displayname()))
 
     def unequip_item(self, slot):
         """
         >>> char = Character({})
         >>> twohand = Item(load_yaml('items', 'halberd.yaml'))
-        >>> char.acquire_item(twohand)
+        >>> twohand = char.acquire_item(twohand)
         >>> char.equip_item(twohand)
         (True, '[ ] has equiped Halberd')
         >>> char.unequip_item('lefthand')
+        >>> char.weapons
+        [<item.Item object at ...>]
         >>> char.weapons[0].displayname()
         'Fist'
         """
-        slot = slot.strip()
-        current = self.getsubtree('inventory/equiped/%s' % slot)
-        debug(current)
-        if current:
-            current = Item(current)
-            if current.displayname() != 'Fist':
-                self.acquire_item(current)
-            if current.get('slot', '') == 'twohand':
-                debug('Unequipping a twohanded weapon')
-                for slot in ['lefthand', 'righthand']:
-                    debug('unequiping from %s' % slot)
-                    self().deltree('inventory/equiped/%s' % slot)
-            else:
-                self.put('inventory/equiped/%s' % slot, {})
-            if self.character_type() == 'player':
-                current.onunequip(self)
+        item = Item(self.getsubtree('inventory/equiped/%s' % slot))
+        currentslot = item.slot()
+        pack = self.get('inventory/pack',[])
+        pack.append(item())
+        self.put('inventory/pack', pack)
+        debug ('Unequipping from ', slot)
+        if currentslot.strip() == 'twohand':
+            slots = ['lefthand','righthand']
+        else:
+            slots = [slot]
+        debug ('Slots = ', slots)
+        for s in slots:
+            debug(s)
+            self().deltree('inventory/equiped/%s' %s)
+            self.put('inventory/equiped/%s' %s, {})
+
 
     def sell_price(self, gold, copper, silver):
             price = price_in_copper(gold, silver, copper)
@@ -736,7 +702,7 @@ class Character(EzdmObject):
         >>> char = Character({})
         >>> char.for_sale()
         []
-        >>> char.acquire_item(Item(load_yaml('items', 'health_potion.yaml')))
+        >>> hp = char.acquire_item(Item(load_yaml('items', 'health_potion.yaml')))
         >>> char.for_sale()
         [(0, 'Health Potion', 'Gold 4, Silver 10, Copper 10')]
         """
@@ -752,30 +718,19 @@ class Character(EzdmObject):
                 raise Exception('Error loading %s - %s' % (self.displayname(), e))
         return out
 
-    def drop_item(self, itemname, section='pack'):
+    def drop_item(self, item, section='pack'):
         """
         >>> char = Character({})
-        >>> char.acquire_item(Item(load_yaml('items','health_potion.yaml')))
-        >>> char.drop_item('Health Potion')
-        >>> len(char.get('inventory/pack', []))
-        0
-        >>> char.acquire_item(Item(load_yaml('items','health_potion.yaml')))
-        >>> char.drop_item(0)
+        >>> item = char.acquire_item(Item(load_yaml('items','health_potion.yaml')))
+        >>> char.drop_item(item)
         >>> len(char.get('inventory/pack', []))
         0
         """
-        todrop = None
-        if isinstance(itemname, str):
-            for item in self.get('inventory/%s' % section, []):
-                item = Item(item)
-                if item.displayname() == itemname:
-                    todrop = self.get('inventory/%s' % section, []).index(item())
-        else:
-            todrop = itemname
-        if todrop is None:
-            return
-        item = Item(self.objdata['inventory/pack'][todrop])
-        if self.character_type() == 'player':
+        pack = self.get('inventory/pack',[])
+        for i in pack:
+            if Item(i).get_hash() == item.get_hash():
+                todrop = pack.index(i)
+        if self.character_type == 'player':
             item.ondrop(player=self)
         del(self.objdata['inventory/pack'][todrop])
 
@@ -838,8 +793,9 @@ class Character(EzdmObject):
         >>> char = Character({})
         >>> char.weapons[0].displayname()
         'Fist'
-        >>> char.acquire_item(Item(load_yaml('items','halberd.yaml')))
-        >>> char.equip_item(0)
+        >>> halberd = char.acquire_item(Item(load_yaml('items','halberd.yaml')))
+        >>> item = Item(char.get('inventory/pack')[0])
+        >>> char.equip_item(item)
         (True, '[ ] has equiped Halberd')
         >>> char.weapons[0].displayname()
         'Halberd'
@@ -847,15 +803,15 @@ class Character(EzdmObject):
         1
         """
         equipedweapons = self.equiped_by_type('weapon')
-        debug(equipedweapons)
         if not equipedweapons:
             debug('No weapons equipped - equipping fist')
             fist = Item(load_yaml('items', 'fist.yaml'))
-            self.acquire_item(fist)
-            self.equip_item(0)
+            fist = self.acquire_item(fist)
+            self.equip_item(fist)
             equipedweapons = self.equiped_by_type('weapon')
         if equipedweapons and equipedweapons[0].get('slot', "") == 'twohand':
-            return equipedweapons[1:]
+            return [equipedweapons[0]]
+        debug('Equipped weapons', equipedweapons)
         return equipedweapons
 
     def num_weapons(self):
@@ -954,7 +910,7 @@ class Character(EzdmObject):
     #             del out['core']['combat']['saving_throws']
     #         prettynames = load_yaml('rules', 'saving_throws.yaml')
     #         writekey('abilities', self.abilities(), out)
-    #         if not self.character_type() == 'player':
+    #         if not self.character_type == 'player':
     #             out['XP Worth'] = self.xp_worth()
     #         for k, v in list(self.saving_throws.items()):
     #             prettyname = readkey('/names/%s' % k, prettynames, k)
