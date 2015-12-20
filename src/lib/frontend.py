@@ -10,7 +10,6 @@ from dialog import Dialog, FloatDialog, SettingsDialog
 from eventstack import EventStack
 from mapview import Mapview
 from messages import messages
-from itemeditor import ItemEditor
 from yaml_editor import YAMLEditor
 
 def todo_event():
