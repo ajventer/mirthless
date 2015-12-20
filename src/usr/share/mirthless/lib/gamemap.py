@@ -111,12 +111,13 @@ class GameMap(EzdmObject):
         if not tile():
             return {}
         out = []
-        for thingy in tile.get('items', []):
-            data = FlattenedDict(load_yaml('items', thingy))
-            if data:
-                i = Item(data)
-                sprite = AnimatedSprite(i.get('/animations', {}))
-                out.append(('items', sprite))
+        for section in ['items', 'npcs']:
+            for thingy in tile.get(section, []):
+                data = FlattenedDict(load_yaml(section, thingy))
+                if data:
+                    i = Item(data)
+                    sprite = AnimatedSprite(i.get('/animations', {}))
+                    out.append((section, sprite))
         money = self.getmoney(x, y)
         if price_in_copper(*money):
             m = AnimatedSprite({"view":[]})
