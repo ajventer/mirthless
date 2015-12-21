@@ -80,7 +80,6 @@ class Mapview(pygame.sprite.DirtySprite, Tempsprites):
                     mouseover=npc.displayname(),
                     frontend=self.frontend)
         if animations['view'] and npc is None:
-            debug('Adding item sprite')
             itemsprite = ButtonSprite(
                 self.frontend.tilemaps,
                 rect,
@@ -153,9 +152,9 @@ class Mapview(pygame.sprite.DirtySprite, Tempsprites):
             self._addtemp(make_hash(), rmBtn)
 
     def removefromtile(self,x,y,objtype,item):
-        debug('Remove from tile ', objtype,type(item))
         self.gamemap.removefromtile(x,y,item,objtype)
         self.tile = self.gamemap.tile(x,y)
+        self._rmtemp()
         self.updatetile(x, y)
 
     def delete(self):
@@ -179,7 +178,9 @@ class Mapview(pygame.sprite.DirtySprite, Tempsprites):
         self._addtemp('mapload', mapload)
         self._addtemp('mapsave', mapsave)        
 
-    def loadmap(self, data):
+    def loadmap(self, data, reload=False):
+        if reload:
+            self._rmtemp()
         self.registerclickevent()
         self.gamemap = GameMap(data)
         self.gamemap.initialize(data=data)
@@ -281,6 +282,7 @@ class Mapview(pygame.sprite.DirtySprite, Tempsprites):
 
     def updatetile(self, x, y):
         self.gamemap.load_tile(x,y,self.tile)
+        debug('UpdateTile', self.gamemap.tile(x,y), self.tile)
         self.loadmap(self.gamemap())
         self.dialog = FloatDialog(self.frontend.rightwindow_rect, self.frontend, layer=1)
         self._addtemp('rightwindow', self.dialog)
