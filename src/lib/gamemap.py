@@ -50,14 +50,15 @@ class Tile(EzdmObject):
             result.append(Item(load_yaml('items',item)))
         return result
 
-    def remove(self, hash, objtype):
+    def remove(self, obj, objtype):
         if objtype == 'npc':
             self.put('npc', '')
         counter = 0
         todel = None
         current = self.get('items', [])
         for item in current:
-            if Item(item).get_hash() == hash:
+            hash = Item(load_yaml('items',item)).get_hash()
+            if obj.get_hash() == hash:
                 todel = counter
             counter += 1
         if todel is not None:
@@ -125,9 +126,9 @@ class GameMap(EzdmObject):
         tile.add(obj, objtype)
         self.load_tile(x, y, tile)
 
-    def removefromtile(self, x, y, name, objtype):
+    def removefromtile(self, x, y, item, objtype):
         tile = self.tile(x, y)
-        tile.remove(name, objtype)
+        tile.remove(item, objtype)
         self.load_tile(x, y, tile)
 
     def tile_objects(self, x, y):

@@ -65,7 +65,6 @@ class Mapview(pygame.sprite.DirtySprite, Tempsprites):
         rect = pygame.Rect(scn_x, scn_y, scale, scale)
         animations = {'view':[]}
         for objtype, item in self.gamemap.tile_objects(x,y):
-            debug(objtype, item)
             if objtype != 'npc':
                 animations['view'] += item.get('animations/view')
             else:
@@ -78,10 +77,10 @@ class Mapview(pygame.sprite.DirtySprite, Tempsprites):
                     animations = npc.getsubtree('animations'),
                     layer=self._layer+2,
                     fps=5,
+                    mouseover=npc.displayname(),
                     frontend=self.frontend)
-                npc.setanimation('stand')
-        if animations['view'] and npc is not None:
-            debug(animations['view'])
+        if animations['view'] and npc is None:
+            debug('Adding item sprite')
             itemsprite = ButtonSprite(
                 self.frontend.tilemaps,
                 rect,
@@ -92,10 +91,10 @@ class Mapview(pygame.sprite.DirtySprite, Tempsprites):
                 layer=self._layer+1,
                 fps=3,
                 frontend=self.frontend)
-            itemsprite.setanimation('view')
             self._addtemp(make_hash(), itemsprite)
         if npc is not None:
             self._addtemp(make_hash(), npc)
+
 
     def zoomicons(self, x, y, scn_x, scn_y):
         objlist = list(self.gamemap.tile_objects(x,y))
@@ -110,15 +109,16 @@ class Mapview(pygame.sprite.DirtySprite, Tempsprites):
             scale = int(128/n)
         else:
             scale = int(128/colcount)
-        debug('Cols ', colcount)
         for objtype,item in objlist:
             s_x = scn_x + col*scale
             s_y = scn_y + row*scale
             rect = pygame.Rect(s_x, s_y, scale, scale)
             if objtype != 'money':
                 animations = item.getsubtree('animations')
+                name=item.displayname()
             else:
                 animations = item
+                name='Money'
             itemsprite = ButtonSprite(
             self.frontend.tilemaps,
             rect,
@@ -127,6 +127,7 @@ class Mapview(pygame.sprite.DirtySprite, Tempsprites):
             onclick_params = [x,y,objtype, item],
             animations = animations,
             layer=self._layer+2,
+            mouseover=name,
             fps=5,
             frontend=self.frontend)
             if objtype == 'npc':
@@ -140,7 +141,22 @@ class Mapview(pygame.sprite.DirtySprite, Tempsprites):
                 row += 1
     
     def targetclick(self,x,y,objtype, item):
-        debug(objtype)
+        minx, miny = self.frontend.rightwindow_rect.x + 10, self.frontend.rightwindow_rect.y + 10
+        if self.frontend.mode == 'editor':
+            rmBtn = Button('Remove',
+            self.removefromtile,
+            [x,y,objtype,item],
+            self.frontend.eventstack,
+            self.frontend.imagecache,
+            pos=(minx,miny + 185)
+            )
+            self._addtemp(make_hash(), rmBtn)
+
+    def removefromtile(self,x,y,objtype,item):
+        debug('Remove from tile ', objtype,type(item))
+        self.gamemap.removefromtile(x,y,item,objtype)
+        self.tile = self.gamemap.tile(x,y)
+        self.updatetile(x, y)
 
     def delete(self):
         self.frontend.eventstack.unregister_event(self.clickhash)
@@ -163,10 +179,8 @@ class Mapview(pygame.sprite.DirtySprite, Tempsprites):
         self._addtemp('mapload', mapload)
         self._addtemp('mapsave', mapsave)        
 
-    def loadmap(self, data, reload=False):
+    def loadmap(self, data):
         self.registerclickevent()
-        if reload:
-            self._rmtemp()
         self.gamemap = GameMap(data)
         self.gamemap.initialize(data=data)
         if self.frontend.mode == 'editor':
@@ -231,7 +245,6 @@ class Mapview(pygame.sprite.DirtySprite, Tempsprites):
         if item is not None:
             self.gamemap.addtotile( x, y, item, 'items')
         self.tile = self.gamemap.tile(x,y)
-        debug(dict(self.tile()))
         self.updatetile(x, y)
 
     def selectbg(self, x, y):
@@ -268,9 +281,7 @@ class Mapview(pygame.sprite.DirtySprite, Tempsprites):
 
     def updatetile(self, x, y):
         self.gamemap.load_tile(x,y,self.tile)
-        debug(self.gamemap.tile(x,y))
         self.loadmap(self.gamemap())
-        debug(self.gamemap.tile(x,y))
         self.dialog = FloatDialog(self.frontend.rightwindow_rect, self.frontend, layer=1)
         self._addtemp('rightwindow', self.dialog)
         zoomimage = self.tileimage(x, y, 128)
