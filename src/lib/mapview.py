@@ -224,6 +224,23 @@ class Mapview(pygame.sprite.DirtySprite, Tempsprites):
             self._addtemp('te_additem', te_additem)
             self._addtemp('te_addnpc', te_addnpc)
             self._addtemp('te_onenter', te_onenter)
+        te_clone_tile = Button('Clone Tile', self.clonetile, [x,y], self.frontend.eventstack,self.frontend.imagecache, pos=(minx,miny + 200))
+        self._addtemp('te_clone', te_clone_tile)
+        clone_coords = TextInput(
+            pygame.Rect(minx + 150,  miny + 200, 100,25),
+            16, self.frontend.eventstack, 
+            prompt='%sx%s' %(x,y), layer=3)
+        self._addtemp('te_clone_coords', clone_coords)
+        debug(self.frontend.sprites)
+
+    def clonetile(self, x,y):
+        target=self.frontend.sprites['te_clone_coords'].text
+        tx, ty = target.split('x')
+        tx, ty = int(tx), int(ty)
+        for iy in range(y,ty +1):
+            for ix in range(x,tx +1):
+                self.gamemap.copy_tile(x,y,ix,iy)
+        self.updatetile(x, y)
 
     def additem(self, x, y):
         self._rmtemp()

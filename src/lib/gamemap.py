@@ -106,9 +106,10 @@ class GameMap(EzdmObject):
         #Does not copy items, npcs or monsters !
         source = self.tile(src_x, src_y)()
         dest = copy.deepcopy(source)
-        filtered_keys = ['npcs', 'items', ['copper'], ['condition/silver'], ['gold']]
+        filtered_keys = ['npcs', 'items', 'copper', 'silver', 'gold']
         for key in filtered_keys:
-            del dest[key]
+            if key in dest:
+                del dest[key]
         self.load_tile_from_dict(dest_x, dest_y, dest)
 
     def tile(self, x, y):
