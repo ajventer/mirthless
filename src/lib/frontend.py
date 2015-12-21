@@ -38,8 +38,8 @@ class Frontend(object):
                 "dialog": None
                 } 
             self.sprites['mb'] = MessageBox(self.messagebox_rect, messages, self)
-            self.mapview = Mapview(self)
-            self.mapview.loadmap({})
+            # self.mapview = Mapview(self)
+            # self.mapview.loadmap({})
             self.mainmenuitems = []
             self.game_menu = [
             ("Quit", [sys.exit]),
@@ -51,6 +51,7 @@ class Frontend(object):
             ]
             self.editor_menu = [
             ("Quit", [self.quit]),
+            ("Maps", [self.mainmenu, Mapview, self, 'mapview']),
             ("Items/spells", [self.mainmenu, YAMLEditor, self, 'template_item.yaml', 'Item Editor']),
             ("NPCs", [self.mainmenu, YAMLEditor, self, 'template_character.yaml', 'NPC Editor']),
             ("Quests", [todo_event]),
@@ -69,11 +70,9 @@ class Frontend(object):
                 self.sprites[item[1]].delete()
                 del self.sprites[item[1]]
         if key in self.sprites:
-            self.mapview.registerclickevent()
             self.sprites[key].delete()
             del self.sprites[key]
         else:
-            self.eventstack.unregister_event(self.mapview.clickhash)
             self.mainmenuitems = []
             item = obj(*args)
             self.mainmenuitems.append((item, key))
@@ -108,9 +107,6 @@ class Frontend(object):
             self.sprites['%s_button' % button[0]] = Button(button[0], button[1][0],button[1][1:], self.eventstack, self.imagecache, (menu.index(button) * buttonplacement,5))
       
         self.screen.blit(seperator, (0,self.screensize.h -205))
-        dialog = Dialog(self.rightwindow_rect, self.imagecache, layer=1)
-        self.screen.blit(dialog.image, (self.rightwindow_rect.x, self.rightwindow_rect.y))
-        self.sprites['rightwindow'] = dialog
 
         self.background = self.screen.copy()
         return self.screen, self.background
@@ -118,7 +114,7 @@ class Frontend(object):
 
     def draw(self):
         screensize = self.screen.get_rect()
-        self.screen.blit(self.mapview.image, (50,65))
+        #self.screen.blit(self.mapview.image, (50,65))
         sprites = pygame.sprite.LayeredUpdates()
         for sprite in self.sprites:
             sprites.add(self.sprites[sprite])
