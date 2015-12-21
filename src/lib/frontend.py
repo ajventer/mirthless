@@ -37,7 +37,7 @@ class Frontend(object):
                 "header": [],
                 "dialog": None
                 } 
-            self.sprites['mb'] = MessageBox(self.messagebox_rect, messages, self)
+            self.sprites['mb'] = MessageBox(messages, self.messagebox_rect,  self)
             # self.mapview = Mapview(self)
             # self.mapview.loadmap({})
             self.mainmenuitems = []
@@ -95,7 +95,6 @@ class Frontend(object):
         seperator = self.imagecache['seperator']
         seperator = pygame.transform.smoothscale(seperator, (self.screensize.w, 20))
         self.screen.blit(woodbg, (0,0))
-
         self.screen.blit(seperator, (0,42))
         debug ('Game mode is', self.mode)
         if self.mode == 'game':
@@ -114,7 +113,6 @@ class Frontend(object):
 
     def draw(self):
         screensize = self.screen.get_rect()
-        #self.screen.blit(self.mapview.image, (50,65))
         sprites = pygame.sprite.LayeredUpdates()
         for sprite in self.sprites:
             sprites.add(self.sprites[sprite])

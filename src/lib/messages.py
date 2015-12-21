@@ -26,26 +26,27 @@ class Messages(object):
     def read(self):
         if not self.messages:
             return ''
-        result =''
+        result =[]
         if len(self.messages) < self.buffer:
             for line in self.messages:
-                result += '\n'+line.strip()
+                result.append(str(line).strip())
             return result
         end = min([self.messageindex + self.buffer, len(self.messages) -1])
         for I in range(self.messageindex, end):
-            result += '\n'+self.messages[I].strip()
+            line = self.messages[I]
+            result.append(str(line).strip())
         return result
 
     def warning(self,s):
-        self.messages.append('{color 237, 89, 9; %s} ' % s.strip())
+        self.messages.append('{{237,89,9}}%s' %s)
         self.scrolldown()
 
     def message(self,s):
-        self.messages.append(s.strip())
+        self.messages.append('{{255,255,255}}%s' %s)
         self.scrolldown()
 
     def error(self,s):
-        self.messages.append('{color 255, 0, 0; %s} ' % s.strip())
+        self.messages.append('{{255, 0, 0}}%s' %s)
         debug('Error:', self.read())
         self.scrolldown()
 

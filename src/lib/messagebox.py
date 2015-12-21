@@ -1,67 +1,45 @@
-from glyph import Editor, Glyph, Macros
-from pygame import display
-from pygame import draw
-from pygame import event
-from pygame.font import Font, SysFont
-from pygame import image
-from pygame import mouse
-from pygame import transform
-from pygame import sprite
+import pygame
 from pygame.locals import *
 from util import file_path
-# DEFAULT_CURSOR = mouse.get_cursor()
+import re
 
-# #the hand cursor
-# _HAND_CURSOR = (
-# "     XX         ",
-# "    X..X        ",
-# "    X..X        ",
-# "    X..X        ",
-# "    X..XXXXX    ",
-# "    X..X..X.XX  ",
-# " XX X..X..X.X.X ",
-# "X..XX.........X ",
-# "X...X.........X ",
-# " X.....X.X.X..X ",
-# "  X....X.X.X..X ",
-# "  X....X.X.X.X  ",
-# "   X...X.X.X.X  ",
-# "    X.......X   ",
-# "     X....X.X   ",
-# "     XXXXX XX   ")
-# _HCURS, _HMASK = pygame.cursors.compile(_HAND_CURSOR, ".", "X")
-# HAND_CURSOR = ((16, 16), (5, 1), _HCURS, _HMASK)
+def render_text (text, size=32, color=(0,0,0)):
+    font = pygame.font.SysFont('monospace', size)
+    #font = pygame.font.Font(file_path('fonts','BLKCHCRY.TTF'), size)
+    return font.render(str(text), 1, color)
 
-DEFAULT = {
-    'bkg'       : (11, 11, 11),
-    'color'     : (201, 192, 187),
-    'font'      : SysFont('monospace', 16), #Font(file_path('fonts','BLKCHCRY.TTF'), 16),
-    'spacing'   : 0, #FONT.get_linesize(),
-    }
-
-class MessageBox(sprite.DirtySprite):
-    def __init__(self, CLIP, messages, frontend):
+class MessageBox(pygame.sprite.DirtySprite):
+    def __init__(self, messages, rect, frontend, defaultcolor=(255,255,255)):
         self._layer=0
-        super(sprite.DirtySprite, self).__init__()
-        self.glyph = Glyph(CLIP, ncols=2, **DEFAULT)
+        super(pygame.sprite.DirtySprite, self).__init__()
         self.frontend = frontend
         self.messages = messages
-        self.frontend.eventstack.register_event("wheelup", self, messages.scrollup) 
-        self.frontend.eventstack.register_event("wheeldown", self, messages.scrolldown)        
+        self.defaultcolor = defaultcolor
+        self.up = self.frontend.eventstack.register_event("wheelup", self, messages.scrollup) 
+        self.down = self.frontend.eventstack.register_event("wheeldown", self, messages.scrolldown)
+        self.rect = rect
+        self.surface = pygame.Surface((self.rect.w, self.rect.h))
+        self.background = self.surface.copy()
+        self.image = self.surface
 
-    @property   
-    def image(self):
-        self.clear(self.frontend.screen, self.frontend.background)
-        glyph = self.glyph
-        glyph_rect = glyph.rect
-        glyph.input(self.messages.read().replace('\n','/n'), justify = 'justified')
-        glyph.update()
-        return glyph.image
+    def delete(self):
+        self.frontend.eventstack.unregister(self.up)
+        self.frontend.eventstack.unregister(self.down)
+        self.kill()
 
-    @property
-    def rect(self):
-        return self.glyph.rect
+    def update(self):
+        self.surface.blit(self.background, (0,0))
+        y = self.surface.get_rect().y
+        for line in self.messages.read():
+            color=self.defaultcolor
+            pattern = r'{{(.*)}}'
+            m = re.search(pattern, line)
+            if m:
+                color = tuple([int(i) for i in m.groups()[0].split(',')])
+                line = re.sub(pattern, '', line)
+            lineimg=render_text(line, 16, color)
+            self.surface.blit(lineimg,(10,y))
+            y += lineimg.get_rect().h
+        self.image = self.surface
 
-    def clear(self, screen, background):
-    	self.glyph.clear(screen, background)
 

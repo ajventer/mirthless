@@ -19,10 +19,10 @@ def scrn_print(surface, text, x, y, size=32, color=(0,0,0)):
     surface.blit(rendered_text, textpos)
 
 class Label(pygame.sprite.DirtySprite):
-    def __init__(self, text,pos, layer=6):
+    def __init__(self, text,pos, layer=6, color=(255,0,0)):
         self._layer = layer
         super(pygame.sprite.DirtySprite, self).__init__()
-        self.image = render_text (text, size=16, color=(255,0,0), font=None)
+        self.image = render_text (text, size=16, color=color, font=None)
         self.rect = self.image.get_rect()
         self.rect.x = pos[0]
         self.rect.y = pos[1]

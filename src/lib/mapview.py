@@ -24,7 +24,8 @@ class Mapview(pygame.sprite.DirtySprite, Tempsprites):
         self.backgrounds = {}
         self.mapw = self.frontend.mapw
         Tempsprites.__init__(self)
-        self.firstload = True
+        self.dialog = FloatDialog(self.frontend.rightwindow_rect, self.frontend, layer=1)
+        self._addtemp('rightwindow', self.dialog)
         self.loadmap({})
 
 
@@ -65,25 +66,25 @@ class Mapview(pygame.sprite.DirtySprite, Tempsprites):
     def registerclickevent(self):
         self.clickhash = self.frontend.eventstack.register_event("button1", self, self.click)
 
+    def maploadsavename(self):
+        self.mapname = TextInput(
+            pygame.Rect(50, self.frontend.mapw+70, self.mapw /2,25),
+            16, self.frontend.eventstack, 
+            prompt=self.gamemap.get('name','Enter map displayname here'))
+        mapload = Button('Load', self.load, [], self.frontend.eventstack,self.frontend.imagecache, pos=(self.mapw/2 + 50,self.frontend.mapw+67))
+        mapsave = Button('Save', self.save, [], self.frontend.eventstack,self.frontend.imagecache, pos=(self.mapw/2 + 150,self.frontend.mapw+67))
+        self._addtemp('mapname', self.mapname)
+        self._addtemp('mapload', mapload)
+        self._addtemp('mapsave', mapsave)        
+
     def loadmap(self, data, reload=False):
         self.registerclickevent()
         if reload:
             self._rmtemp()
-        dialog = FloatDialog(self.frontend.rightwindow_rect, self.frontend, layer=1)
-        self._addtemp('rightwindow', dialog)
         self.gamemap = GameMap(data)
         self.gamemap.initialize(data=data)
-        if self.frontend.mode == 'editor' and self.firstload:
-            self.firstload = False
-            self.mapname = TextInput(
-                pygame.Rect(50, self.frontend.mapw+70, self.mapw /2,25),
-                16, self.frontend.eventstack, 
-                prompt=self.gamemap.get('name','Enter map displayname here'))
-            mapload = Button('Load', self.load, [], self.frontend.eventstack,self.frontend.imagecache, pos=(self.mapw/2 + 50,self.frontend.mapw+67))
-            mapsave = Button('Save', self.save, [], self.frontend.eventstack,self.frontend.imagecache, pos=(self.mapw/2 + 150,self.frontend.mapw+67))
-            self._addtemp('mapname', self.mapname)
-            self._addtemp('mapload', mapload)
-            self._addtemp('mapsave', mapsave)
+        if self.frontend.mode == 'editor':
+            self.maploadsavename()
         for x in range(0,20):
             for y in range(0,20):
                 scn_x = 50+(self.tilesize*x)
@@ -159,16 +160,19 @@ class Mapview(pygame.sprite.DirtySprite, Tempsprites):
 
     def click(self, pos):
         self._rmtemp()
+        self.dialog = FloatDialog(self.frontend.rightwindow_rect, self.frontend, layer=1)
+        self._addtemp('rightwindow', self.dialog)
         x, y = pos
         x = x - 50
         y = y - 65
         map_x = int(x / self.tilesize)
         map_y = int(y / self.tilesize)
         zoomimage = self.tileimage(map_x, map_y, 128)
-        self.frontend.sprites['rightwindow'].image.blit(zoomimage, (15,15))
+        self.dialog.image.blit(zoomimage, (15,15))
         self.tile = self.gamemap.tile(map_x,map_y)
         if self.frontend.mode == 'editor':
-            self.tile_editor(map_x,map_y, self.frontend.sprites['rightwindow'].image)
+            self.maploadsavename()
+            self.tile_editor(map_x,map_y, self.dialog.image)
             return 
         messages.message('Tile click: %sx%s' % (map_x, map_y))
         return
