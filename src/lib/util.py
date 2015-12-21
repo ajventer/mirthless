@@ -9,6 +9,7 @@ import yaml
 from flatteneddict import FlattenedDict, stripslashes, flatten
 import time
 from  tempfile import NamedTemporaryFile
+from math import sqrt
 
 gamedir = 'TESTDATA'
 
@@ -129,6 +130,8 @@ def make_hash():
 
 
 def load_yaml(directory, filename):
+    if not filename.endswith('.yaml'):
+        filename = '%s.yaml' % filename
     filename = file_path(directory, filename)
     return FlattenedDict(yaml.load(open(filename).read()))
 

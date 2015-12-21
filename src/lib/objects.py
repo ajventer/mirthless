@@ -102,4 +102,8 @@ class EzdmObject(object):
     def save_to_file(self, directory):
         filename = save_yaml(directory, self.filename(), dict(self()), new=True)
         return filename
+
+    def save(self):
+        #TODO - save to player save slot
+        pass
         

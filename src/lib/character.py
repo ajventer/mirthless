@@ -1,7 +1,6 @@
 from util import rolldice, inrange, price_in_copper, convert_money, save_yaml, load_yaml, debug
 from item import Item
 from objects import EzdmObject, event
-from gamemap import GameMap
 import copy
 from random import randrange
 import operator
@@ -131,33 +130,6 @@ class Character(EzdmObject):
             result[level].append(idx)
         return result
 
-    def moveto(self, mapname, x, y, page=None):
-        if not mapname:
-            return
-        if not isinstance(x, int) or not isinstance(y, int):
-            try:
-                x = int(x)
-                y = int(y)
-            except:
-                return
-        current = self.location()
-        ctype = self.character_type == 'player' and 'players' or 'npcs'
-        if current.get('map') and x and y:
-            gamemap = GameMap(load_yaml('maps', current['map']))
-            gamemap.removefromtile(current['x'], current['y'], self.name(), ctype)
-        self.put('location/x', x)
-        self.put('location/y', y)
-        self.put('location/map', mapname)
-        self.save()
-        gamemap = GameMap(load_yaml('maps', mapname))
-        gamemap.addtotile(x, y, self.name(), 'players')
-        if page:
-            tile = gamemap.tile(x, y)
-            tile.onenter(self, page)
-            gamemap.load_tile_from_objdata(x, y, tile())
-        if self.character_type == 'player':
-            gamemap.reveal(x, y, self.lightradius)
-
     def inventory_generator(self, sections=['pack', 'equiped', 'spells']):
         """
         >>> c = Character({})
@@ -219,14 +191,6 @@ class Character(EzdmObject):
         elif int(xpkey) > 12:
             xp = 3000 + ((int(xpkey) - 13) * 1000)
         return int(xp)
-
-    def save_to_tile(self):
-        loc = self.location()
-        gamemap = GameMap(load_yaml('maps', loc['map']))
-        if isinstance(gamemap.tile(loc['x'], loc['y'])().get('conditional', {}).get('npcs'), list):
-            gamemap.tile(loc['x'], loc['y'])()['conditional']['npcs'] = {}
-        gamemap.tile(loc['x'], loc['y'])()['conditional']['npcs'][self.get_hash()] = self()
-        return gamemap.save()
 
     def heal(self, amount):
         """
@@ -290,16 +254,6 @@ class Character(EzdmObject):
         name = '%s_%s.yaml' % (self.get('personal/name/first', ''), self.get('personal/name/last', ''))
         return name.lower().replace(' ', '_').replace("'", "")
 
-    def save(self):
-        #TODO
-        pass
-
-    def autosave(self):
-        if self.character_type == 'player':
-            return self.save()
-        else:
-            return self.save_to_tile()
-
     def to_hit_mod(self):
         """
         >>> char = Character(load_yaml('characters', 'bardic_rogue.yaml'))
@@ -359,11 +313,11 @@ class Character(EzdmObject):
         """
         key = self.get('class/parent', '')
         sts = FlattenedDict(load_yaml("rules", "saving_throws.yaml"))
-        sts = FlattenedDict(sts.readsubtree(key))
+        sts = FlattenedDict(sts.getsubtree(key))
         hitdice = self.get('combat/level-hitdice', 0)
         for key2 in sts.subkeys():
             if inrange(hitdice, key2):
-                st = sts.readsubtree(key2)
+                st = sts.getsubtree(key2)
                 st['ppd'] = int(st['ppd']) + self.ppd_mod()
                 return(st)
 

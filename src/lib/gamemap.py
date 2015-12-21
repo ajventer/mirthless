@@ -3,6 +3,7 @@ from item import Item
 from util import save_yaml, load_yaml,debug, price_in_copper
 import copy
 from flatteneddict import FlattenedDict
+from npc import NPC
 
 class Tile(EzdmObject):
     """
@@ -22,26 +23,49 @@ class Tile(EzdmObject):
 
     def canenter(self, new=None):
         if new is None:
-            return self.get('canenter', False)
+            return self.get('canenter', False) and self.get('npc', '') == '' and not self.get('player', False)
         self.put('canenter', new)
 
-    def add(self, name, objtype):
-        if isinstance(name, str) and not name.endswith('.yaml'):
-            name = '%s.yaml' % name
-        current = self.get('%s' % objtype, [])
-        name = EzdmObject(name)
-        name.set_hash()
-        #TODO: Save to gamesave slot
-        current.append((objtype, name.get_hash()))
+    def add(self, obj, objtype):
+        if objtype == 'npc':
+            self.put(objtype, obj.get_hash())
+        elif objtype == 'items':
+            current = self.get(objtype, [])
+            current.append(obj.get_hash())
+            self.put(objtype, current)
+
+    def load(self,objtype):
+        if objtype == 'npc':
+            data = self.get('npc', False)
+            if not data:
+                return None
+            npc = NPC(load_yaml('characters',data))
+            npc.set_hash()
+            npc.save()
+            self.add('npc', npc.get_hash())
+            return npc
+        current = self.get('items', [])
+        result = []
+        for item in current:
+            result.append(Item(load_yaml('items',item)))
+        return result
 
     def remove(self, hash, objtype):
-        del self()['%s/%s' %(objtype, hash) ]
+        if objtype == 'npc':
+            self.put('npc', '')
+        counter = 0
+        todel = None
+        current = self.get('items', [])
+        for item in current:
+            if Item(item).get_hash() == hash:
+                todel = counter
+            counter += 1
+        if todel is not None:
+            del current[todel]
+            self.put('items', current)
 
-    def list(self, objtype):
-        return self.get('%s' % objtype, [])
-
-    def onenter(self, player, page):
-        event(self, "events/onenter", {'tile': self, 'page': page, 'player': player})
+    def onenter(self, player):
+        event(self, "events/onenter", {'tile': self, 'messages':messages, 'player': player})
 
 
 class GameMap(EzdmObject):
@@ -96,38 +120,37 @@ class GameMap(EzdmObject):
         tile = self.tile(x, y)
         return (int(tile.get('gold', 0)), int(tile.get('silver', 0)), int(tile.get('copper', 0)))
 
-    def addtotile(self, x, y, name, objtype):
+    def addtotile(self, x, y, obj, objtype):
         tile = self.tile(x, y)
-        tile.add(name, objtype)
-        self.load_tile_from_json(x, y, tile())
+        tile.add(obj, objtype)
+        self.load_tile(x, y, tile)
 
     def removefromtile(self, x, y, name, objtype):
         tile = self.tile(x, y)
         tile.remove(name, objtype)
-        self.load_tile_from_json(x, y, tile())
+        self.load_tile(x, y, tile)
 
-    def tile_sprites(self, x, y, unique=False):
+    def tile_objects(self, x, y):
         tile = self.tile(x, y)
         if not tile():
             return
-        for section in ['items', 'npcs']:
-            for thingy in tile.get(section, []):
-                data = FlattenedDict(load_yaml(section, thingy))
-                if data:
-                    i = Item(data)
-                    sprite = AnimatedSprite(i.get('/animations', {}))
-                    yield section, sprite
+        items = tile.load('items')
+        npc = tile.load('npc')
+        for item in items:
+            yield ('items', item)
         money = self.getmoney(x, y)
         if price_in_copper(*money):
-            m = AnimatedSprite({"view":[]})
+            m = {'view': []}
             if money[0]:
                 #TODO - select a new gold icon and put here in the proper format.
-                m.animations['view'].append('Money.png:0:1')
+                m['view'].append('Money.png:0:1')
             if money[1]:
-                m.animations['view'].append('Money.png:3:1')
+                m['view'].append('Money.png:3:1')
             if money[2]:
-                m.animations['view'].append('Money.png:0:0')
+                m['view'].append('Money.png:0:0')
             yield 'money', m
+        if npc is not None:
+            yield('npc', npc)
 
     def name(self):
         return self.get('name', '')
