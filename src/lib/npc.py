@@ -3,7 +3,7 @@ from util import rolldice, load_yaml
 from messages import messages
 
 class NPC(Character):
-    def __init__(self, data, level):
+    def __init__(self, data, level=1):
         Character.__init__(self, data)
         #Scale up the NPC to match the player level
         self.put('combat/level-hitdice', level)

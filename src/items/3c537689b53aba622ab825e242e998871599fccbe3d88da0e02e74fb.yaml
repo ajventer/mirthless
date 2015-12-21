@@ -1,0 +1,20 @@
+ac: '2'
+animations/view:
+- Shield.png:5:0:0
+canpickup: true
+charges: '0'
+hash: 3c537689b53aba622ab825e242e998871599fccbe3d88da0e02e74fb
+identified: true
+in_use: false
+lightradius: '0'
+material: shield
+name: Basic wooden buckler
+price/copper: '17'
+price/gold: '0'
+price/silver: '0'
+rounds_per_charge: '0'
+rounds_used: 0
+size: small
+slot: lefthand
+type: armor
+weight: '2'

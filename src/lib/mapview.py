@@ -218,8 +218,12 @@ class Mapview(pygame.sprite.DirtySprite, Tempsprites):
         self._addtemp('te_set_background', Button('Set Background', 
             self.selectbg, (x,y), self.frontend.eventstack,self.frontend.imagecache, pos=(minx + 180, miny + 30)))
         if self.tile.background() and self.tile.canenter():
-            te_additem = Button('Add Item', self.additem, [x,y], self.frontend.eventstack,self.frontend.imagecache, pos=(minx,miny + 150))
+            te_additem = Button('Add Item', self.additem, [x,y], self.frontend.eventstack,self.frontend.imagecache, pos=(minx,miny + 160))
+            te_addnpc = Button('Add NPC', self.addnpc, [x,y], self.frontend.eventstack,self.frontend.imagecache, pos=(minx + 120,miny + 160))
+            te_onenter = Button('Events/OnEnter', self.onenter, [x,y], self.frontend.eventstack,self.frontend.imagecache, pos=(minx + 250,miny + 160))
             self._addtemp('te_additem', te_additem)
+            self._addtemp('te_addnpc', te_addnpc)
+            self._addtemp('te_onenter', te_onenter)
 
     def additem(self, x, y):
         self._rmtemp()
@@ -240,6 +244,12 @@ class Mapview(pygame.sprite.DirtySprite, Tempsprites):
             can_add=False,
             can_remove=False)
         self._addtemp('te_listmanager' , c)
+
+    def addnpc(self, x, y):
+        pass
+
+    def onenter(self,x,y):
+        pass
 
     def newitem(self, item,x,y):
         self._rmtemp()
@@ -282,7 +292,6 @@ class Mapview(pygame.sprite.DirtySprite, Tempsprites):
 
     def updatetile(self, x, y):
         self.gamemap.load_tile(x,y,self.tile)
-        debug('UpdateTile', self.gamemap.tile(x,y), self.tile)
         self.loadmap(self.gamemap())
         self.dialog = FloatDialog(self.frontend.rightwindow_rect, self.frontend, layer=1)
         self._addtemp('rightwindow', self.dialog)
@@ -303,6 +312,7 @@ class Mapview(pygame.sprite.DirtySprite, Tempsprites):
         map_y = int(y / self.tilesize)
         self.tile = self.gamemap.tile(map_x,map_y)
         self.updatetile(map_x, map_y)
+
 
 
 

@@ -1,0 +1,20 @@
+ac: '2'
+animations/view:
+- Boot.png:7:0:0
+canpickup: true
+charges: '0'
+hash: fa3cb2f74178c43ebb1198ceee13db9286970227d977a09f0364f2e9
+identified: true
+in_use: false
+lightradius: '0'
+material: mail
+name: Rusty mail boots
+price/copper: '30'
+price/gold: '0'
+price/silver: '0'
+rounds_per_charge: '0'
+rounds_used: 0
+size: medium
+slot: feet
+type: armor
+weight: '2'

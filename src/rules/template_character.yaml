@@ -27,9 +27,6 @@ conditional/class.parent=wizard/shields: false
 events/__Toninspect: ''
 events/__Tontalk: ''
 loot/__Yalways_drops: []
-loot/copper: 99
-loot/gold: 99
-loot/silver: 99
 disposition: __[friendly,neutral,aggressive]
 __Yinventory/equiped/chest: {}
 __Yinventory/equiped/feet: {}
@@ -42,7 +39,7 @@ __Yinventory/equiped/neck: {}
 __Yinventory/equiped/rightfinger: {}
 __Yinventory/equiped/righthand: {}
 __Yinventory/equiped/wrists: {}
-inventory/money/copper: 0
+inventory/money/copper: 5
 inventory/money/gold: 0
 inventory/money/silver: 0
 inventory/pack: []
