@@ -1,0 +1,28 @@
+animations/closed:
+- Door0.png:2:3:0
+animations/open:
+- Door1.png:2:3:0
+animations/view:
+- Door0.png:4:2:0
+charges: '0'
+conditional/type=door/locked: true
+description:
+- 'This sturdy cell door was designed by '
+- somebody with very firm ideas on the concepts
+- of *inside* and *outside*, notably that those
+- on the *inside* should not be able to become
+- those on the *outside*.
+hash: 1167577e76ab648421f80e35f17eb2e80c750ce29289456babad6402
+identified: true
+in_use: false
+lightradius: '0'
+locked: true
+name: Cell Door
+price/copper: '0'
+price/gold: '0'
+price/silver: '0'
+rounds_per_charge: '0'
+rounds_used: 0
+size: large
+type: door
+weight: '100'

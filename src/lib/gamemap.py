@@ -9,6 +9,10 @@ class Tile(EzdmObject):
     """
     >>> t = Tile({})
     """
+    def __init__(self, objdata):
+        self.objdata = objdata
+        self.objdata = FlattenedDict(self.objdata)
+
     def revealed(self):
         return self.get('revealed', False) is True
 
