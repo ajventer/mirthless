@@ -31,7 +31,7 @@ class Messages(object):
             for line in self.messages:
                 result.append(str(line).strip())
             return result
-        end = min([self.messageindex + self.buffer, len(self.messages) -1])
+        end = min([self.messageindex + self.buffer, len(self.messages)])
         for I in range(self.messageindex, end):
             line = self.messages[I]
             result.append(str(line).strip())
