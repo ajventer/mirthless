@@ -1,7 +1,8 @@
 import pygame
 from pygame.locals import *
-from util import file_path
+from util import file_path, debug
 import re
+from button import TextInput
 
 def render_text (text, size=32, color=(0,0,0)):
     font = pygame.font.SysFont('monospace', size)
@@ -18,9 +19,38 @@ class MessageBox(pygame.sprite.DirtySprite):
         self.up = self.frontend.eventstack.register_event("wheelup", self, messages.scrollup) 
         self.down = self.frontend.eventstack.register_event("wheeldown", self, messages.scrolldown)
         self.rect = rect
+        self.has_focus = True
         self.surface = pygame.Surface((self.rect.w, self.rect.h))
         self.background = self.surface.copy()
         self.image = self.surface
+        debug_rect = pygame.Rect(self.rect.x, self.rect.y, self.rect.w, 25)
+        self.debug_console = TextInput(debug_rect, 16,
+            self.frontend.eventstack,
+            prompt='>>>',
+            clearprompt=True,
+            layer=self._layer+1,
+            name='debug',
+            onreturn=self.debugcmd,
+            onreturn_args=[])
+        self.frontend.eventstack.register_event("keydown", self, self.toggledebug)
+
+    def toggledebug(self, event):
+        if event.key == K_BACKQUOTE:
+            if 'debugconsole' in self.frontend.sprites:
+                del self.frontend.sprites['debugconsole']
+            else:
+                self.frontend.sprites['debugconsole'] = self.debug_console
+
+    def debugcmd(self):
+        command = self.debug_console.text
+        debug('DEBUG CONSOLE: ', command)
+        self.debug_console.text = ''
+        try:
+            exec (command)
+        except Exception as E:
+            self.messages.message('')
+            self.messages.error('Error executing command: '+str(E))
+            self.messages.message('')
 
     def delete(self):
         self.frontend.eventstack.unregister(self.up)

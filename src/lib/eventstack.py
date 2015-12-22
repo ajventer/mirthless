@@ -44,7 +44,7 @@ class EventStack():
         if event.type == KEYDOWN:
             x,y = pygame.mouse.get_pos()
             for sprite in self.get_events("keydown"):
-                if sprite.rect.collidepoint(x,y):
+                if sprite.has_focus:
                     self.events["keydown"][sprite][0](event)
                     return
         if event.type == pygame.QUIT:

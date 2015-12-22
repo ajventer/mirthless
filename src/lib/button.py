@@ -1,7 +1,6 @@
 import pygame
 from pygame.locals import *
 from util import debug, file_list, gamedir
-from messagebox import MessageBox
 from imagecache import ImageCache
 from util import file_path
 
@@ -173,13 +172,15 @@ class checkboxbtn(Button):
                 self.onclick(self, self.checked, *self.onclick_params)
 
 class TextInput(pygame.sprite.DirtySprite):
-    def __init__(self, rect, fontsize, eventstack, prompt='', clearprompt=True, layer=1, name=''):
+    def __init__(self, rect, fontsize, eventstack, prompt='', clearprompt=True, layer=1, name='', onreturn=None, onreturn_args=[]):
         self.prompt = prompt
         self.clearprompt = clearprompt
         self.text = prompt
         self._layer = layer
         self.registered_events = []
         self.name = name
+        self.onreturn = onreturn
+        self.onreturn_args = onreturn_args
         super(pygame.sprite.DirtySprite, self).__init__()
         self.rect = rect
         self.fontsize = fontsize
@@ -242,6 +243,8 @@ class TextInput(pygame.sprite.DirtySprite):
             self.capslock = not self.capslock
         elif event.key == K_RETURN:
             self.has_focus = False
+            if self.onreturn:
+                self.onreturn(*self.onreturn_args)
         elif event.key == K_SPACE:
             self.text += ' '
         elif event.key == K_LEFT:

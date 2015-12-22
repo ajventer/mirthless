@@ -1,9 +1,10 @@
 from objects import EzdmObject, event
 from item import Item
-from util import save_yaml, load_yaml,debug, price_in_copper
+from util import save_yaml, load_yaml,debug, price_in_copper, file_path
 import copy
 from flatteneddict import FlattenedDict
 from npc import NPC
+import json
 
 class Tile(EzdmObject):
     """
@@ -91,6 +92,12 @@ class GameMap(EzdmObject):
         for y in range(0, self.max_y):
             for x in range(0, self.max_x):
                 tile = self.tile(x, y)
+
+    def save_to_file(self, directory):
+        filename = file_path(directory, self.filename(), new=True)
+        data = dict(self())
+        open(filename,'w').write(json.dumps(data, indent=4))
+        return filename
 
     def new(self):
         self()['tiles'] = [[{}] * self.max_x for _ in range(self.max_y)]
