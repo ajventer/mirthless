@@ -23,23 +23,25 @@ class MessageBox(pygame.sprite.DirtySprite):
         self.surface = pygame.Surface((self.rect.w, self.rect.h))
         self.background = self.surface.copy()
         self.image = self.surface
-        debug_rect = pygame.Rect(self.rect.x, self.rect.y, self.rect.w, 25)
-        self.debug_console = TextInput(debug_rect, 16,
-            self.frontend.eventstack,
-            prompt='>>>',
-            clearprompt=True,
-            layer=self._layer+1,
-            name='debug',
-            onreturn=self.debugcmd,
-            onreturn_args=[])
         self.frontend.eventstack.register_event("keydown", self, self.toggledebug)
 
     def toggledebug(self, event):
         if event.key == K_BACKQUOTE:
             if 'debugconsole' in self.frontend.sprites:
                 del self.frontend.sprites['debugconsole']
+                self.debug_console.delete()
             else:
+                debug_rect = pygame.Rect(self.rect.x, self.rect.y, self.rect.w, 25)
+                self.debug_console = TextInput(debug_rect, 16,
+                    self.frontend.eventstack,
+                    prompt='>>>',
+                    clearprompt=True,
+                    layer=self._layer+1,
+                    name='debug',
+                    onreturn=self.debugcmd,
+                    onreturn_args=[])
                 self.frontend.sprites['debugconsole'] = self.debug_console
+
 
     def debugcmd(self):
         command = self.debug_console.text
