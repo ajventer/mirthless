@@ -1,191 +1,188 @@
-animations/attackmelee:
-- Humanoid1.png:2:2:0
-- Humanoid0.png:2:2:0
-animations/attackmisile:
-- Humanoid1.png:2:2:0
-- Humanoid0.png:2:2:0
-animations/cast:
-- Humanoid1.png:2:2:0
-- Humanoid0.png:2:2:0
-animations/stand:
-- Humanoid1.png:2:2:0
-- Humanoid0.png:2:2:0
-animations/walkaway:
-- Humanoid1.png:2:2:0
-- Humanoid0.png:2:2:0
-animations/walkleft:
-- Humanoid1.png:2:2:0
-- Humanoid0.png:2:2:0
-animations/walkright:
-- Humanoid1.png:2:2:0
-- Humanoid0.png:2:2:0
-animations/walktoward:
-- Humanoid1.png:2:2:0
-- Humanoid0.png:2:2:0
-armor_types: plate
-attributes/cha: '9'
-attributes/con: '15'
-attributes/dex: '10'
-attributes/int: '7'
-attributes/str: '16'
-attributes/wis: '10'
-class/class: fighter
-class/parent: warrior
-combat/hitpoints: 2
-combat/level-hitdice: 1
-combat/max_hp: 8
-disposition: aggressive
-hash: 44cd6b17565d6b7d05e049f113c8b27235dc0dbac79edf4ccd21a7ad
-inventory/equiped/chest: ''
-inventory/equiped/chest/ac: '3'
-inventory/equiped/chest/animations/view:
-- Armor.png:1:8:0
-inventory/equiped/chest/canpickup: true
-inventory/equiped/chest/charges: '0'
-inventory/equiped/chest/hash: 562b312d79274c38dbcf9f05612877e97018841757d688df1adb9b9f
-inventory/equiped/chest/identified: true
-inventory/equiped/chest/in_use: false
-inventory/equiped/chest/lightradius: '0'
-inventory/equiped/chest/material: mail
-inventory/equiped/chest/name: Rusty mail vest
-inventory/equiped/chest/price/copper: '0'
-inventory/equiped/chest/price/gold: '0'
-inventory/equiped/chest/price/silver: '1'
-inventory/equiped/chest/rounds_per_charge: '0'
-inventory/equiped/chest/rounds_used: 0
-inventory/equiped/chest/size: medium
-inventory/equiped/chest/slot: chest
-inventory/equiped/chest/type: armor
-inventory/equiped/chest/weight: '4'
-inventory/equiped/feet: ''
-inventory/equiped/feet/ac: '2'
-inventory/equiped/feet/animations/view:
-- Boot.png:7:0:0
-inventory/equiped/feet/canpickup: true
-inventory/equiped/feet/charges: '0'
-inventory/equiped/feet/hash: 5f42abfe3e22f881ecd02a34509c85444410af85c25886892baae1c8
-inventory/equiped/feet/identified: true
-inventory/equiped/feet/in_use: false
-inventory/equiped/feet/lightradius: '0'
-inventory/equiped/feet/material: mail
-inventory/equiped/feet/name: Rusty mail boots
-inventory/equiped/feet/price/copper: '30'
-inventory/equiped/feet/price/gold: '0'
-inventory/equiped/feet/price/silver: '0'
-inventory/equiped/feet/rounds_per_charge: '0'
-inventory/equiped/feet/rounds_used: 0
-inventory/equiped/feet/size: medium
-inventory/equiped/feet/slot: feet
-inventory/equiped/feet/type: armor
-inventory/equiped/feet/weight: '2'
-inventory/equiped/gloves: {}
-inventory/equiped/head: ''
-inventory/equiped/head/ac: '2'
-inventory/equiped/head/animations/view:
-- Hat.png:2:1:0
-inventory/equiped/head/charges: '0'
-inventory/equiped/head/hash: 59f0724bf0735942c03e7a12b0b8c56281c021e2fbd47c3c7faf53f8
-inventory/equiped/head/identified: true
-inventory/equiped/head/in_use: false
-inventory/equiped/head/lightradius: '0'
-inventory/equiped/head/material: mail
-inventory/equiped/head/name: Rusty mail skullcap
-inventory/equiped/head/price/copper: '0'
-inventory/equiped/head/price/gold: '0'
-inventory/equiped/head/price/silver: '2'
-inventory/equiped/head/rounds_per_charge: '0'
-inventory/equiped/head/rounds_used: 0
-inventory/equiped/head/size: small
-inventory/equiped/head/slot: head
-inventory/equiped/head/type: armor
-inventory/equiped/head/weight: '1'
-inventory/equiped/leftfinger: {}
-inventory/equiped/lefthand: ''
-inventory/equiped/lefthand/ac: '2'
-inventory/equiped/lefthand/animations/view:
-- Shield.png:5:0:0
-inventory/equiped/lefthand/canpickup: true
-inventory/equiped/lefthand/charges: '0'
-inventory/equiped/lefthand/hash: 40b3bda8e8d81e642822cd6399124e916d2185eb4bdaf1ed82617d32
-inventory/equiped/lefthand/identified: true
-inventory/equiped/lefthand/in_use: false
-inventory/equiped/lefthand/lightradius: '0'
-inventory/equiped/lefthand/material: shield
-inventory/equiped/lefthand/name: Basic wooden buckler
-inventory/equiped/lefthand/price/copper: '17'
-inventory/equiped/lefthand/price/gold: '0'
-inventory/equiped/lefthand/price/silver: '0'
-inventory/equiped/lefthand/rounds_per_charge: '0'
-inventory/equiped/lefthand/rounds_used: 0
-inventory/equiped/lefthand/size: small
-inventory/equiped/lefthand/slot: lefthand
-inventory/equiped/lefthand/type: armor
-inventory/equiped/lefthand/weight: '2'
-inventory/equiped/legs: ''
-inventory/equiped/legs/ac: '3'
-inventory/equiped/legs/animations/view:
-- Engineer Clothes.png:0:3:0
-inventory/equiped/legs/canpickup: true
-inventory/equiped/legs/charges: '0'
-inventory/equiped/legs/hash: 4606524f1a45efbe2d6134ad74638892759e1f35b7dcaf37beec76ce
-inventory/equiped/legs/identified: true
-inventory/equiped/legs/in_use: false
-inventory/equiped/legs/lightradius: '0'
-inventory/equiped/legs/material: mail
-inventory/equiped/legs/name: Rusy mail pants
-inventory/equiped/legs/price/copper: '0'
-inventory/equiped/legs/price/gold: '0'
-inventory/equiped/legs/price/silver: '1'
-inventory/equiped/legs/rounds_per_charge: '0'
-inventory/equiped/legs/rounds_used: 0
-inventory/equiped/legs/size: medium
-inventory/equiped/legs/slot: legs
-inventory/equiped/legs/type: armor
-inventory/equiped/legs/weight: '1'
-inventory/equiped/neck: {}
-inventory/equiped/rightfinger: {}
-inventory/equiped/righthand: ''
-inventory/equiped/righthand/animations/strike:
-- ShortWep.png:0:1:0
-- ShortWep.png:0:1:90
-inventory/equiped/righthand/animations/view:
-- ShortWep.png:0:1:0
-inventory/equiped/righthand/canpickup: true
-inventory/equiped/righthand/charges: '0'
-inventory/equiped/righthand/description:
-- This simple medium length sword is standard equipment
-- 'for low-level soldiers and guards. '
-- Careful, it may be simple, but it is also sharp.
-inventory/equiped/righthand/hash: ae5ecdd3b185963b207bc21acb58fd7dcea856ff4e2e3bd341beeb6a
-inventory/equiped/righthand/identified: true
-inventory/equiped/righthand/in_use: false
-inventory/equiped/righthand/lightradius: '0'
-inventory/equiped/righthand/max_dmg: '6'
-inventory/equiped/righthand/name: 'Simple shortsword '
-inventory/equiped/righthand/price/copper: '10'
-inventory/equiped/righthand/price/gold: '0'
-inventory/equiped/righthand/price/silver: '0'
-inventory/equiped/righthand/range: short
-inventory/equiped/righthand/rounds_per_charge: '0'
-inventory/equiped/righthand/rounds_used: 0
-inventory/equiped/righthand/save_against: none
-inventory/equiped/righthand/size: small
-inventory/equiped/righthand/slot: righthand
-inventory/equiped/righthand/type: weapon
-inventory/equiped/righthand/weapon_type: melee
-inventory/equiped/righthand/weight: '3'
-inventory/equiped/wrists: {}
-inventory/money/copper: '2'
-inventory/money/gold: '1'
-inventory/money/silver: '5'
-inventory/pack: []
-lightradius: '0'
-loot/always_drops: []
-personal/alignment/law: lawful
-personal/alignment/social: good
-personal/name/first: Prison
-personal/name/last: Guard
-personal/portrait: portrait_jinn_human_male.png
-personal/race: human
-personal/sex: male
-shields: 'True'
+{
+    "inventory/equiped/righthand/range": "short", 
+    "inventory/equiped/righthand/charges": "0", 
+    "inventory/equiped/feet/material": "mail", 
+    "lightradius": "0", 
+    "inventory/equiped/lefthand/type": "armor", 
+    "inventory/equiped/armor/type": "armor", 
+    "inventory/equiped/feet/slot": "feet", 
+    "inventory/equiped/lefthand/in_use": false, 
+    "inventory/equiped/neck": {}, 
+    "combat/max_hp": 8, 
+    "inventory/equiped/head/charges": "0", 
+    "inventory/equiped/head/weight": "1", 
+    "inventory/equiped/feet/identified": true, 
+    "inventory/equiped/armor/material": "mail", 
+    "inventory/equiped/feet/rounds_used": 0, 
+    "personal/name/first": "Prison", 
+    "inventory/equiped/lefthand/price/gold": "0", 
+    "inventory/equiped/lefthand/rounds_per_charge": "0", 
+    "inventory/equiped/righthand/identified": true, 
+    "inventory/equiped/righthand/rounds_per_charge": "0", 
+    "inventory/equiped/righthand/lightradius": "0", 
+    "combat/hitpoints": 7, 
+    "combat/level-hitdice": 1, 
+    "animations/cast": [
+        "Humanoid1.png:2:2:0", 
+        "Humanoid0.png:2:2:0"
+    ], 
+    "personal/name/last": "Guard", 
+    "inventory/money/copper": "2", 
+    "inventory/equiped/armor/hash": "a7c9070851cd5b5960a0c55264dc5d480b7163710d7044d305f493b8", 
+    "inventory/equiped/feet/type": "armor", 
+    "animations/walkright": [
+        "Humanoid1.png:2:2:0", 
+        "Humanoid0.png:2:2:0"
+    ], 
+    "inventory/equiped/feet/charges": "0", 
+    "inventory/equiped/feet/size": "medium", 
+    "inventory/equiped/feet/animations/view": [
+        "Boot.png:7:0:0"
+    ], 
+    "inventory/equiped/righthand/animations/view": [
+        "ShortWep.png:0:1:0"
+    ], 
+    "inventory/equiped/lefthand/weight": "2", 
+    "animations/attackmelee": [
+        "Humanoid1.png:2:2:0", 
+        "Humanoid0.png:2:2:0"
+    ], 
+    "inventory/equiped/righthand/type": "weapon", 
+    "inventory/equiped/righthand/description": [
+        "This simple medium length sword is standard equipment", 
+        "for low-level soldiers and guards. ", 
+        "Careful, it may be simple, but it is also sharp."
+    ], 
+    "inventory/equiped/righthand/max_dmg": "6", 
+    "inventory/equiped/armor/identified": true, 
+    "inventory/equiped/head/price/silver": "2", 
+    "animations/walkleft": [
+        "Humanoid1.png:2:2:0", 
+        "Humanoid0.png:2:2:0"
+    ], 
+    "inventory/equiped/armor/rounds_used": 0, 
+    "inventory/equiped/feet": "", 
+    "inventory/equiped/feet/lightradius": "0", 
+    "inventory/equiped/armor/in_use": false, 
+    "inventory/equiped/feet/canpickup": true, 
+    "inventory/equiped/gloves": {}, 
+    "inventory/equiped/lefthand/price/copper": "17", 
+    "inventory/equiped/lefthand/ac": "2", 
+    "inventory/equiped/rightfinger": {}, 
+    "shields": "True", 
+    "hash": "44cd6b17565d6b7d05e049f113c8b27235dc0dbac79edf4ccd21a7ad", 
+    "personal/alignment/social": "good", 
+    "personal/portrait": "portrait_jinn_human_male.png", 
+    "inventory/equiped/righthand/save_against": "none", 
+    "inventory/equiped/lefthand/hash": "40b3bda8e8d81e642822cd6399124e916d2185eb4bdaf1ed82617d32", 
+    "inventory/equiped/lefthand/price/silver": "0", 
+    "inventory/equiped/legs": {}, 
+    "inventory/equiped/lefthand/animations/view": [
+        "Shield.png:5:0:0"
+    ], 
+    "inventory/equiped/feet/hash": "5f42abfe3e22f881ecd02a34509c85444410af85c25886892baae1c8", 
+    "inventory/equiped/righthand/size": "small", 
+    "disposition": "aggressive", 
+    "inventory/equiped/armor/price/copper": "0", 
+    "inventory/equiped/head/size": "small", 
+    "class/parent": "warrior", 
+    "inventory/equiped/feet/price/gold": "0", 
+    "animations/attackmisile": [
+        "Humanoid1.png:2:2:0", 
+        "Humanoid0.png:2:2:0"
+    ], 
+    "animations/walkaway": [
+        "Humanoid1.png:2:2:0", 
+        "Humanoid0.png:2:2:0"
+    ], 
+    "class/class": "fighter", 
+    "inventory/equiped/armor": "", 
+    "inventory/equiped/lefthand/rounds_used": 0, 
+    "inventory/equiped/head": "", 
+    "inventory/equiped/righthand/weight": "3", 
+    "inventory/equiped/righthand/canpickup": true, 
+    "inventory/equiped/feet/ac": "2", 
+    "inventory/equiped/feet/weight": "2", 
+    "inventory/equiped/righthand": "", 
+    "armor_types": "plate", 
+    "inventory/equiped/lefthand/size": "small", 
+    "animations/walktoward": [
+        "Humanoid1.png:2:2:0", 
+        "Humanoid0.png:2:2:0"
+    ], 
+    "inventory/equiped/head/lightradius": "0", 
+    "loot/always_drops": [], 
+    "inventory/equiped/armor/animations/view": [
+        "Armor.png:1:8:0"
+    ], 
+    "personal/race": "human", 
+    "inventory/equiped/righthand/slot": "righthand", 
+    "inventory/equiped/head/slot": "head", 
+    "inventory/equiped/armor/price/gold": "0", 
+    "inventory/equiped/lefthand": "", 
+    "inventory/money/silver": "5", 
+    "inventory/equiped/righthand/animations/strike": [
+        "ShortWep.png:0:1:0", 
+        "ShortWep.png:0:1:90"
+    ], 
+    "inventory/equiped/armor/price/silver": "1", 
+    "inventory/equiped/head/animations/view": [
+        "Hat.png:2:1:0"
+    ], 
+    "inventory/equiped/armor/canpickup": true, 
+    "personal/sex": "male", 
+    "inventory/equiped/lefthand/identified": true, 
+    "inventory/equiped/armor/slot": "armor", 
+    "inventory/equiped/feet/name": "Rusty mail boots", 
+    "inventory/equiped/head/price/copper": "0", 
+    "inventory/equiped/lefthand/material": "shield", 
+    "inventory/equiped/armor/ac": "3", 
+    "inventory/equiped/feet/price/silver": "0", 
+    "inventory/equiped/wrists": {}, 
+    "attributes/dex": "10", 
+    "inventory/equiped/head/material": "mail", 
+    "inventory/equiped/head/in_use": false, 
+    "attributes/wis": "10", 
+    "inventory/equiped/lefthand/lightradius": "0", 
+    "inventory/equiped/armor/charges": "0", 
+    "inventory/equiped/head/identified": true, 
+    "inventory/pack": [], 
+    "inventory/equiped/lefthand/canpickup": true, 
+    "inventory/equiped/head/name": "Rusty mail skullcap", 
+    "inventory/equiped/head/hash": "59f0724bf0735942c03e7a12b0b8c56281c021e2fbd47c3c7faf53f8", 
+    "inventory/equiped/armor/size": "medium", 
+    "inventory/equiped/righthand/price/silver": "0", 
+    "inventory/equiped/righthand/in_use": false, 
+    "inventory/equiped/righthand/hash": "ae5ecdd3b185963b207bc21acb58fd7dcea856ff4e2e3bd341beeb6a", 
+    "inventory/equiped/righthand/weapon_type": "melee", 
+    "attributes/con": "15", 
+    "inventory/equiped/head/type": "armor", 
+    "inventory/equiped/head/price/gold": "0", 
+    "inventory/equiped/armor/rounds_per_charge": "0", 
+    "inventory/equiped/head/ac": "2", 
+    "inventory/equiped/righthand/price/copper": "10", 
+    "inventory/equiped/lefthand/slot": "lefthand", 
+    "inventory/equiped/lefthand/charges": "0", 
+    "inventory/equiped/righthand/rounds_used": 0, 
+    "animations/stand": [
+        "Humanoid1.png:2:2:0", 
+        "Humanoid0.png:2:2:0"
+    ], 
+    "inventory/money/gold": "1", 
+    "inventory/equiped/head/rounds_used": 0, 
+    "inventory/equiped/feet/in_use": false, 
+    "inventory/equiped/leftfinger": {}, 
+    "personal/alignment/law": "lawful", 
+    "inventory/equiped/righthand/price/gold": "0", 
+    "inventory/equiped/feet/price/copper": "30", 
+    "attributes/int": "7", 
+    "inventory/equiped/head/rounds_per_charge": "0", 
+    "inventory/equiped/armor/lightradius": "0", 
+    "attributes/str": "16", 
+    "inventory/equiped/feet/rounds_per_charge": "0", 
+    "inventory/equiped/armor/name": "Rusty mail vest", 
+    "attributes/cha": "9", 
+    "inventory/equiped/righthand/name": "Simple shortsword ", 
+    "inventory/equiped/lefthand/name": "Basic wooden buckler", 
+    "inventory/equiped/armor/weight": "4"
+}

@@ -1,0 +1,870 @@
+{
+    "tiles": [
+        [
+            {
+                "background": "Wall2.png:3:6"
+            }, 
+            {
+                "background": "Wall2.png:3:6"
+            }, 
+            {
+                "background": "Wall2.png:3:6"
+            }, 
+            {
+                "background": "Wall2.png:3:6"
+            }, 
+            {
+                "background": "Wall2.png:3:6"
+            }, 
+            {
+                "background": "Wall2.png:3:6"
+            }, 
+            {
+                "background": "Wall2.png:3:6"
+            }, 
+            {
+                "background": "Wall2.png:3:6"
+            }, 
+            {
+                "background": "Wall2.png:3:6"
+            }, 
+            {
+                "background": "Wall2.png:3:6"
+            }, 
+            {
+                "background": "Wall2.png:3:6"
+            }, 
+            {
+                "background": "Wall2.png:3:6"
+            }, 
+            {
+                "background": "Wall2.png:3:6"
+            }, 
+            {
+                "background": "Wall2.png:3:6"
+            }, 
+            {
+                "background": "Wall2.png:3:6"
+            }, 
+            {
+                "background": "Wall2.png:3:6"
+            }, 
+            {
+                "background": "Wall2.png:3:6"
+            }, 
+            {
+                "background": "Wall2.png:3:6"
+            }, 
+            {
+                "background": "Wall2.png:3:6"
+            }, 
+            {
+                "background": "Wall2.png:3:6"
+            }
+        ], 
+        [
+            {
+                "background": "Wall2.png:3:6"
+            }, 
+            {
+                "canenter": true, 
+                "background": "Tile.png:5:3"
+            }, 
+            {
+                "canenter": true, 
+                "background": "Floor_7.png:0:2"
+            }, 
+            {
+                "canenter": true, 
+                "background": "Floor_7.png:0:2"
+            }, 
+            {
+                "background": "Wall2.png:3:6"
+            }, 
+            {
+                "canenter": true, 
+                "background": "Floor_7.png:0:2"
+            }, 
+            {
+                "canenter": true, 
+                "background": "Floor_7.png:0:2"
+            }, 
+            {
+                "canenter": true, 
+                "background": "Floor_7.png:0:2"
+            }, 
+            {
+                "canenter": true, 
+                "background": "Floor_7.png:0:2"
+            }, 
+            {
+                "background": "Wall2.png:3:6"
+            }, 
+            {
+                "canenter": true, 
+                "background": "Floor_7.png:0:2"
+            }, 
+            {
+                "canenter": true, 
+                "background": "Floor_7.png:0:2"
+            }, 
+            {
+                "canenter": true, 
+                "background": "Floor_7.png:0:2"
+            }, 
+            {
+                "canenter": true, 
+                "background": "Floor_7.png:0:2"
+            }, 
+            {
+                "background": "Wall2.png:3:6"
+            }, 
+            {
+                "canenter": true, 
+                "background": "Floor_7.png:0:2"
+            }, 
+            {
+                "canenter": true, 
+                "background": "Floor_7.png:0:2"
+            }, 
+            {
+                "canenter": true, 
+                "background": "Floor_7.png:0:2"
+            }, 
+            {
+                "canenter": true, 
+                "background": "Floor_7.png:0:2"
+            }, 
+            {
+                "background": "Wall2.png:3:6"
+            }
+        ], 
+        [
+            {
+                "background": "Wall2.png:3:6"
+            }, 
+            {
+                "canenter": true, 
+                "background": "Floor_7.png:0:2"
+            }, 
+            {
+                "canenter": true, 
+                "background": "Floor_7.png:0:2"
+            }, 
+            {
+                "canenter": true, 
+                "background": "Floor_7.png:0:2"
+            }, 
+            {
+                "background": "Wall2.png:3:6"
+            }, 
+            {
+                "canenter": true, 
+                "background": "Floor_7.png:0:2"
+            }, 
+            {
+                "canenter": true, 
+                "background": "Floor_7.png:0:2"
+            }, 
+            {
+                "canenter": true, 
+                "background": "Floor_7.png:0:2"
+            }, 
+            {
+                "canenter": true, 
+                "background": "Floor_7.png:0:2"
+            }, 
+            {
+                "background": "Wall2.png:3:6"
+            }, 
+            {
+                "canenter": true, 
+                "background": "Floor_7.png:0:2"
+            }, 
+            {
+                "canenter": true, 
+                "background": "Floor_7.png:0:2"
+            }, 
+            {
+                "canenter": true, 
+                "background": "Floor_7.png:0:2"
+            }, 
+            {
+                "canenter": true, 
+                "background": "Floor_7.png:0:2"
+            }, 
+            {
+                "background": "Wall2.png:3:6"
+            }, 
+            {
+                "canenter": true, 
+                "background": "Floor_7.png:0:2"
+            }, 
+            {
+                "canenter": true, 
+                "background": "Floor_7.png:0:2"
+            }, 
+            {
+                "canenter": true, 
+                "background": "Floor_7.png:0:2"
+            }, 
+            {
+                "canenter": true, 
+                "background": "Floor_7.png:0:2"
+            }, 
+            {
+                "background": "Wall2.png:3:6"
+            }
+        ], 
+        [
+            {
+                "background": "Wall2.png:3:6"
+            }, 
+            {
+                "canenter": true, 
+                "background": "Floor_7.png:0:2"
+            }, 
+            {
+                "canenter": true, 
+                "background": "Floor_7.png:0:2"
+            }, 
+            {
+                "canenter": true, 
+                "background": "Floor_7.png:0:2"
+            }, 
+            {
+                "background": "Wall2.png:3:6"
+            }, 
+            {
+                "canenter": true, 
+                "background": "Floor_7.png:0:2"
+            }, 
+            {
+                "canenter": true, 
+                "background": "Floor_7.png:0:2"
+            }, 
+            {
+                "canenter": true, 
+                "background": "Floor_7.png:0:2"
+            }, 
+            {
+                "canenter": true, 
+                "background": "Floor_7.png:0:2"
+            }, 
+            {
+                "background": "Wall2.png:3:6"
+            }, 
+            {
+                "canenter": true, 
+                "background": "Floor_7.png:0:2"
+            }, 
+            {
+                "canenter": true, 
+                "background": "Floor_7.png:0:2"
+            }, 
+            {
+                "canenter": true, 
+                "background": "Floor_7.png:0:2"
+            }, 
+            {
+                "canenter": true, 
+                "background": "Floor_7.png:0:2"
+            }, 
+            {
+                "background": "Wall2.png:3:6"
+            }, 
+            {
+                "canenter": true, 
+                "background": "Floor_7.png:0:2"
+            }, 
+            {
+                "canenter": true, 
+                "background": "Floor_7.png:0:2"
+            }, 
+            {
+                "canenter": true, 
+                "background": "Floor_7.png:0:2"
+            }, 
+            {
+                "canenter": true, 
+                "background": "Floor_7.png:0:2"
+            }, 
+            {
+                "background": "Wall2.png:3:6"
+            }
+        ], 
+        [
+            {
+                "background": "Wall2.png:3:6"
+            }, 
+            {
+                "background": "Wall2.png:3:6"
+            }, 
+            {
+                "background": "Wall2.png:3:6"
+            }, 
+            {
+                "items": [
+                    "1167577e76ab648421f80e35f17eb2e80c750ce29289456babad6402"
+                ], 
+                "canenter": true, 
+                "background": "Floor_7.png:0:2"
+            }, 
+            {
+                "background": "Wall2.png:3:6"
+            }, 
+            {
+                "background": "Wall2.png:3:6"
+            }, 
+            {
+                "background": "Wall2.png:3:6"
+            }, 
+            {
+                "background": "Wall2.png:3:6"
+            }, 
+            {
+                "items": [
+                    "1167577e76ab648421f80e35f17eb2e80c750ce29289456babad6402"
+                ], 
+                "canenter": true, 
+                "background": "Floor_7.png:0:3"
+            }, 
+            {
+                "background": "Wall2.png:3:6"
+            }, 
+            {
+                "background": "Wall2.png:3:6"
+            }, 
+            {
+                "background": "Wall2.png:3:6"
+            }, 
+            {
+                "background": "Wall2.png:3:6"
+            }, 
+            {
+                "items": [
+                    "1167577e76ab648421f80e35f17eb2e80c750ce29289456babad6402"
+                ], 
+                "canenter": true, 
+                "background": "Floor_7.png:0:2"
+            }, 
+            {
+                "background": "Wall2.png:3:6"
+            }, 
+            {
+                "background": "Wall2.png:3:6"
+            }, 
+            {
+                "background": "Wall2.png:3:6"
+            }, 
+            {
+                "background": "Wall2.png:3:6"
+            }, 
+            {
+                "items": [
+                    "1167577e76ab648421f80e35f17eb2e80c750ce29289456babad6402"
+                ], 
+                "canenter": true, 
+                "background": "Floor_7.png:0:3"
+            }, 
+            {
+                "background": "Wall2.png:3:6"
+            }
+        ], 
+        [
+            {
+                "background": "Wall2.png:3:6"
+            }, 
+            {
+                "canenter": true, 
+                "background": "Floor_7.png:0:2"
+            }, 
+            {
+                "canenter": true, 
+                "background": "Floor_7.png:0:3"
+            }, 
+            {
+                "canenter": true, 
+                "background": "Floor_7.png:0:2"
+            }, 
+            {
+                "canenter": true, 
+                "background": "Floor_7.png:0:2"
+            }, 
+            {
+                "canenter": true, 
+                "background": "Floor_7.png:0:2"
+            }, 
+            {
+                "canenter": true, 
+                "background": "Floor_7.png:0:2"
+            }, 
+            {
+                "canenter": true, 
+                "background": "Floor_7.png:0:2"
+            }, 
+            {
+                "canenter": true, 
+                "background": "Floor_7.png:0:2"
+            }, 
+            {
+                "canenter": true, 
+                "background": "Floor_7.png:0:2"
+            }, 
+            {
+                "canenter": true, 
+                "background": "Floor_7.png:0:2"
+            }, 
+            {
+                "canenter": true, 
+                "background": "Floor_7.png:0:2"
+            }, 
+            {
+                "canenter": true, 
+                "background": "Floor_7.png:0:2"
+            }, 
+            {
+                "canenter": true, 
+                "background": "Floor_7.png:0:2"
+            }, 
+            {
+                "canenter": true, 
+                "background": "Floor_7.png:0:2"
+            }, 
+            {
+                "canenter": true, 
+                "background": "Floor_7.png:0:2"
+            }, 
+            {
+                "canenter": true, 
+                "background": "Floor_7.png:0:2"
+            }, 
+            {
+                "canenter": true, 
+                "background": "Floor_7.png:0:2"
+            }, 
+            {
+                "canenter": true, 
+                "background": "Floor_7.png:0:2"
+            }, 
+            {
+                "background": "Wall2.png:3:6"
+            }
+        ], 
+        [
+            {
+                "background": "Wall2.png:3:6"
+            }, 
+            {
+                "canenter": true, 
+                "background": "Floor_7.png:0:2"
+            }, 
+            {
+                "background": "Wall2.png:3:6"
+            }, 
+            {
+                "canenter": true, 
+                "background": "Floor_7.png:0:2"
+            }, 
+            {
+                "canenter": true, 
+                "background": "Floor_7.png:0:2"
+            }, 
+            {
+                "canenter": true, 
+                "background": "Floor_7.png:0:2"
+            }, 
+            {
+                "canenter": true, 
+                "background": "Floor_7.png:0:2"
+            }, 
+            {
+                "canenter": true, 
+                "background": "Floor_7.png:0:2"
+            }, 
+            {
+                "canenter": true, 
+                "background": "Floor_7.png:0:2"
+            }, 
+            {
+                "canenter": true, 
+                "background": "Floor_7.png:0:2"
+            }, 
+            {
+                "canenter": true, 
+                "background": "Floor_7.png:0:2"
+            }, 
+            {
+                "canenter": true, 
+                "background": "Floor_7.png:0:2"
+            }, 
+            {
+                "canenter": true, 
+                "background": "Floor_7.png:0:2"
+            }, 
+            {
+                "canenter": true, 
+                "background": "Floor_7.png:0:2"
+            }, 
+            {
+                "canenter": true, 
+                "background": "Floor_7.png:0:2"
+            }, 
+            {
+                "canenter": true, 
+                "background": "Floor_7.png:0:2"
+            }, 
+            {
+                "canenter": true, 
+                "background": "Floor_7.png:0:2"
+            }, 
+            {
+                "canenter": true, 
+                "background": "Floor_7.png:0:2"
+            }, 
+            {
+                "canenter": true, 
+                "background": "Floor_7.png:0:2"
+            }, 
+            {
+                "background": "Wall2.png:3:6"
+            }
+        ], 
+        [
+            {
+                "background": "Wall2.png:3:6"
+            }, 
+            {
+                "canenter": true, 
+                "background": "Tile.png:4:3"
+            }, 
+            {
+                "background": "Wall2.png:3:6"
+            }, 
+            {
+                "background": "Wall2.png:3:6"
+            }, 
+            {
+                "background": "Wall2.png:3:6"
+            }, 
+            {
+                "background": "Wall2.png:3:6"
+            }, 
+            {
+                "background": "Wall2.png:3:6"
+            }, 
+            {
+                "background": "Wall2.png:3:6"
+            }, 
+            {
+                "background": "Wall2.png:3:6"
+            }, 
+            {
+                "background": "Wall2.png:3:6"
+            }, 
+            {
+                "background": "Wall2.png:3:6"
+            }, 
+            {
+                "background": "Wall2.png:3:6"
+            }, 
+            {
+                "background": "Wall2.png:3:6"
+            }, 
+            {
+                "background": "Wall2.png:3:6"
+            }, 
+            {
+                "background": "Wall2.png:3:6"
+            }, 
+            {
+                "background": "Wall2.png:3:6"
+            }, 
+            {
+                "background": "Wall2.png:3:6"
+            }, 
+            {
+                "background": "Wall2.png:3:6"
+            }, 
+            {
+                "background": "Wall2.png:3:6"
+            }, 
+            {
+                "background": "Wall2.png:3:6"
+            }
+        ], 
+        [
+            {
+                "background": "Wall2.png:3:6"
+            }, 
+            {
+                "background": "Wall2.png:3:6"
+            }, 
+            {
+                "background": "Wall2.png:3:6"
+            }, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}
+        ], 
+        [
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}
+        ], 
+        [
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}
+        ], 
+        [
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}
+        ], 
+        [
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}
+        ], 
+        [
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}
+        ], 
+        [
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}
+        ], 
+        [
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}
+        ], 
+        [
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}
+        ], 
+        [
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}
+        ], 
+        [
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}
+        ], 
+        [
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}, 
+            {}
+        ]
+    ], 
+    "hash": "f1440bb0f6826a470c385218d19515ad937c1d7ab4ad3e0c71206238", 
+    "lightradius": 1, 
+    "name": ""
+}

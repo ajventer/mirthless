@@ -10,6 +10,7 @@ from flatteneddict import FlattenedDict, stripslashes, flatten
 import time
 from  tempfile import NamedTemporaryFile
 from math import sqrt
+import json
 
 gamedir = 'TESTDATA'
 
@@ -141,7 +142,7 @@ def dump_yaml(data):
 
 def save_yaml(directory, filename, data, new=False):
     filename = file_path(directory, filename, new=new)
-    strings = dump_yaml(data)
+    strings = json.dumps(data, indent=4)
     open(filename,'w').write(strings)
     return filename
 

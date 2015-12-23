@@ -28,8 +28,7 @@ events/__Toninspect: ''
 events/__Tontalk: ''
 loot/__Yalways_drops: []
 disposition: __[friendly,neutral,aggressive]
-__Yinventory/equiped/chest: {}
-__Yinventory/equiped/feet: {}
+__Yinventory/equiped/armor: {}
 __Yinventory/equiped/gloves: {}
 __Yinventory/equiped/head: {}
 __Yinventory/equiped/leftfinger: {}

@@ -1,7 +1,7 @@
 
 conditional/type=armor/ac: 0
 conditional/type=armor/material: __[shield,cloth,leather,mail,plate]
-conditional/type=armor/slot: __[head,chest,legs,feet,wrists,hands,finger,neck,lefthand]
+conditional/type=armor/slot: __[head,armor,feet,wrists,hands,finger,neck,lefthand]
 conditional/type=spell/spell_level: 1
 conditional/type=spell/spell_school: __[Abjuration,Alteration,Conjuration,Enchantment,Divination,Illusion,Invocation,Necromancy]
 conditional/type=spell/spell_type: __[priest spells,wizard spells]

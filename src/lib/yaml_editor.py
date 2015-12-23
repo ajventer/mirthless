@@ -401,7 +401,7 @@ class YAMLEditor(FloatDialog, Tempsprites):
     def loaditem(self, item):
         debug('Loading item', item.displayname())
         self.item = item
-        self.editorlayout()
+        self.updateconditionals()
 
     def delete(self):
         self._rmtemp()

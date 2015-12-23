@@ -109,7 +109,7 @@ head:
     y: 32
     w: 64
     h: 64
-chest:
+armor:
     x: 416
     y: 32
     w: 64
@@ -136,11 +136,6 @@ righthand:
     h: 64
 wrists:
     x: 32
-    y: 416
-    w: 64
-    h: 64
-legs:
-    x: 123
     y: 416
     w: 64
     h: 64
