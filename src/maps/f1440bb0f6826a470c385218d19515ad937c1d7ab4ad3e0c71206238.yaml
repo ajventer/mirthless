@@ -132,6 +132,20 @@
                 "background": "Floor_7.png:0:2"
             }, 
             {
+                "events/onenter": [
+                    "#This is a python snippet", 
+                    "#It will be executed when the event occurs.", 
+                    "#You can use the following predefined objects to interact with the game", 
+                    "#item: The item that generated this event. item.lightradius += 1", 
+                    "#player: the player. player.put('core/combat/hitpoints', int(player.get('core/combat/hitpoints'))+1)", 
+                    "#target: the monster being targetted (only available for events that have a target). target.take_damage(4)", 
+                    "#messages: Send a message, warning or error. message.error('You have been cursed !!!')", 
+                    "#You can safely delete these comments if you want to, or just put your event handling code below.", 
+                    "#When you're done, save the file and close the text editor to return to Mirthless.", 
+                    "", 
+                    "#Hello", 
+                    ""
+                ], 
                 "canenter": true, 
                 "background": "Floor_7.png:0:2"
             }, 
@@ -377,7 +391,8 @@
             }, 
             {
                 "canenter": true, 
-                "background": "Floor_7.png:0:2"
+                "background": "Floor_7.png:0:2", 
+                "npc": "44cd6b17565d6b7d05e049f113c8b27235dc0dbac79edf4ccd21a7ad"
             }, 
             {
                 "canenter": true, 
@@ -866,5 +881,5 @@
     ], 
     "hash": "f1440bb0f6826a470c385218d19515ad937c1d7ab4ad3e0c71206238", 
     "lightradius": 1, 
-    "name": ""
+    "name": "Nyrac City Prison"
 }

@@ -10,7 +10,7 @@ from dialog import TileSelector, MapSelector
 from animatedsprite import ButtonSprite
 import yaml
 import os
-from util import imagepath, file_list, load_yaml, make_hash
+from util import imagepath, file_list, load_yaml, make_hash, default_text, editsnippet
 from item import Item
 
                                 
@@ -74,10 +74,10 @@ class Mapview(pygame.sprite.DirtySprite, Tempsprites):
                     self.frontend.eventstack,
                     onclick = self.click,
                     onclick_params = [(scn_x,scn_y)],
-                    animations = npc.getsubtree('animations'),
+                    animations = item.getsubtree('animations'),
                     layer=self._layer+2,
                     fps=5,
-                    mouseover=npc.displayname(),
+                    mouseover=item.displayname(),
                     frontend=self.frontend)
         if animations['view'] and npc is None:
             itemsprite = ButtonSprite(
@@ -168,10 +168,11 @@ class Mapview(pygame.sprite.DirtySprite, Tempsprites):
         self.clickhash = self.frontend.eventstack.register_event("button1", self, self.click)
 
     def maploadsavename(self):
+        name = self.gamemap.get('name','Enter map displayname here')
         self.mapname = TextInput(
             pygame.Rect(50, self.frontend.mapw+70, self.mapw /2,25),
             16, self.frontend.eventstack, 
-            prompt=self.gamemap.get('name','Enter map displayname here'))
+            prompt=self.gamemap.get('name',name))
         mapload = Button('Load', self.load, [], self.frontend.eventstack,self.frontend.imagecache, pos=(self.mapw/2 + 50,self.frontend.mapw+67))
         mapsave = Button('Save', self.save, [], self.frontend.eventstack,self.frontend.imagecache, pos=(self.mapw/2 + 150,self.frontend.mapw+67))
         self._addtemp('mapname', self.mapname)
@@ -198,7 +199,8 @@ class Mapview(pygame.sprite.DirtySprite, Tempsprites):
         self.frontend.draw() 
 
     def save(self):
-        self.gamemap.put('name', self.mapname.get_text())
+        if self.mapname.text:
+            self.gamemap.put('name', self.mapname.text)
         filename = self.gamemap.save_to_file('maps')
         messages.error('Saved to: %s' % os.path.basename(filename))
 
@@ -242,31 +244,50 @@ class Mapview(pygame.sprite.DirtySprite, Tempsprites):
                 self.gamemap.copy_tile(x,y,ix,iy)
         self.updatetile(x, y)
 
-    def additem(self, x, y):
+    def selectlist(self, dirname,action, x, y):
         self._rmtemp()
         itemlist = []
-        for itemfile in file_list('items'):
+        for itemfile in file_list(dirname):
             itemfile = os.path.basename(itemfile)
-            itemlist.append(Item(load_yaml('items',itemfile)))
+            itemlist.append(Item(load_yaml(dirname,itemfile)))
         c = ContainerDialog(self.rect,
             self.frontend,
-            'Add item',
+            'Add %s' % dirname,
             self._layer + 1,
             items=itemlist,
-            onclose=self.newitem,
+            onclose=action,
             onclose_parms=[x,y],
-            onselect=self.newitem,
+            onselect=action,
             onselect_parms=[x,y],
             animation='view',
             can_add=False,
             can_remove=False)
         self._addtemp('te_listmanager' , c)
 
+    def additem(self, x, y):
+        self.selectlist('items', self.newitem, x, y)
+
+
     def addnpc(self, x, y):
-        pass
+        self.selectlist('characters', self.newnpc, x, y)
 
     def onenter(self,x,y):
-        pass
+        default = default_text
+        data = self.gamemap.tile(x,y).get('events/onenter', default)
+        data = editsnippet('\n'.join(data))
+        tile = self.gamemap.tile(x,y)
+        tile.put('events/onenter',data.split('\n'))
+        self.gamemap.load_tile(x,y,tile)
+        self.tile = self.gamemap.tile(x,y)
+        self.updatetile(x, y)
+
+    def newnpc(self, item, x,y):
+        self._rmtemp()
+        if item is not None:
+            self.gamemap.addtotile( x, y, item, 'npc')
+            debug(self.gamemap())
+        self.tile = self.gamemap.tile(x,y)
+        self.updatetile(x, y)
 
     def newitem(self, item,x,y):
         self._rmtemp()

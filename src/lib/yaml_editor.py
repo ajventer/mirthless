@@ -53,7 +53,7 @@ class YAMLEditor(FloatDialog, Tempsprites):
         else:
             default = ['']
         data = self.item.get(key, default)
-        if data[0] != key:
+        if not key in data[0]:
             data.insert(0,'#%s' % key)
         data = editsnippet('\n'.join(data))
         self.item.put(key,data.split('\n'))
