@@ -1,6 +1,7 @@
 from character import Character
 from util import gamedir
 import json
+import os
 
 class Player(Character):
 
@@ -8,12 +9,11 @@ class Player(Character):
     def character_type(self):
         return 'player'
 
-    def savetoslot(self,slot):
-        savedir = gamedir[-1]
-        filename = os.path.join(savedir,str(slot), 'player','player.yaml')
-        os.makedirs(os.dirname(filename
-            ))
-        open(filename, 'w').write(json.dump(self(),indent=4))
+    def savetoslot(self):
+        savedir = gamedir[0]
+        filename = os.path.join(savedir,'player','player.yaml')
+        os.makedirs(os.path.dirname(filename))
+        open(filename, 'w').write(json.dumps(self(),indent=4))
 
     def moveto(self, map, x, y):
         if not mapname:

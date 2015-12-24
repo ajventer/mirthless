@@ -12,6 +12,7 @@ from eventstack import EventStack
 from mapview import Mapview
 from frontend import Frontend
 from messages import Messages, messages
+from game import Game
 
 imagecache = ImageCache()
 eventstack = EventStack()
@@ -125,9 +126,9 @@ def initpygame(settings, caption, settingsfile):
     if not '--editor' in sys.argv:
         messages.error('Game mode is barely started. The editor is much further along. Try starting the game with --editor')
         messages.message(':)')
+        game = Game(frontend)
     tilemaps.initialize()
-
-    return screen, frontend.screenlayout(), frontend
+    return screen, frontend.screenlayout(), frontend, game
 
 
 
