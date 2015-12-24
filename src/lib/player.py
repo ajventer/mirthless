@@ -1,11 +1,19 @@
 from character import Character
-
+from util import gamedir
+import json
 
 class Player(Character):
 
     @property
     def character_type(self):
         return 'player'
+
+    def savetoslot(self,slot):
+        savedir = gamedir[-1]
+        filename = os.path.join(savedir,str(slot), 'player','player.yaml')
+        os.makedirs(os.dirname(filename
+            ))
+        open(filename, 'w').write(json.dump(self(),indent=4))
 
     def moveto(self, map, x, y):
         if not mapname:
