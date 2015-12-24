@@ -22,7 +22,7 @@ class YAMLEditor(FloatDialog, Tempsprites):
             self.dirname = 'items'
         elif self.title == 'NPC Editor':
             self.dirname = 'characters'
-        self.rect = pygame.Rect(50,65, self.frontend.screensize.w -100, self.frontend.screensize.h - 300)
+        self.rect = self.frontend.bigwindowrect
         FloatDialog.__init__(self, self.rect, frontend)
         Tempsprites.__init__(self)
         if self.title == 'Item Editor':

@@ -8,7 +8,7 @@ import os
 from messages import messages
 
 class Inventory(FloatDialog):
-    def __init__(self, rect, frontend, char, layer=5, onclose=None):
+    def __init__(self, rect, frontend, char, layer=5, onclose=None, title=''):
         self._layer = layer
         FloatDialog.__init__(self, rect, frontend, layer)
         self.rect = rect

@@ -11,6 +11,7 @@ from eventstack import EventStack
 from mapview import Mapview
 from messages import messages
 from yaml_editor import YAMLEditor
+from inventory import Inventory
 from game import Game
 
 def todo_event():
@@ -34,22 +35,24 @@ class Frontend(object):
             debug ("Mapwidth: ", self.mapw, "Tile size", self.mapscale)
             self.rightwindow_rect = pygame.Rect(dialogx, 65, self.screensize.w - 50 -dialogx, self.screensize.h - 300)
             self.messagebox_rect = pygame.Rect(0,self.screensize.h - 190,self.screensize.w, self.screensize.h)
+            self.bigwindowrect = pygame.Rect(50,65, self.screensize.w -100, self.screensize.h - 300)
             self.layout = {
                 "header": [],
                 "dialog": None
                 } 
             self.sprites['mb'] = MessageBox(messages, self.messagebox_rect,  self)
-            # self.mapview = Mapview(self)
-            # self.mapview.loadmap({})
+            if self.mode != 'editor':
+                self.game = Game(self)
+                self.game_menu = [
+                    ("Quit", [sys.exit]),
+                    ("Map", [self.mainmenu, Mapview, self, 'mapview']),
+                    ("Inventory", [self.mainmenu, Inventory, self.bigwindowrect, self,self.game.player,5,'inventory']),
+                    ("Spellbook", [todo_event]),
+                    ("Journal", [todo_event]),
+                    ("Settings", [self.settings]),
+                    ("About", [todo_event]),
+                ]
             self.mainmenuitems = []
-            self.game_menu = [
-            ("Quit", [sys.exit]),
-            ("Inventory", [todo_event]),
-            ("Spellbook", [todo_event]),
-            ("Journal", [todo_event]),
-            ("Settings", [self.settings]),
-            ("About", [todo_event]),
-            ]
             self.editor_menu = [
             ("Quit", [self.quit]),
             ("Maps", [self.mainmenu, Mapview, self, 'mapview']),
@@ -58,8 +61,6 @@ class Frontend(object):
             ("Quests", [todo_event]),
             ("Settings", [self.mainmenu, SettingsDialog, pygame.Rect(self.screensize.w/2 - 300,self.screensize.h/2 -200,600,400), self, 'Settings']),
             ] 
-            if self.mode != 'editor':
-                self.game = Game(self)
 
     def quit(self,*args):
         sys.exit()
@@ -111,6 +112,7 @@ class Frontend(object):
         self.screen.blit(seperator, (0,self.screensize.h -205))
 
         self.background = self.screen.copy()
+        self.game.mainwindow()
         return self.screen, self.background
 
 
