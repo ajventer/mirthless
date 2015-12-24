@@ -40,7 +40,7 @@ def hello():
     print "Hello world"
 
 if __name__ == "__main__":
-    screen, screenlayout, frontend, game = initpygame(settings, 'Mirthless RPG', settingsfile)
+    screen, screenlayout, frontend = initpygame(settings, 'Mirthless RPG', settingsfile)
     quit = False 
     clock = pygame.time.Clock()
     pygame.key.set_repeat(50, 50)

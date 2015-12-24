@@ -11,6 +11,7 @@ from eventstack import EventStack
 from mapview import Mapview
 from messages import messages
 from yaml_editor import YAMLEditor
+from game import Game
 
 def todo_event():
     messages.warning('Event not yet implemented')
@@ -19,7 +20,7 @@ class Frontend(object):
     def __init__(self,screen=None, imagecache=None, eventstack=None, tilemaps=None, mode='game', settingsfile='/etc/mirthless/mirthless.cfg'):
         self.mode = mode
         self.settingsfile = settingsfile
-        if screen:          
+        if screen:
             self.sprites = {}
             self.imagecache = imagecache
             self.eventstack = eventstack
@@ -57,6 +58,8 @@ class Frontend(object):
             ("Quests", [todo_event]),
             ("Settings", [self.mainmenu, SettingsDialog, pygame.Rect(self.screensize.w/2 - 300,self.screensize.h/2 -200,600,400), self, 'Settings']),
             ] 
+            if self.mode != 'editor':
+                self.game = Game(self)
 
     def quit(self,*args):
         sys.exit()
