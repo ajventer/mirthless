@@ -58,6 +58,10 @@ class Tile(EzdmObject):
     def remove(self, obj, objtype):
         if objtype == 'npc':
             self.put('npc', '')
+            return
+        if objtype == 'player':
+            self.put('player', False)
+            return
         counter = 0
         todel = None
         current = self.get('items', [])

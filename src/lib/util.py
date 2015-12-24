@@ -12,7 +12,8 @@ from  tempfile import NamedTemporaryFile
 from math import sqrt
 import json
 
-gamedir = 'TESTDATA'
+gamedir = ['.', 'TESTDATA']
+
 
 default_text="""#This is a python snippet
 #It will be executed when the event occurs.
@@ -69,38 +70,34 @@ def imagepath(s):
         rot = 0
     return (parts[0], int(parts[1]), int(parts[2]), rot)
 
-def forcegamedir():
-    global gamedir
+def forcegamedir(gamedir):
     if gamedir == 'TESTDATA':
+        debug('checking in testdata')
         gamedir = os.path.dirname(os.path.abspath(__file__)) + '/..'
         gamedir = os.path.abspath(gamedir)
-        return gamedir
+        return os.path.join(gamedir, 'testdata')
     else:
      return gamedir
-
-
 
 def file_list(directory, needle='*'):
     result = []
     global gamedir
-    gamedir = forcegamedir()
-    debug(gamedir)
-    dirname = os.path.join(gamedir, directory)
-    return glob(dirname+'/'+needle)
+    for dirname in gamedir:
+        dirname = forcegamedir(dirname)
+        debug(dirname)
+        dirlist = os.path.join(dirname, directory)
+        result += glob(dirlist+'/'+needle)
+    debug(result)
+    return result
 
 def file_path(directory, filename, new=False):
-    global gamedir
-    gamedir = forcegamedir()
-    filename = os.path.join(gamedir, directory, filename)
     if new:
-        return filename #Don't check for pre-existing when saving a new file
-    if not os.path.exists(filename):
-        testpath = os.path.join(gamedir,'testdata', directory, os.path.basename(filename))
-        if os.path.exists(testpath):
-            filename = testpath
-        else:
-            raise IOError(testpath)
-    return filename
+        return os.path.join(gamedir[0], directory, filename)
+    matches = file_list(directory, filename)
+    if not matches:
+        raise IOError(filename)
+    return matches[0]
+
 
 def filename_parser(displayname):
     name = displayname

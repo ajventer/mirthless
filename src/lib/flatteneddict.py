@@ -86,6 +86,9 @@ class FlattenedDict(dict):
                     result[subkey] = self[k]
         return result
 
+    def getsubtree(self, key):
+        return self.readsubtree(key)
+
     def writekey(self, key, value):
         key = stripslashes(key)
         self[key] = value

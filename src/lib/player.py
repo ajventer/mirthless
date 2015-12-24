@@ -1,18 +1,11 @@
 from character import Character
-from util import rolldice, load_yaml
-from messages import messages
 
-class NPC(Character):
-    def __init__(self, data, level=1):
-        Character.__init__(self, data)
-        #Scale up the NPC to match the player level
-        self.put('combat/level-hitdice', level)
-        self.roll_hit_dice()
-        self.weapons
+
+class Player(Character):
 
     @property
     def character_type(self):
-        return 'npc'
+        return 'player'
 
     def moveto(self, map, x, y):
         if not mapname:
@@ -28,9 +21,9 @@ class NPC(Character):
         current = self.location()
         if current.get('map') and x and y:
             gamemap = GameMap(load_yaml('maps', current['map']))
-            gamemap.removefromtile(current['x'], current['y'],self,'npc')
+            gamemap.removefromtile(current['x'], current['y'],self,'player')
+        self.put('location/x', x)
+        self.put('location/y', y)
+        self.put('location/map', mapname)
         map.addtotile(x, y, 'npc', self)
-        if map.tile(x,y).revealed():
-            messages.warning('%s moves to %sx%s' %(self.displayname(),x, y))
-
-
+        messages.warning('%s moves to %sx%s' %(self.displayname(),x, y))

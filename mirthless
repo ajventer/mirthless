@@ -31,7 +31,7 @@ if gamedir is None:
 sys.path.append(os.path.join(gamedir,'lib'))
 print sys.path
 import util
-util.gamedir = gamedir
+util.gamedir.insert(0, gamedir)
 util.debug('Library path:', '\n\t'.join(sys.path))
 from graphics import Mapview, Tilemap, initpygame, imagecache, eventstack, tilemaps
 
