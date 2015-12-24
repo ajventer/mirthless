@@ -1,11 +1,11 @@
 from player import Player
 import os
-from util import gamedir, debug
+from util import gamedir, debug, load_yaml
 from tempsprites import Tempsprites
 from dialog import FloatDialog
 import pygame
 from pygame.locals import *
-from button import Button, Dropdown
+from button import Button, Dropdown, render_text
 
 
 
@@ -14,8 +14,8 @@ class Game(Tempsprites):
     def __init__(self, frontend):
         self.frontend = frontend
         Tempsprites.__init__(self)
-        self.mainwindow()
         self.homedir = os.path.join(os.getenv('HOME'), '.mirthless')
+        self.mainwindow()
 
 
     def mainwindow(self):
@@ -31,6 +31,18 @@ class Game(Tempsprites):
             layer=6,
             fontsize=16)
         self._addtemp('newgamebtn', newgame)
+        main.image.blit(render_text ('Load Game', size=32, color=(255,0,0), font=None),(50,50))
+        rect = pygame.Rect(self.frontend.screensize.w/2 - 180,self.frontend.screensize.h/2 -100, 300, 30)
+        loadslots = Dropdown(
+            self.frontend.eventstack,
+            self.frontend.imagecache,
+            16,
+            rect,
+            os.listdir(self.homedir),
+            layer=6,
+            onselect=self.loadgame)
+        self._addtemp('loadgame', loadslots)
+
 
     def setsavedir(self, slot):
         self.slot = slot
@@ -51,3 +63,5 @@ class Game(Tempsprites):
     def loadgame(self, slot):
         self.setsavedir(slot)
         self.player = Player(load_yaml('player','player.yaml'))
+        debug(self.player.get_hash())
+        self._rmtemp()
