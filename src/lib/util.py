@@ -126,6 +126,11 @@ def make_hash():
     user_string = user_string.encode('utf-8')
     return str(hashlib.sha224(user_string).hexdigest())
 
+def resaved(directory, filename):
+    if not filename.endswith('.yaml'):
+        filename = '%s.yaml' % filename
+    filename = file_path(directory, filename)
+    return gamedir[0] in filename
 
 def load_yaml(directory, filename):
     if not filename.endswith('.yaml'):

@@ -112,7 +112,8 @@ class Frontend(object):
         self.screen.blit(seperator, (0,self.screensize.h -205))
 
         self.background = self.screen.copy()
-        self.game.mainwindow()
+        if self.mode == 'game':
+            self.game.mainwindow()
         return self.screen, self.background
 
 

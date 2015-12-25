@@ -103,6 +103,12 @@ class EzdmObject(object):
         filename = save_yaml(directory, self.filename(), dict(self()), new=True)
         return filename
 
+    def savetoslot(self, directory):
+        savedir = gamedir[0]
+        filename = os.path.join(savedir,directory,'%s.yaml' % self.get_hash())
+        os.makedirs(os.path.dirname(filename))
+        open(filename, 'w').write(json.dumps(self(),indent=4))
+
     def save(self):
         #TODO - save to player save slot
         pass

@@ -1,6 +1,6 @@
 from objects import EzdmObject, event
 from item import Item
-from util import save_yaml, load_yaml,debug, price_in_copper, file_path
+from util import save_yaml, load_yaml,debug, price_in_copper, file_path, resaved
 import copy
 from flatteneddict import FlattenedDict
 from npc import NPC
@@ -45,14 +45,22 @@ class Tile(EzdmObject):
             if not data:
                 return None
             npc = NPC(load_yaml('characters',data))
-            npc.set_hash()
-            npc.save()
-            self.add('npc', npc.get_hash())
+            if not resaved('characters', data):
+                npc.set_hash()
+                npc.savetoslot('characters')
+                self.add('npc', npc.get_hash())
             return npc
         current = self.get('items', [])
         result = []
+        itemlist = []
         for item in current:
-            result.append(Item(load_yaml('items',item)))
+            i = Item(load_yaml('items',item))
+            if not resaved('items', item):
+                i.set_hash()
+                i.savetoslot('items')
+            result.append(i)
+            itemlist.append(i.get_hash())
+        self.put('items', itemlist)
         return result
 
     def remove(self, obj, objtype):
