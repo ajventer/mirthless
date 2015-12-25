@@ -17,6 +17,8 @@ class Game(Tempsprites):
         self.homedir = os.path.join(os.getenv('HOME'), '.mirthless')
         self.player = Player({})
         self.cleanuplist = []
+        template = load_yaml('rules','template_character.yaml')
+        self.portrait = template['personal/portrait']
 
     def mainwindow(self):
         rect = self.frontend.screensize
@@ -77,8 +79,6 @@ class Game(Tempsprites):
         self._addtemp('lastnamelbl', lastnamelbl)
         lastname = TextInput(pygame.Rect(100,190,100,30), 16, self.frontend.eventstack, layer=6)
         self._addtemp('lastname', lastname)
-        template = load_yaml('rules','template_character.yaml')
-        self.portrait = template['personal/portrait']
         portrait = BlitButton(
                 self.nextportrait, 
                 [],
