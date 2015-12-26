@@ -13,13 +13,16 @@ class Inventory(FloatDialog):
         FloatDialog.__init__(self, rect, frontend, layer)
         self.rect = rect
         self.frontend = frontend
-        self.npc = char.character_type == 'npc'
         self.char = char
+        if self.char is None:
+            self.char = self.frontend.game.player
+        self.npc = self.char.character_type == 'npc'
         self.onclose = onclose
         self.layout()
 
     def layout(self):
         self._rmtemp()
+
         itemlist = []
         for itemfile in file_list('items'):
             itemfile = os.path.basename(itemfile)
@@ -43,6 +46,7 @@ class Inventory(FloatDialog):
         image_y = 10
         self.image.blit(self.frontend.imagecache['inventory_background.png'], (image_x, image_y))
         rects = load_yaml('images','gui_rects.yaml')
+        debug(self.char())
         portrait = self.frontend.imagecache[self.char.get('personal/portrait')]
         portrait = pygame.transform.smoothscale(portrait, (256,256))
         prect = rects['inventory_portrait']

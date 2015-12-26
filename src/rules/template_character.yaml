@@ -6,8 +6,8 @@ conditional/class.parent=rogue/abilities/hide in shadows: 5
 conditional/class.parent=rogue/abilities/move silently: 10
 conditional/class.parent=rogue/abilities/open locks: 10
 conditional/class.parent=rogue/abilities/pick pockets: 15
-conditional/class.parattributesent=rogue/abilities/read languages: 0
-conditional/class.parent=rogue/armor_types: __[leather]
+conditional/class.parent=rogue/abilities/read languages: 0
+conditional/class.parent=rogue/armor_types: leather
 conditional/class.parent=rogue/shields: false
 conditional/class.class=bard/shields: true
 conditional/class.class=bard/abilities/climb walls: 50
@@ -19,10 +19,10 @@ conditional/class.class=paladin/abilities/cure disease(weekly): 100
 conditional/class.class=paladin/abilities/lay on hands (daily): 100
 conditional/class.class=paladin/abilities/sense evil intent(must end turn): 100
 conditional/class.parent=priest/shields: false
-conditional/class.parent=priest/armor_types: __[cloth]
-conditional/class.parent=warrior/armor_types: __[plate]
+conditional/class.parent=priest/armor_types: cloth
+conditional/class.parent=warrior/armor_types: plate
 conditional/class.parent=warrior/shields: true
-conditional/class.parent=wizard/armor_types: __[cloth]
+conditional/class.parent=wizard/armor_types: cloth
 conditional/class.parent=wizard/shields: false
 events/__Toninspect: ''
 events/__Tontalk: ''

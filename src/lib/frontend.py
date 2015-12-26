@@ -46,7 +46,7 @@ class Frontend(object):
                 self.game_menu = [
                     ("Quit", [sys.exit]),
                     ("Map", [self.mainmenu, Mapview, self, 'mapview']),
-                    ("Inventory", [self.mainmenu, Inventory, self.bigwindowrect, self,self.game.player,5,'inventory']),
+                    ("Inventory", [self.mainmenu, Inventory, self.bigwindowrect, self,None,5,None,'inventory']),
                     ("Spellbook", [todo_event]),
                     ("Journal", [todo_event]),
                     ("Settings", [self.settings]),
