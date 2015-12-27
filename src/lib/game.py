@@ -1,12 +1,14 @@
 from player import Player
 import os
-from util import gamedir, debug, load_yaml
+from util import gamedir, debug, load_yaml, file_path
 from tempsprites import Tempsprites
 from dialog import FloatDialog
 import pygame
 from pygame.locals import *
 from button import Button, Dropdown, render_text, Label, TextInput, BlitButton
 from item import Item
+from journal import Journal
+import json
 
 
 
@@ -20,6 +22,7 @@ class Game(Tempsprites):
         self.cleanuplist = []
         template = load_yaml('rules','template_character.yaml')
         self.portrait = template['personal/portrait']
+        self.journal = Journal
 
     def mainwindow(self):
         rect = self.frontend.screensize
@@ -185,4 +188,6 @@ class Game(Tempsprites):
         self.setsavedir(slot)
         self.player = Player(load_yaml('player','player.yaml'))
         debug(self.player.get_hash())
+
+        self.journal = Journal(json.loads(open(file_path('journal', 'journal.yaml')).read()))
         self._rmtemp()

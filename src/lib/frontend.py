@@ -12,6 +12,7 @@ from mapview import Mapview
 from messages import messages
 from yaml_editor import YAMLEditor
 from inventory import Inventory
+from journal import JournalView
 from game import Game
 
 def todo_event():
@@ -48,7 +49,7 @@ class Frontend(object):
                     ("Map", [self.mainmenu, Mapview, self, 'mapview']),
                     ("Inventory", [self.mainmenu, Inventory, self.bigwindowrect, self,None,5,None,'inventory']),
                     ("Spellbook", [todo_event]),
-                    ("Journal", [todo_event]),
+                    ("Journal", [self.mainmenu, JournalView, self.bigwindowrect, self,None,5,'journal']),
                     ("Settings", [self.settings]),
                     ("About", [todo_event]),
                 ]

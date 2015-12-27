@@ -10,8 +10,8 @@ def render_text (text, size=32, color=(0,0,0)):
     return font.render(str(text), 1, color)
 
 class MessageBox(pygame.sprite.DirtySprite):
-    def __init__(self, messages, rect, frontend, defaultcolor=(255,255,255)):
-        self._layer=0
+    def __init__(self, messages, rect, frontend, defaultcolor=(255,255,255), hasdebugconsole=True, layer=0):
+        self._layer=layer
         super(pygame.sprite.DirtySprite, self).__init__()
         self.frontend = frontend
         self.messages = messages
@@ -23,7 +23,8 @@ class MessageBox(pygame.sprite.DirtySprite):
         self.surface = pygame.Surface((self.rect.w, self.rect.h))
         self.background = self.surface.copy()
         self.image = self.surface
-        self.frontend.eventstack.register_event("keydown", self, self.toggledebug)
+        if hasdebugconsole:
+            self.frontend.eventstack.register_event("keydown", self, self.toggledebug)
 
     def toggledebug(self, event):
         if event.key == K_BACKQUOTE:
@@ -58,8 +59,8 @@ class MessageBox(pygame.sprite.DirtySprite):
             self.messages.message('')
 
     def delete(self):
-        self.frontend.eventstack.unregister(self.up)
-        self.frontend.eventstack.unregister(self.down)
+        self.frontend.eventstack.unregister_event(self.up)
+        self.frontend.eventstack.unregister_event(self.down)
         self.kill()
 
     def update(self):
