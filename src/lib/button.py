@@ -263,6 +263,7 @@ class TextInput(pygame.sprite.DirtySprite):
                 out.append(new)
             self.text = ''.join(out)
             self.cpos += 1
+        return True
 
     def delete(self):
         for h in self.registered_events:

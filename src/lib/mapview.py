@@ -195,6 +195,9 @@ class Mapview(pygame.sprite.DirtySprite, Tempsprites):
 
     def registerclickevent(self):
         self.clickhash = self.frontend.eventstack.register_event("button1", self, self.click)
+        if self.frontend.mode != 'editor':
+            self.frontend.eventstack.register_event("keydown", self, self.keydown)
+            self.has_focus = True
 
     def maploadsavename(self):
         name = self.gamemap.get('name','Enter map displayname here')
@@ -233,14 +236,17 @@ class Mapview(pygame.sprite.DirtySprite, Tempsprites):
         filename = self.gamemap.save_to_file('maps')
         messages.error('Saved to: %s' % os.path.basename(filename))
 
-    def player_controls(self, x,y, surface):
-        minx, miny = self.frontend.rightwindow_rect.x + 10, self.frontend.rightwindow_rect.y + 10
-        maxx, maxy = minx + self.frontend.rightwindow_rect.w - 10, self.frontend.rightwindow_rect.h - 10
-        loc = self.frontend.game.player.getsubtree('location')
+    def player_can_goto(self, x, y):
+        loc = self.frontend.game.player.location()
         xdiff = loc['x'] - x
         ydiff = loc['y'] - y
         distance = hypot(xdiff, ydiff)
-        if distance <= 1.5 and self.gamemap.tile(x,y).canenter():
+        return distance <= 1.5 and self.gamemap.tile(x,y).canenter()
+
+    def player_controls(self, x,y, surface):
+        minx, miny = self.frontend.rightwindow_rect.x + 10, self.frontend.rightwindow_rect.y + 10
+        maxx, maxy = minx + self.frontend.rightwindow_rect.w - 10, self.frontend.rightwindow_rect.h - 10
+        if self.player_can_goto(x, y):
              player_go_here = Button('Go Here', 
                                     self.goto, 
                                     ['player', x, y],
@@ -248,6 +254,25 @@ class Mapview(pygame.sprite.DirtySprite, Tempsprites):
                                     self.frontend.imagecache,
                                     pos=(minx +180,miny + 10))
              self._addtemp('player_go_here', player_go_here)
+
+    def keydown(self, event):
+        messages.message('Processing event '+event.unicode)
+        loc = self.frontend.game.player.location()
+        x = loc['x']
+        y = loc['y']
+        if event.key == K_LEFT or event.unicode.upper() == 'A':
+            x -= 1
+        elif event.key == K_RIGHT or event.unicode.upper() == 'D':
+            x += 1
+        elif event.key == K_UP or event.unicode.upper() == 'W':
+            y -= 1
+        elif event.key == K_DOWN or event.unicode.upper() == 'S':
+            y += 1
+        else:
+            return False
+        if self.player_can_goto(x, y):
+            self.goto('player', x, y)
+        return True
 
     def goto(self, charname, x, y):
         sprite = self.frontend.sprites[charname]

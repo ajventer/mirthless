@@ -42,6 +42,8 @@ class MessageBox(pygame.sprite.DirtySprite):
                     onreturn=self.debugcmd,
                     onreturn_args=[])
                 self.frontend.sprites['debugconsole'] = self.debug_console
+            return True
+        return False
 
 
     def debugcmd(self):
