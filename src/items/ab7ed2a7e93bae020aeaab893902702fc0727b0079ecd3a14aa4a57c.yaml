@@ -1,0 +1,23 @@
+{
+    "ac": "0", 
+    "hash": "ab7ed2a7e93bae020aeaab893902702fc0727b0079ecd3a14aa4a57c", 
+    "lightradius": "0", 
+    "weight": "1", 
+    "in_use": false, 
+    "material": "cloth", 
+    "animations/view": [
+        "Armor.png:6:8:0"
+    ], 
+    "identified": true, 
+    "rounds_per_charge": "0", 
+    "size": "small", 
+    "slot": "armor", 
+    "rounds_used": 0, 
+    "name": "Prison rags", 
+    "charges": "0", 
+    "canpickup": true, 
+    "price/silver": "0", 
+    "price/copper": "1", 
+    "price/gold": "0", 
+    "type": "armor"
+}

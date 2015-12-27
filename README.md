@@ -48,6 +48,7 @@ Game art from:
 4. Fist icon from: https://openclipart.org/detail/19831/chibi-fist
 5. http://opengameart.org/content/jinns-icons
 6. http://opengameart.org/content/48-animated-old-school-rpg-characters-16x16
+7. http://opengameart.org/content/fantasy-book
 
 The GLYPH text rendering library for pygame is included with the project and used in several parts of the interface.
 http://www.pygame.org/project-Glyph-1002-2794.html
