@@ -173,6 +173,9 @@ class Game(Tempsprites):
         firstmap = GameMap(load_yaml('maps', 'f1440bb0f6826a470c385218d19515ad937c1d7ab4ad3e0c71206238'))
         self.player.moveto(firstmap, 18, 1)
         firstmap.savetoslot('maps')
+        animations = load_yaml('rules', 'default_sprites')
+        for k,v  in animations[playerclass[0]].items():
+            self.player.put(k, v)
         self.player.savetoslot()
         self.journal.write('Prison')
         self._rmtemp()
