@@ -72,7 +72,6 @@ def imagepath(s):
 
 def forcegamedir(gamedir):
     if gamedir == 'TESTDATA':
-        debug('checking in testdata')
         gamedir = os.path.dirname(os.path.abspath(__file__)) + '/..'
         gamedir = os.path.abspath(gamedir)
         return os.path.join(gamedir, 'testdata')
@@ -87,10 +86,10 @@ def file_list(directory, needle='*'):
         debug(dirname)
         dirlist = os.path.join(dirname, directory)
         result += glob(dirlist+'/'+needle)
-    debug(result)
     return result
 
 def file_path(directory, filename, new=False):
+    filename = os.path.basename(filename)
     if new:
         return os.path.join(gamedir[0], directory, filename)
     matches = file_list(directory, filename)

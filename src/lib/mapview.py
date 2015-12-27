@@ -29,7 +29,12 @@ class Mapview(pygame.sprite.DirtySprite, Tempsprites):
         Tempsprites.__init__(self)
         self.dialog = FloatDialog(self.frontend.rightwindow_rect, self.frontend, layer=1)
         self._addtemp('rightwindow', self.dialog)
-        self.loadmap({})
+        if self.frontend.mode == 'editor':
+            self.loadmap({})
+        else:
+            loc = self.frontend.game.player.location()
+            mapname = loc['map']
+            self.loadmap(load_yaml('maps', mapname))
 
 
     def tileimage(self, x, y, scale):
@@ -59,6 +64,9 @@ class Mapview(pygame.sprite.DirtySprite, Tempsprites):
         return tileimage
 
     def tileicons(self, x, y, scn_x, scn_y, scale):
+        if not self.gamemap.tile(x,y).get('revealed', False):
+            if self.frontend.mode != 'editor':
+                return
         scn_x = 50+(self.tilesize*x)
         scn_y = 65+(self.tilesize*y)
         npc = None

@@ -1,5 +1,7 @@
 from util import debug, dump_yaml, make_hash, gamedir, save_yaml
 from flatteneddict import FlattenedDict, stripslashes
+import os
+import json
 
 def event(obj, key, localvars):
     code = '\n'.join(obj.get(key, ''))
@@ -106,7 +108,8 @@ class EzdmObject(object):
     def savetoslot(self, directory):
         savedir = gamedir[0]
         filename = os.path.join(savedir,directory,'%s.yaml' % self.get_hash())
-        os.makedirs(os.path.dirname(filename))
+        if not os.path.exists(os.path.dirname(filename)):
+            os.makedirs(os.path.dirname(filename))
         open(filename, 'w').write(json.dumps(self(),indent=4))
 
     def save(self):

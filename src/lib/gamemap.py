@@ -206,8 +206,8 @@ class GameMap(EzdmObject):
                 if not tile.get('revealed', False):
                     has_revealed = True
                 tile.put('/revealed', True)
-                self.load_tile_from_json(pt_x, pt_y, tile())
+                self.load_tile(pt_x, pt_y, tile)
         if has_revealed:
             #TODO - revealing may have included an enemy and started combat
             pass
-        self.save()
+        self.savetoslot('maps')

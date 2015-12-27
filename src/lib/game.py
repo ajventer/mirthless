@@ -8,9 +8,8 @@ from pygame.locals import *
 from button import Button, Dropdown, render_text, Label, TextInput, BlitButton
 from item import Item
 from journal import Journal
+from gamemap import GameMap
 import json
-
-
 
 class Game(Tempsprites):
     livecharacters = []
@@ -22,7 +21,7 @@ class Game(Tempsprites):
         self.cleanuplist = []
         template = load_yaml('rules','template_character.yaml')
         self.portrait = template['personal/portrait']
-        self.journal = Journal
+        self.journal = Journal()
 
     def mainwindow(self):
         rect = self.frontend.screensize
@@ -165,13 +164,17 @@ class Game(Tempsprites):
             if key.startswith('__Yinventory'):
                 k = key.replace('__Y', '')
                 self.player.put(k, template[key])
+        slot = str(len(os.listdir(self.homedir)))
         self.setsavedir(slot)
         armor = Item(load_yaml('items', 'ab7ed2a7e93bae020aeaab893902702fc0727b0079ecd3a14aa4a57c.yaml'))
         armor = self.player.acquire_item(armor)
         self.player.equip_item(armor)
         debug(self.player())
-        slot = str(len(os.listdir(self.homedir)))
+        firstmap = GameMap(load_yaml('maps', 'f1440bb0f6826a470c385218d19515ad937c1d7ab4ad3e0c71206238'))
+        self.player.moveto(firstmap, 18, 1)
+        firstmap.savetoslot('maps')
         self.player.savetoslot()
+        self.journal.write('Prison')
         self._rmtemp()
 
     def nextportrait(self):
