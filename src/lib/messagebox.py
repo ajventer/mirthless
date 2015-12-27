@@ -48,7 +48,10 @@ class MessageBox(pygame.sprite.DirtySprite):
         debug('DEBUG CONSOLE: ', command)
         self.debug_console.text = ''
         try:
-            exec (command)
+            code_locals = locals()
+            code_locals.update({'player': self.frontend.game.player, 'game': self.frontend.game, 'frontend':self.frontend, 'messages': self.messages})
+            code_globals = globals()
+            exec command in code_globals, code_locals
         except Exception as E:
             self.messages.message('')
             self.messages.error('Error executing command: '+str(E))
