@@ -1,8 +1,9 @@
 from character import Character
-from util import gamedir
+from util import gamedir, load_yaml
 import json
 from messages import messages
 import os
+from gamemap import GameMap
 
 class Player(Character):
 

@@ -22,6 +22,7 @@ class Game(Tempsprites):
         template = load_yaml('rules','template_character.yaml')
         self.portrait = template['personal/portrait']
         self.journal = Journal()
+        characters = []
 
     def mainwindow(self):
         rect = self.frontend.screensize

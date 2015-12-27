@@ -12,6 +12,7 @@ import yaml
 import os
 from util import imagepath, file_list, load_yaml, make_hash, default_text, editsnippet
 from item import Item
+from math import hypot
 
                                 
 class Mapview(pygame.sprite.DirtySprite, Tempsprites):
@@ -70,7 +71,7 @@ class Mapview(pygame.sprite.DirtySprite, Tempsprites):
                 return
             player = self.frontend.game.player
             loc = player.location()
-            if loc['x'] == x and loc['y'] == y:
+            if loc['x'] == x and loc['y'] == y and not 'player' in self.frontend.sprites:
                 playerbtn = ButtonSprite(
                     self.frontend.tilemaps,
                     rect,
@@ -82,7 +83,7 @@ class Mapview(pygame.sprite.DirtySprite, Tempsprites):
                     fps=5,
                     mouseover=player.displayname(),
                     frontend=self.frontend)
-                self._addtemp('player', playerbtn)
+                self.frontend.sprites['player'] = playerbtn
         scn_x = 50+(self.tilesize*x)
         scn_y = 65+(self.tilesize*y)
         npc = None
@@ -114,8 +115,13 @@ class Mapview(pygame.sprite.DirtySprite, Tempsprites):
                 fps=3,
                 frontend=self.frontend)
             self._addtemp(make_hash(), itemsprite)
-        if npc is not None:
-            self._addtemp(npc.get_hash(), npc)
+        if npc is not None and not npc.get_hash() in self.frontend.sprites:
+            self.frontend.sprites[npc.get_hash()] = npc
+            if not npc in self.frontend.game.characters: 
+                self.frontend.game.characters.append(npc)
+
+    def update(self):
+        self.loadmap(self.gamemap())
 
 
     def zoomicons(self, x, y, scn_x, scn_y):
@@ -226,6 +232,44 @@ class Mapview(pygame.sprite.DirtySprite, Tempsprites):
             self.gamemap.put('name', self.mapname.text)
         filename = self.gamemap.save_to_file('maps')
         messages.error('Saved to: %s' % os.path.basename(filename))
+
+    def player_controls(self, x,y, surface):
+        minx, miny = self.frontend.rightwindow_rect.x + 10, self.frontend.rightwindow_rect.y + 10
+        maxx, maxy = minx + self.frontend.rightwindow_rect.w - 10, self.frontend.rightwindow_rect.h - 10
+        loc = self.frontend.game.player.getsubtree('location')
+        xdiff = loc['x'] - x
+        ydiff = loc['y'] - y
+        distance = hypot(xdiff, ydiff)
+        if distance <= 1.5 and self.gamemap.tile(x,y).canenter():
+             player_go_here = Button('Go Here', 
+                                    self.goto, 
+                                    ['player', x, y],
+                                    self.frontend.eventstack,
+                                    self.frontend.imagecache,
+                                    pos=(minx +180,miny + 10))
+             self._addtemp('player_go_here', player_go_here)
+
+    def goto(self, charname, x, y):
+        sprite = self.frontend.sprites[charname]
+        scn_x = 50+(self.tilesize*x)
+        scn_y = 65+(self.tilesize*y)
+        sprite.onarive = self.arrive_at
+        sprite.onarive_params = [charname,x,y]
+        sprite.goto = (scn_x, scn_y)
+
+    def arrive_at(self, charname, x, y):
+        if charname == 'player':
+            self.frontend.game.player.moveto(self.gamemap, x,y)
+            self.frontend.game.player.savetoslot()
+        else:
+            for char in self.frontend.game.characters:
+                if char.get_hash() == charname:
+                    char.moveto(self.gamemap, x, y)
+                    char.savetoslot('characters')
+                    break
+        self.gamemap.savetoslot('maps')
+
+
 
     def tile_editor(self, x, y, surface):
         surface.blit(render_text('Edit tile', color=(255,0,0)),(280,10))
@@ -362,7 +406,8 @@ class Mapview(pygame.sprite.DirtySprite, Tempsprites):
         if self.frontend.mode == 'editor':
             self.maploadsavename()
             self.tile_editor(x,y, self.dialog.image)
-
+        else:
+            self.player_controls(x,y, self.dialog.image)
 
     def click(self, pos):
         self._rmtemp()
@@ -371,13 +416,6 @@ class Mapview(pygame.sprite.DirtySprite, Tempsprites):
         y = y - 65
         map_x = int(x / self.tilesize)
         map_y = int(y / self.tilesize)
-        self.tile = self.gamemap.tile(map_x,map_y)
-        self.updatetile(map_x, map_y)
-
-
-
-
-
-
-
-
+        self.tile = self.gamemap.tile(map_x, map_y)
+        if self.tile.get('revealed', False) or self.frontend.mode == 'editor':
+            self.updatetile(map_x, map_y)

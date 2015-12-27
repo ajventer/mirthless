@@ -9,37 +9,60 @@ class AnimatedSprite(pygame.sprite.DirtySprite):
         "stand": ['Aquatic0.png:4:1:0','Aquatic0.png:5:1:90','Aquatic0.png:4:1:180','Aquatic0.png:5:1:270'],
         'walkleft': [],
         'walkright': [],
-        'walkup': [],
-        'walkdown': []
+        'walkaway': [],
+        'walktoward': []
     }
-    def __init__(self, tilemaps, rect, animations={}, layer=2, fps=60):
+    def __init__(self, tilemaps, rect, animations={}, layer=2, fps=60, onarive=None):
         self._layer = layer
         self.framerate = 60/fps
         self.counter = 0
         self.pause = False
         super(pygame.sprite.DirtySprite, self).__init__()
         self.tilemaps = tilemaps
+        self.animation = None
         if animations:
             self.animations = animations
         if 'stand' in self.animations:
             self.setanimation('stand')
         else:
             self.setanimation(self.animations.keys()[0])
+        self.goto = (0,0)
+        self.onarive = onarive
+        self.onarive_params = []
         self.rect = rect
         self.image = self.currentimage()
 
     def setanimation(self, newanimation):
-        self.animation = newanimation
-        self.frame =0
+        if self.animation != newanimation:
+            self.animation = newanimation
+            self.frame =0
 
     def currentframe(self):
+        if self.goto != (0,0):
+            x, y = self.goto
+            if y > self.rect.y:
+                self.setanimation('walktoward')
+                self.rect.y += 1
+            elif y < self.rect.y:
+                self.setanimation('walkaway')
+                self.rect.y -= 1
+            elif x > self.rect.x:
+                self.setanimation('walkright')
+                self.rect.x += 1
+            elif x < self.rect.x:
+                self.setanimation('walkleft')
+                self.rect.x -= 1
+            else:
+                self.setanimation('stand')
+                if self.onarive is not None:
+                    self.onarive(*self.onarive_params)
         try:
             return self.animations[self.animation][self.frame]
         except:
             return 'NoFrameSpecified'
 
     def nextframe(self):
-        if self.frame < len(self.animations[self.animation]) -1:
+        if self.frame < len(self.animations.get(self.animation,[])) -1:
             self.frame += 1
         else:
             self.frame = 0
