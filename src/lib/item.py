@@ -67,7 +67,7 @@ class Item(EzdmObject):
 
     def onstrike(self, player, target):
         event(self, "events/onstrike", {'item': self, 'player': player, 'target': target, 'messages': messages})
-        debug("Item.onstrike save: %s" % target.autosave())
+        debug("Item.onstrike save: %s" % target.savetoslot())
 
     def onuse(self, player, target):
         debug("[DEBUG] Item.onuse: player %s, target %s" % (player.displayname(), target.displayname()))
@@ -86,10 +86,10 @@ class Item(EzdmObject):
         event(self, "/events/onuse", {'item': self, 'player': player, 'target': target, 'messages': messages})
         try:
             target = messages.characterlist[target.index]
-            debug("Item.onround save: %s" % target.autosave())
+            debug("Item.onround save: %s" % target.savetoslot())
         except:
             return
-        messages.error("Item.onuse save: %s" % target.autosave())
+        messages.error("Item.onuse save: %s" % target.savetoslot())
 
     def onround(self, player):
         targetindex = self.get('/target', 0)
@@ -113,7 +113,7 @@ class Item(EzdmObject):
                 self.onfinish(player=player)
         try:
             target = messages.characterlist[targetindex]
-            debug("Item.onround save: %s" % target.autosave())
+            debug("Item.onround save: %s" % target.savetoslot())
         except:
             return
 
@@ -138,13 +138,13 @@ class Item(EzdmObject):
         event(self, "/events/onfinish", {'item': self, 'player': player, 'target': target, 'messages': messages})
         try:
             target = messages.characterlist[targetindex]
-            debug("Item.onfinish save: %s" % target.autosave())
+            debug("Item.onfinish save: %s" % target.savetoslot())
         except:
             return
 
     def ondrop(self, player):
         event(self, "events/ondrop", {'item': self, 'player': player, 'messages': messages})
-        player.autosave()
+        player.savetoslot()
 
     def interrupt(self):
         self.put('in_use', False)

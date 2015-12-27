@@ -6,6 +6,7 @@ from dialog import FloatDialog
 import pygame
 from pygame.locals import *
 from button import Button, Dropdown, render_text, Label, TextInput, BlitButton
+from item import Item
 
 
 
@@ -161,6 +162,9 @@ class Game(Tempsprites):
             if key.startswith('__Yinventory'):
                 k = key.replace('__Y', '')
                 self.player.put(k, template[key])
+        armor = Item(load_yaml('items', 'ab7ed2a7e93bae020aeaab893902702fc0727b0079ecd3a14aa4a57c.yaml'))
+        armor = self.player.acquire_item(armor)
+        self.player.equip_item(armor)
         debug(self.player())
         slot = str(len(os.listdir(self.homedir)))
         self.setsavedir(slot)
