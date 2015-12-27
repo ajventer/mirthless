@@ -55,6 +55,7 @@ class AnimatedSprite(pygame.sprite.DirtySprite):
             else:
                 self.setanimation('stand')
                 if self.onarive is not None:
+                    self.goto = (0,0)
                     self.onarive(*self.onarive_params)
         try:
             return self.animations[self.animation][self.frame]
