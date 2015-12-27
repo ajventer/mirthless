@@ -64,13 +64,28 @@ class Mapview(pygame.sprite.DirtySprite, Tempsprites):
         return tileimage
 
     def tileicons(self, x, y, scn_x, scn_y, scale):
-        if not self.gamemap.tile(x,y).get('revealed', False):
-            if self.frontend.mode != 'editor':
+        rect = pygame.Rect(scn_x, scn_y, scale, scale)
+        if self.frontend.mode != 'editor':
+            if not self.gamemap.tile(x,y).get('revealed', False):
                 return
+            player = self.frontend.game.player
+            loc = player.location()
+            if loc['x'] == x and loc['y'] == y:
+                playerbtn = ButtonSprite(
+                    self.frontend.tilemaps,
+                    rect,
+                    self.frontend.eventstack,
+                    onclick = self.click,
+                    onclick_params = [(scn_x,scn_y)],
+                    animations = player.getsubtree('animations'),
+                    layer=self._layer+2,
+                    fps=5,
+                    mouseover=player.displayname(),
+                    frontend=self.frontend)
+                self._addtemp('player', playerbtn)
         scn_x = 50+(self.tilesize*x)
         scn_y = 65+(self.tilesize*y)
         npc = None
-        rect = pygame.Rect(scn_x, scn_y, scale, scale)
         animations = {'view':[]}
         for objtype, item in self.gamemap.tile_objects(x,y):
             if objtype != 'npc':
@@ -100,7 +115,7 @@ class Mapview(pygame.sprite.DirtySprite, Tempsprites):
                 frontend=self.frontend)
             self._addtemp(make_hash(), itemsprite)
         if npc is not None:
-            self._addtemp(make_hash(), npc)
+            self._addtemp(npc.get_hash(), npc)
 
 
     def zoomicons(self, x, y, scn_x, scn_y):
