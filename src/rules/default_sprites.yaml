@@ -1,4 +1,4 @@
-mage:
+wizard:
     animations/stand:
      - Mage.png:3:0:0
     animations/walkleft:

@@ -14,7 +14,7 @@ from random import choice
 
 #removed 'wizard:mage' due to missing sprite info in defaults_sprites.yaml
 PLAYER_CLASSES = ['warrior:fighter', 'warrior:ranger',
-                  'rogue:thief', 'rogue:bard', 'priest:druid', 'priest:cleric']
+                  'rogue:thief', 'rogue:bard', 'priest:druid', 'priest:cleric', 'wizard:mage']
 
 
 class Game(Tempsprites):
