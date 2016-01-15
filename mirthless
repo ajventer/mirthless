@@ -28,11 +28,19 @@ settings = yaml.load(settingstr)
 if gamedir is None:
     gamedir = settings['gamedir']
 
+  
 sys.path.append(os.path.join(gamedir,'lib'))
 print sys.path
 import util
 util.gamedir.insert(0, gamedir)
 util.debug('Library path:', '\n\t'.join(sys.path))
+
+try:
+    os.mkdir(os.path.join(os.getenv('HOME'), '.mirthless'))
+    util.debug('.mirthless directory created')
+except OSError:
+    util.debug('.mirthless directory exists')
+  
 from graphics import Mapview, Tilemap, initpygame, imagecache, eventstack, tilemaps
 
 

@@ -9,7 +9,7 @@ all:
 # Add commands here to build code.
 
 install: test
-	mkdir -p /home/$(USER)/.mirthless
+
 	mkdir -p $(DESTDIR)/usr/share/mirthless
 	cp -rfv ${SRCDIR}/*  $(DESTDIR)/usr/share/mirthless
 	chmod -R 755 $(DESTDIR)/usr/share/mirthless
