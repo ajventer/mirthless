@@ -10,6 +10,12 @@ from item import Item
 from journal import Journal
 from gamemap import GameMap
 import json
+from random import choice 
+
+#removed 'wizard:mage' due to missing sprite info in defaults_sprites.yaml
+PLAYER_CLASSES = ['warrior:fighter', 'warrior:ranger',
+                  'rogue:thief', 'rogue:bard', 'priest:druid', 'priest:cleric']
+
 
 class Game(Tempsprites):
     livecharacters = []
@@ -108,7 +114,7 @@ class Game(Tempsprites):
             self.frontend.imagecache,
             16,
             pygame.Rect(420,150,200,30),
-            ['warrior:fighter','warrior:ranger','wizard:mage','rogue:thief','rogue:bard','priest:druid', 'priest:cleric'],
+            PLAYER_CLASSES,
             layer=17)
         self._addtemp('playerclass', playerclass)
         racelbl = Label('Race:',(340,190))
@@ -147,7 +153,8 @@ class Game(Tempsprites):
         self.player.put('personal/name/last', value('lastname'))
         self.player.put('personal/portrait', self.portrait)
         self.player.put('personal/sex', value('sex'))
-        playerclass = value('playerclass').split(':')
+        playerclass = value('playerclass') or choice(PLAYER_CLASSES) 
+        playerclass = playerclass.split(':')
         debug(playerclass)
         self.player.put('class/parent', playerclass[0])
         self.player.put('class/class', playerclass[1])
