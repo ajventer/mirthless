@@ -1,0 +1,172 @@
+abilities/climb walls: 50
+abilities/detect noise: 20
+abilities/find-remove traps: 5
+abilities/move silently: 10
+abilities/open locks: 10
+abilities/pick pockets: 10
+abilities/read languages: 5
+armor_types: 3
+attributes/cha: 17
+attributes/con: 11
+attributes/dex: 12
+attributes/int: 14
+attributes/str: 9
+attributes/wis: 8
+class/class: bard
+class/parent: rogue
+combat/hitpoints: 17
+combat/level-hitdice: 4
+combat/max_hp: 16
+combat/saving_throws/breath: 16
+combat/saving_throws/pp: 12
+combat/saving_throws/ppd: 13
+combat/saving_throws/rod: 14
+combat/saving_throws/spell: 15
+combat/thac0: 18
+icon: avatars/48x48_Faces_4th_Sheet_Update_CharlesGabriel_OGA_0-1-3.png
+inventory/equiped/chest: 
+inventory/equiped/feet: 
+inventory/equiped/gloves: 
+inventory/equiped/head: 
+inventory/equiped/leftfinger: 
+inventory/equiped/lefthand/damage_type: stab
+inventory/equiped/lefthand/dmg: 4
+inventory/equiped/lefthand/range: ''
+inventory/equiped/lefthand/save_against: none
+inventory/equiped/lefthand/slot: lefthand
+inventory/equiped/lefthand/to_hit: 0
+inventory/equiped/lefthand/weapon_type: melee
+inventory/equiped/lefthand/charges: 0
+inventory/equiped/lefthand/current_rounds_performed: 0
+inventory/equiped/lefthand/description: A small dagger balanced for use
+  in the offhand.
+inventory/equiped/lefthand/icon: icons/dagger.png
+inventory/equiped/lefthand/identified: true
+inventory/equiped/lefthand/in_use: false
+inventory/equiped/lefthand/name: Offhand_Dagger
+inventory/equiped/lefthand/price/copper: ''
+inventory/equiped/lefthand/price/gold: 2
+inventory/equiped/lefthand/price/silver: ''
+inventory/equiped/lefthand/rounds_per_charge: 0
+inventory/equiped/lefthand/size: small
+inventory/equiped/lefthand/type: weapon
+inventory/equiped/lefthand/weight: ''
+inventory/equiped/lefthand/events/ondrop: campaign.warning('%s has dropped %s'
+  % (player.displayname(), item.displayname()))
+inventory/equiped/lefthand/events/onequip: ''
+inventory/equiped/lefthand/events/onfinish: ''
+inventory/equiped/lefthand/events/onpickup: ''
+inventory/equiped/lefthand/events/onround: ''
+inventory/equiped/lefthand/events/onuse: ''
+inventory/equiped/legs: 
+inventory/equiped/neck: 
+inventory/equiped/rightfinger: 
+inventory/equiped/righthand/damage_type: stab
+inventory/equiped/righthand/dmg: 4
+inventory/equiped/righthand/range: ''
+inventory/equiped/righthand/save_against: none
+inventory/equiped/righthand/slot: ' righthand'
+inventory/equiped/righthand/to_hit: 0
+inventory/equiped/righthand/weapon_type: melee
+inventory/equiped/righthand/charges: 0
+inventory/equiped/righthand/current_rounds_performed: 0
+inventory/equiped/righthand/description: A small dagger balanced for use
+  in the main hand.
+inventory/equiped/righthand/icon: icons/dagger.png
+inventory/equiped/righthand/identified: true
+inventory/equiped/righthand/in_use: false
+inventory/equiped/righthand/name: Mainhand Dagger
+inventory/equiped/righthand/price/copper: ''
+inventory/equiped/righthand/price/gold: 25
+inventory/equiped/righthand/price/silver: ''
+inventory/equiped/righthand/rounds_per_charge: 0
+inventory/equiped/righthand/size: small
+inventory/equiped/righthand/type: weapon
+inventory/equiped/righthand/weight: ''
+inventory/equiped/righthand/events/ondrop: campaign.warning('%s has dropped %s'
+  % (player.displayname(), item.displayname()))
+inventory/equiped/righthand/events/onequip: ''
+inventory/equiped/righthand/events/onfinish: ''
+inventory/equiped/righthand/events/onpickup: ''
+inventory/equiped/righthand/events/onround: ''
+inventory/equiped/righthand/events/onuse: ''
+inventory/equiped/wrists: {}
+inventory/money/copper: 10
+inventory/money/gold: 105
+inventory/money/silver: 1
+inventory/pack:
+- core:
+    charges: 0
+    current_rounds_performed: 0
+    description: Heals the target character for 1d6 hitpoints
+    icon: icons/health_potion.png
+    identified: true
+    in_use: false
+    name: Health Potion
+    price:
+      copper: 0
+      gold: 10
+      silver: 0
+    rounds_per_charge: 1
+    size: small
+    target: null
+    type: other
+    weight: 0
+  events:
+    ondrop: ''
+    onequip: ''
+    onfinish: ''
+    onpickup: ''
+    onround: ''
+    onuse: "campaign.warning('%s is using a %s on %s' % (player.displayname(), item.displayname(),\
+      \ target.displayname()))\r\nfrom ezdm_libs.util import rolldice\r\nhealth, roll_message\
+      \ = rolldice(numdice=1, numsides=6, modifier=0)\r\ncampaign.message(roll_message)\r\
+      \nresult = target.heal(health)\r\ncampaign.error('%s has been healed for %s,\
+      \ and current hitpoints are %s' % (player.displayname(), health, result))"
+inventory/spells:
+- conditional:
+    spell_level: 1
+    spell_school: Conjuration
+  core:
+    charges: -1
+    current_rounds_performed: 0
+    description: Fires a bolt of arcane energy at the target, if it hits it does 1d4
+      damage.
+    icon: icons/magic_misile.png
+    identified: true
+    in_use: false
+    name: Magic Misile
+    price:
+      copper: 25
+      gold: 200
+      silver: 50
+    rounds_per_charge: 2
+    size: small
+    target: null
+    type: spell
+    weight: 0
+  events:
+    ondrop: ''
+    onequip: ''
+    onfinish: "campaign.warning('%s has finished casting Magic Misile at %s'  % (player.displayname(),\
+      \ target.displayname()))\r\nfrom ezdm_libs.util import rolldice\r\nspell_success\
+      \ = player.spell_success()\r\nif not spell_success[1]:\r\n\tcampaign.error(spell_success[0])\r\
+      \nelse:\r\n\tdmg = rolldice(numdice=1, numsides=4, modifier=0)\r\n\tresult =\
+      \ target.take_damage(dmg)\r\n\tcampaign.error(result[1])"
+    onpickup: ''
+    onround: campaign.error('%s continues to cast Magic Misile at %s' % (player.displayname(),
+      target.displayname()))
+    onuse: campaign.error('%s is casting Magic Missile at %s' % (player.displayname(),
+      target.displayname()))
+location/map: simple_room.json
+location/x: 1
+location/y: 6
+personal/alignment/law: neutral
+personal/alignment/social: good
+personal/backstory: ''
+personal/name/first: BARDIC
+personal/name/last: ROGUE
+personal/race: half-elf
+personal/sex: female
+personal/xp: 5460
+type: player

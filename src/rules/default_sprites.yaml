@@ -1,0 +1,84 @@
+mage:
+    animations/stand:
+     - Mage.png:3:0:0
+    animations/walkleft:
+     - Mage.png:0:1:0
+     - Mage.png:1:1:0
+    animations/walkright:
+     - Mage.png:0:2:0
+     - Mage.png:3:2:0
+    animations/walkaway:
+     - Mage.png:0:3:0
+     - Mage.png:1:3:0
+    animations/walktoward:
+     - Mage.png:0:0:0
+     - Mage.png:1:0:0
+    animations/cast: 
+     - Mage.png:0:0:0
+    animations/attackmelee:
+     - Mage.png:0:0:0
+    animations/attackmisile:
+     - Mage.png:0:0:0
+warrior:
+    animations/stand:
+     - Warrior.png:3:0:0
+    animations/walkleft:
+     - Warrior.png:0:1:0
+     - Warrior.png:1:1:0
+    animations/walkright:
+     - Warrior.png:0:2:0
+     - Warrior.png:3:2:0
+    animations/walkaway:
+     - Warrior.png:0:3:0
+     - Warrior.png:1:3:0
+    animations/walktoward:
+     - Warrior.png:0:0:0
+     - Warrior.png:1:0:0
+    animations/cast: 
+     - Warrior.png:0:0:0
+    animations/attackmelee:
+     - Warrior.png:0:0:0
+    animations/attackmisile:
+     - Warrior.png:0:0:0
+rogue:
+    animations/stand:
+     - Rogue.png:3:0:0
+    animations/walkleft:
+     - Rogue.png:0:1:0
+     - Rogue.png:1:1:0
+    animations/walkright:
+     - Rogue.png:0:2:0
+     - Rogue.png:3:2:0
+    animations/walkaway:
+     - Rogue.png:0:3:0
+     - Rogue.png:1:3:0
+    animations/walktoward:
+     - Rogue.png:0:0:0
+     - Rogue.png:1:0:0
+    animations/cast: 
+     - Rogue.png:0:0:0
+    animations/attackmelee:
+     - Rogue.png:0:0:0
+    animations/attackmisile:
+     - Rogue.png:0:0:0
+priest:
+    animations/stand:
+     - Paladin.png:3:0:0
+    animations/walkleft:
+     - Paladin.png:0:1:0
+     - Paladin.png:1:1:0
+    animations/walkright:
+     - Paladin.png:0:2:0
+     - Paladin.png:3:2:0
+    animations/walkaway:
+     - Paladin.png:0:3:0
+     - Paladin.png:1:3:0
+    animations/walktoward:
+     - Paladin.png:0:0:0
+     - Paladin.png:1:0:0
+    animations/cast: 
+     - Paladin.png:0:0:0
+    animations/attackmelee:
+     - Paladin.png:0:0:0
+    animations/attackmisile:
+     - Paladin.png:0:0:0

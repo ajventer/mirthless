@@ -1,0 +1,115 @@
+
+conditional/class.parent=rogue/abilities/climb walls: 60
+conditional/class.parent=rogue/abilities/detect noise: 15
+conditional/class.parent=rogue/abilities/find-remove traps: 5
+conditional/class.parent=rogue/abilities/hide in shadows: 5
+conditional/class.parent=rogue/abilities/move silently: 10
+conditional/class.parent=rogue/abilities/open locks: 10
+conditional/class.parent=rogue/abilities/pick pockets: 15
+conditional/class.parent=rogue/abilities/read languages: 0
+conditional/class.parent=rogue/armor_types: leather
+conditional/class.parent=rogue/shields: false
+conditional/class.class=bard/shields: true
+conditional/class.class=bard/abilities/climb walls: 50
+conditional/class.class=bard/abilities/detect noise: 20
+conditional/class.class=bard/abilities/pick pockets: 10
+conditional/class.class=bard/abilities/read languages: 5
+conditional/class.class=paladin/abilities/Turn undead (level 3+): 100
+conditional/class.class=paladin/abilities/cure disease(weekly): 100
+conditional/class.class=paladin/abilities/lay on hands (daily): 100
+conditional/class.class=paladin/abilities/sense evil intent(must end turn): 100
+conditional/class.parent=priest/shields: false
+conditional/class.parent=priest/armor_types: cloth
+conditional/class.parent=warrior/armor_types: plate
+conditional/class.parent=warrior/shields: true
+conditional/class.parent=wizard/armor_types: cloth
+conditional/class.parent=wizard/shields: false
+events/__Toninspect: ''
+events/__Tontalk: ''
+loot/__Yalways_drops: []
+disposition: __[friendly,neutral,aggressive]
+__Yinventory/equiped/armor: {}
+__Yinventory/equiped/gloves: {}
+__Yinventory/equiped/head: {}
+__Yinventory/equiped/leftfinger: {}
+__Yinventory/equiped/lefthand: {}
+__Yinventory/equiped/legs: {}
+__Yinventory/equiped/neck: {}
+__Yinventory/equiped/rightfinger: {}
+__Yinventory/equiped/righthand: {}
+__Yinventory/equiped/wrists: {}
+inventory/money/copper: 5
+inventory/money/gold: 0
+inventory/money/silver: 0
+inventory/pack: []
+inventory/spells: []
+inventory/spells_memorized: []
+class/parent: __[warrior,wizard,rogue,priest]
+conditional/class.parent=warrior/class.class: __[fighter,ranger,paladin]
+conditional/class.parent=wizard/class.class: __[mage]
+conditional/class.parent=rogue/class.class: __[bard,thief]
+conditional/class.parent=priest/class.class: __[druid,cleric]
+
+conditional/class.parent=warrior/attributes.str: 16
+conditional/class.parent=wizard/attributes.str: 8
+conditional/class.parent=rogue/attributes.str: 12
+conditional/class.parent=priest/attributes.str: 9
+
+conditional/class.parent=warrior/attributes.cha: 9
+conditional/class.parent=wizard/attributes.cha: 11
+conditional/class.parent=rogue/attributes.cha: 16
+conditional/class.parent=priest/attributes.cha: 14
+
+conditional/class.parent=warrior/attributes.con: 15
+conditional/class.parent=wizard/attributes.con: 9
+conditional/class.parent=rogue/attributes.con: 14
+conditional/class.parent=priest/attributes.con: 11
+
+conditional/class.parent=warrior/attributes.dex: 10
+conditional/class.parent=wizard/attributes.dex: 7
+conditional/class.parent=rogue/attributes.dex: 16
+conditional/class.parent=priest/attributes.dex: 9
+
+conditional/class.parent=warrior/attributes.int: 7
+conditional/class.parent=wizard/attributes.int: 16
+conditional/class.parent=rogue/attributes.int: 13
+conditional/class.parent=priest/attributes.int: 15
+
+conditional/class.parent=warrior/attributes.wis: 10
+conditional/class.parent=wizard/attributes.wis: 14
+conditional/class.parent=rogue/attributes.wis: 12
+conditional/class.parent=priest/attributes.wis: 16
+
+__Ycombat/hitpoints: 0
+__Ycombat/level-hitdice: 1
+__Ycombat/max_hp: 0
+lightradius: 0
+personal/alignment/law: __[chaotic,neutral,lawful]
+personal/alignment/social: __[evil,good,neutral]
+personal/name/first: ''
+personal/name/last: ''
+personal/portrait: portrait_Lucia.png
+personal/race: __[human,elf,dwarf,half-elf,halfling,monster,creature,gnome]
+personal/sex: __[male,female]
+__Yanimations/stand:
+ - Mage.png:3:0:0
+__Yanimations/walkleft:
+ - Mage.png:0:1:0
+ - Mage.png:1:1:0
+__Yanimations/walkright:
+ - Mage.png:0:2:0
+ - Mage.png:3:2:0
+__Yanimations/walkaway:
+ - Mage.png:0:3:0
+ - Mage.png:1:3:0
+__Yanimations/walktoward:
+ - Mage.png:0:0:0
+ - Mage.png:1:0:0
+__Yanimations/cast: 
+ - Mage.png:0:0:0
+__Yanimations/attackmelee:
+ - Mage.png:0:0:0
+__Yanimations/attackmisile:
+ - Mage.png:0:0:0
+
+

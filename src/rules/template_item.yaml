@@ -1,0 +1,54 @@
+
+conditional/type=armor/ac: 0
+conditional/type=armor/material: __[shield,cloth,leather,mail,plate]
+conditional/type=armor/slot: __[head,armor,feet,wrists,hands,finger,neck,lefthand]
+conditional/type=spell/spell_level: 1
+conditional/type=spell/spell_school: __[Abjuration,Alteration,Conjuration,Enchantment,Divination,Illusion,Invocation,Necromancy]
+conditional/type=spell/spell_type: __[priest spells,wizard spells]
+conditional/type=weapon/max_dmg: 4
+conditional/type=weapon/range: __[short,medium,long]
+conditional/type=weapon/save_against: __[ppd,rod,pp,breath,spell,none]
+conditional/type=weapon/slot: __[lefthand,righthand,twohand,either hand]
+conditional/type=weapon/weapon_type: __[melee,magic,misile]
+conditional/type=container/random_contents: __[true,false]
+conditional/type=container/contents: []
+conditional/type=container/locked: __[false,true]
+conditional/type=container/events.onopen: ''
+conditional/type=door/locked: __[false,true]
+animations/view: 
+ - Shield.png:5:0:0
+conditional/type=weapon/animations/strike:
+ - LongWep.png:1:6:90
+conditional/type=spell/animations/travel:
+ - Effect0.png:1:16:0
+ - Effect0.png:0:17:0
+conditional/type=spell/animations/strike:
+ - Effect0.png:1:7:0
+conditional/type=container/animations/closed: []
+conditional/type=container/animations/open: []
+conditional/type=door/animations/open: []
+conditional/type=door/animations/closed: []
+__Tdescription: ''
+canpickup: __[false,true]
+__Yrounds_used: 0
+__Yin_use: false
+charges: 0
+identified: __[false,true]
+lightradius: 0
+name: ''
+price/copper: 0
+price/gold: 0
+price/silver: 0
+rounds_per_charge: 0
+size: __[small,medium,large]
+type: __[weapon,armor,spell,container,door,other]
+weight: 1
+events/__Tondrop: ''
+events/__Tonequip: ''
+events/__Tonfinish: ''
+events/__Tonpickup: ''
+events/__Tonround: ''
+events/__Tonunequip: ''
+events/__Tonuse: ''
+events/__Tonstrike: ''
+events/__Tonattack: ''

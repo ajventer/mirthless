@@ -1,0 +1,29 @@
+animations/strike:
+- ShortWep.png:0:1:0
+- ShortWep.png:0:1:90
+animations/view:
+- ShortWep.png:0:1:0
+canpickup: true
+charges: '0'
+description:
+- This simple medium length sword is standard equipment
+- 'for low-level soldiers and guards. '
+- Careful, it may be simple, but it is also sharp.
+hash: e2a4f0a792a68f6240f43ed3ffe934d4beaccfb04c8f3dda36550d3d
+identified: true
+in_use: false
+lightradius: '0'
+max_dmg: '6'
+name: 'Simple shortsword '
+price/copper: '10'
+price/gold: '0'
+price/silver: '0'
+range: short
+rounds_per_charge: '0'
+rounds_used: 0
+save_against: none
+size: small
+slot: righthand
+type: weapon
+weapon_type: melee
+weight: '3'

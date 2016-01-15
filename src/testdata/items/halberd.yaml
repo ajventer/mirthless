@@ -1,0 +1,33 @@
+damage_type: hack
+dmg: 8
+range: medium
+save_against: none
+slot: twohand
+to_hit: 0
+weapon_type: melee
+charges: 0
+current_rounds_performed: 0
+description: A heavy halberd for significant damage at medium range.
+icon: icons/bardiche1.png
+identified: false
+in_use: false
+name: Halberd
+price/copper: ''
+price/gold: 10
+price/silver: ''
+rounds_per_charge: 0
+size: large
+type: weapon
+weight: ''
+events/ondrop:
+ - messages.warning('%s has dropped %s' % (player.displayname(), item.displayname()))
+events/onequip:
+ - ''
+events/onfinish:
+ - ''
+events/onpickup:
+ - ''
+events/onround:
+ - ''
+events/onuse:
+ - ''

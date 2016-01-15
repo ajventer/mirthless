@@ -1,0 +1,65 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+import yaml
+import os
+import sys
+import pygame
+from pygame.locals import *
+
+
+#The following slightly convoluted import block allows the game to run from the source tree for development
+#When you do so, the local source paths take precedence over the installed paths.
+#TODO: Add a windows check and alter default paths to work on that platform.
+exepath = os.path.abspath(__file__)
+gamedir = None
+if exepath == '/usr/games/mirthless':
+    settingsfile = '/etc/mirthless/mirthless.cfg'
+    gamedir = '/usr/share/mirthless'
+else:
+    settingsfile = os.path.dirname(exepath)+'/etc/mirthless/mirthless.cfg'
+    gamedir =  os.path.abspath(os.path.dirname(exepath)+'/src/')
+
+if os.path.exists('/etc/mirthless/mirthless.cfg'):
+    settingsfile = '/etc/mirthless/mirthless.cfg'
+settingstr = open(settingsfile).read()
+
+settings = yaml.load(settingstr)
+
+if gamedir is None:
+    gamedir = settings['gamedir']
+
+sys.path.append(os.path.join(gamedir,'lib'))
+print sys.path
+import util
+util.gamedir.insert(0, gamedir)
+util.debug('Library path:', '\n\t'.join(sys.path))
+from graphics import Mapview, Tilemap, initpygame, imagecache, eventstack, tilemaps
+
+
+def hello():
+    print "Hello world"
+
+if __name__ == "__main__":
+    screen, screenlayout, frontend = initpygame(settings, 'Mirthless RPG', settingsfile)
+    quit = False 
+    clock = pygame.time.Clock()
+    pygame.key.set_repeat(50, 50)
+    while not quit:     
+        clock.tick(60)  
+        for event in pygame.event.get():
+            quit = eventstack.handle_event(event)
+        frontend.draw()
+        pygame.display.flip()
+
+
+
+
+
+    
+
+    
+
+
+
+
+

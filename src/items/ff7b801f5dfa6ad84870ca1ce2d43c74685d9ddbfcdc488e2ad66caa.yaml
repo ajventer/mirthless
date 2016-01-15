@@ -1,0 +1,55 @@
+animations/strike:
+- Glove.png:4:0:0
+animations/view:
+- Glove.png:4:0:0
+- Glove.png:4:0:0
+canpickup: true
+charges: '0'
+description:
+- Hit the target with your bare fist.
+- 'Max damage: 4'
+- +1 to hit if your dex is > 16
+- +2 to max damage if your str > 18
+- ''
+events/onattack:
+- '#events/onattack'
+- '#events/onattack'
+- '#This is a python snippet'
+- '#It will be executed when the event occurs.'
+- '#You can use the following predefined objects to interact with the game'
+- '#item: The item that generated this event. item.lightradius += 1'
+- '#player: the player. player.put(''core/combat/hitpoints'', int(player.get(''core/combat/hitpoints''))+1)'
+- '#target: the monster being targetted (only available for events that have a target). target.take_damage(4)'
+- '#messages: Send a message, warning or error. message.error(''You have been cursed !!!'')'
+- '#You can safely delete these comments if you want to, or just put your event handling code below.'
+- '#When you''re done, save the file and close the text editor to return to Mirthless.'
+- strength = player.get('attributes/str',1)
+- dex = player.get('attributes/dex',1)
+- 'if dex > 16:'
+- '  messages.message(''High dex - bonus chance to hit'')'
+- '  item.put(''to_hit'', 1)'
+- 'if strength > 18:'
+- '  messages.message(''High str - bonus max damage'')'
+- '  item.put(''max_dmg'',6)'
+- '  '
+- ''
+- '   '
+- ''
+hash: ff7b801f5dfa6ad84870ca1ce2d43c74685d9ddbfcdc488e2ad66caa
+identified: true
+in_use: false
+lightradius: '0'
+max_dmg: '4'
+name: Fist
+price/copper: '0'
+price/gold: '0'
+price/silver: '0'
+range: short
+rounds_per_charge: '0'
+rounds_used: 0
+save_against: none
+size: small
+slot: twohand
+type: weapon
+weapon_type: melee
+weight: '0'

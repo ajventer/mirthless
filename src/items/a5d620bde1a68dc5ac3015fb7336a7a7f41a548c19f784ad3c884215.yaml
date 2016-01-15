@@ -1,0 +1,23 @@
+{
+    "ac": "3", 
+    "hash": "a5d620bde1a68dc5ac3015fb7336a7a7f41a548c19f784ad3c884215", 
+    "lightradius": "0", 
+    "weight": "4", 
+    "in_use": false, 
+    "material": "mail", 
+    "animations/view": [
+        "Armor.png:1:8:0"
+    ], 
+    "identified": true, 
+    "rounds_per_charge": "0", 
+    "size": "medium", 
+    "slot": "armor", 
+    "rounds_used": 0, 
+    "name": "Rusty mail vest", 
+    "charges": "0", 
+    "canpickup": true, 
+    "price/silver": "1", 
+    "price/copper": "0", 
+    "price/gold": "0", 
+    "type": "armor"
+}

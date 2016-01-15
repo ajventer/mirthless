@@ -1,0 +1,24 @@
+charges: 1
+current_rounds_performed: 0
+description: Heals the target character for 1d6 hitpoints
+icon: icons/health_potion.png
+identified: true
+in_use: false
+name: Health Potion
+price/copper: 0
+price/gold: 10
+price/silver: 0
+rounds_per_charge: 1
+size: small
+type: other
+weight: 0
+events/ondrop: ''
+events/onequip: ''
+events/onfinish: ''
+events/onpickup: ''
+events/onround: ''
+events/onuse: "messages.warning('%s is using a %s on %s' % (player.displayname(),\
+  \ item.displayname(), target.displayname()))\r\nfrom ezdm_libs.util import rolldice\r\
+  \nhealth, roll_message = rolldice(numdice=1, numsides=6, modifier=0)\r\nmessages.message(roll_message)\r\
+  \nresult = target.heal(health)\r\nmessages.error('%s has been healed for %s, and\
+  \ current hitpoints are %s' % (player.displayname(), health, result))"

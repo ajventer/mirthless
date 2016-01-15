@@ -1,0 +1,18 @@
+ac: '2'
+animations/view:
+- Hat.png:2:1:0
+charges: '0'
+hash: 9f1fbbbc6de348b5783e347fe887f8157dc40b56788fc6062fda81a0
+in_use: false
+lightradius: '0'
+material: mail
+name: Rusty mail skullcap
+price/copper: '0'
+price/gold: '0'
+price/silver: '2'
+rounds_per_charge: '0'
+rounds_used: 0
+size: small
+slot: head
+type: armor
+weight: '1'

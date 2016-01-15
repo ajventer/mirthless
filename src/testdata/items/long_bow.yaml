@@ -1,0 +1,33 @@
+damage_type: hack
+dmg: 8
+range: long
+save_against: none
+slot: twohand
+to_hit: 0
+weapon_type: melee
+charges: 0
+current_rounds_performed: 0
+description: A small dagger balanced for use in the main hand.
+icon: icons/longbow.png
+identified: false
+in_use: false
+name: Long bow
+price/copper: ''
+price/gold: 25
+price/silver: ''
+rounds_per_charge: 0
+size: large
+type: weapon
+weight: ''
+events/ondrop: 
+ - messages.warning('%s has dropped %s' % (player.displayname(), item.displayname()))
+events/onequip:
+ - ''
+events/onfinish:
+ - ''
+events/onpickup:
+ - ''
+events/onround:
+ - ''
+events/onuse:
+ - ''

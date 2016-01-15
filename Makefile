@@ -3,26 +3,23 @@
 SRCDIR=src
 
 test:
-	nosetests  -x --with-doctest --verbosity=3 --detailed-errors --with-coverage --cover-erase --doctest-options='+ELLIPSIS' -exe -w src/usr/share/mirthless/lib
+	nosetests  -x --with-doctest --verbosity=3 --detailed-errors --with-coverage --cover-erase --doctest-options='+ELLIPSIS' -exe -w src/lib
 
 all: 
 # Add commands here to build code.
 
 install: test
-	find ${SRCDIR} -type f | while read file ; do  \
-			echo $$file ;\
-			install -v -m 755 -o root -g root -d "$$(dirname "$(DESTDIR)/$$file")"; \
-			if [ -x "$$file" ]; then \
-				install -v -m 755 -o root -g root "$$file" "$(DESTDIR)/$$file"; \
-			else \
-				install -v -m 644 -o root -g root "$$file" "$(DESTDIR)/$$file"; \
-			fi; \
-	done
-
-# Add commands here to set special permissions, owners, and groups.
-# Example:
-#
-#	chmod u+s $(DESTDIR)/usr/bin/sudo
+	mkdir -p $(DESTDIR)/usr/share/mirthless
+	cp -rfv ${SRCDIR}/*  $(DESTDIR)/usr/share/mirthless
+	chmod -R 755 $(DESTDIR)/usr/share/mirthless
+	chown -R root:root $(DESTDIR)/usr/share/mirthless
+	cp -rfv etc $(DESTDIR)/
+	chmod -R 755 $(DESTDIR)/etc
+	chown -R root:root $(DESTDIR)/etc
+	mkdir -p $(DESTDIR)/usr/games
+	cp -f mirthless $(DESTDIR)/usr/games/
+	chmod -R 755 $(DESTDIR)/usr/games
+	chown root:root $(DESTDIR)/usr/games
 
 clean:
 	debclean		
